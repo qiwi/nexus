@@ -18,7 +18,9 @@
     "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
     "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
     "postupdate": "yarn && npx yarn-audit-fix && yarn build",
-    "format": "prettier --write 'src/**/*.ts'"
+    "format": "prettier --write 'src/**/*.ts'",
+    "test": "yarn jest",
+    "jest": "jest -w=1 --config=jest.config.json"
   },
   "devDependencies": {
     "@qiwi/libdefkit": "^2.1.0",
