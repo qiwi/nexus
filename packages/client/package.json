@@ -17,8 +17,8 @@
     "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
     "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
     "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
-    "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
-    "format": "prettier --write \"src/**/*.ts\""
+    "postupdate": "yarn && npx yarn-audit-fix && yarn build",
+    "format": "prettier --write 'src/**/*.ts'"
   },
   "devDependencies": {
     "@qiwi/libdefkit": "^2.1.0",

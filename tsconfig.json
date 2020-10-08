@@ -3,9 +3,9 @@
   "compilerOptions": {
     "baseUrl": "./packages",
     "paths": {
-      "blank-ts-monorepo-common": ["./common/src/main/ts"],
-      "blank-ts-monorepo-facade": ["./facade/src/main/ts"],
-      "blank-ts-monorepo-plugin": ["./plugin/src/main/ts"]
+      "@qiwi/nexus-common": ["./common/src/main/ts"],
+      "@qiwi/nexus-facade": ["./facade/src/main/ts"],
+      "@qiwi/nexus-plugin": ["./plugin/src/main/ts"]
     }
   }
 }

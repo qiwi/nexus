@@ -1,7 +1,7 @@
 {
-  "name": "blank-ts-monorepo",
+  "name": "@qiwi/nexus",
   "version": "0.0.0",
-  "description": "Blank TS monorepo",
+  "description": "Components for working with Nexus",
   "main": "target/es5/index.ts",
   "workspaces": [
     "packages/*"
@@ -34,6 +34,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antongolub/blank-ts-monorepo.git"
+    "url": "git+https://github.com/qiwi/nexus.git"
   }
 }

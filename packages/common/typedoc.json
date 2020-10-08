@@ -1,5 +1,5 @@
 {
-  "name": "blank-ts-monorepo-common",
+  "name": "@qiwi/nexus-common",
   "mode": "file",
   "out": "./docs",
   "target": "ES6",
