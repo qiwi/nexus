@@ -1534,14 +1534,39 @@
     tslib "^2.0.1"
     yargs-parser "^20.2.0"
 
+"@qiwi/libdefkit@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.qiwi.com/repository/npm/@qiwi/libdefkit/-/libdefkit-2.1.0.tgz#2fb422550db9d542bb312ff2aa527f4d5c060e91"
+  integrity sha512-h3xJpoRxR5gRLpuQipXUypuo28vt2PaQ/MtPo6fWGod7I5hbz1y7Ny+rJddXCXjSnRYQwhjSptgk8TkvjfgO0Q==
+  dependencies:
+    "@antongolub/dts-bundle" "^0.7.4-beta.0"
+    "@qiwi/substrate" "^1.19.0"
+    "@types/find-cache-dir" "^3.2.0"
+    "@types/fs-extra" "^9.0.1"
+    "@types/lodash" "^4.14.161"
+    "@types/meow" "^5.0.0"
+    "@types/read-pkg" "^5.1.0"
+    "@types/yargs-parser" "^15.0.0"
+    chalk "^4.1.0"
+    find-cache-dir "^3.3.1"
+    find-up "^5.0.0"
+    flowgen "1.11.0"
+    fs-extra "^9.0.1"
+    meow "^7.1.1"
+    tslib "^2.0.1"
+    yargs-parser "^20.2.0"
+
 "@qiwi/multi-semantic-release@^3.8.4":
-  version "3.8.4"
-  resolved "https://registry.yarnpkg.com/@qiwi/multi-semantic-release/-/multi-semantic-release-3.8.4.tgz#73fdc609b27cb33b8f4c1320fd5252485cee4cb8"
-  integrity sha512-t6t3OJYKYeIgDbcClZlD+3/10u8fq/IhkEL2Z8ZgVuJ8UbtqipagwKHAV5VGfugiVcJX446X0tOfISfG6hOdGQ==
+  version "3.8.5"
+  resolved "https://registry.qiwi.com/repository/npm/@qiwi/multi-semantic-release/-/multi-semantic-release-3.8.5.tgz#14b578e67f3cd4c4cbd503ef4c4b7fd62a537516"
+  integrity sha512-vW4zCJCOc4iCKzLRzl/LjGtFjnk5NUdie61T3sEWMHpJMsguyWV5i1HDhql1TzVuWG9MCHBREyjXFoXNe7ne3w==
   dependencies:
     bash-glob "^2.0.0"
     blork "^9.2.2"
     cosmiconfig "^7.0.0"
+    debug "^4.2.0"
+    detect-indent "^6.0.0"
+    detect-newline "^3.1.0"
     execa "^4.0.3"
     get-stream "^6.0.0"
     git-log-parser "^1.2.0"
@@ -1640,7 +1665,7 @@
 
 "@semantic-release/git@^9.0.0":
   version "9.0.0"
-  resolved "https://registry.yarnpkg.com/@semantic-release/git/-/git-9.0.0.tgz#304c4883c87d095b1faaae93300f1f1e0466e9a5"
+  resolved "https://registry.qiwi.com/repository/npm/@semantic-release/git/-/git-9.0.0.tgz#304c4883c87d095b1faaae93300f1f1e0466e9a5"
   integrity sha512-AZ4Zha5NAPAciIJH3ipzw/WU9qLAn8ENaoVAhD6srRPxTpTzuV3NhNh14rcAo8Paj9dO+5u4rTKcpetOBluYVw==
   dependencies:
     "@semantic-release/error" "^2.1.0"
@@ -1717,7 +1742,7 @@
 
 "@semantic-release/npm@^7.0.6":
   version "7.0.6"
-  resolved "https://registry.yarnpkg.com/@semantic-release/npm/-/npm-7.0.6.tgz#1301bd57d246eae048d7104a735467bb0829f3d8"
+  resolved "https://registry.qiwi.com/repository/npm/@semantic-release/npm/-/npm-7.0.6.tgz#1301bd57d246eae048d7104a735467bb0829f3d8"
   integrity sha512-F4judxdeLe8f7+vDva1TkqNc5Tb2tcltZYW0tLtvP2Xt7CD/gGiz7UxAWEOPsXBvIqAP+uTidvGLPl9U3/uRoQ==
   dependencies:
     "@semantic-release/error" "^2.2.0"
@@ -2407,6 +2432,13 @@ aws4@^1.8.0:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.10.1.tgz#e1e82e4f3e999e2cfd61b161280d16a111f86428"
   integrity sha512-zg7Hz2k5lI8kb7U32998pRRFin7zJlkfezGJjUc2heaD4Pw2wObakCDVzkKztTm/Ln7eiVvYsjqak0Ed4LkMDA==
+
+axios@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.qiwi.com/repository/npm/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
+  integrity sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
+  dependencies:
+    follow-redirects "^1.10.0"
 
 babel-jest@^26.3.0:
   version "26.3.0"
@@ -3526,9 +3558,9 @@ detect-newline@^2.1.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-2.1.0.tgz#f41f1c10be4b00e87b5f13da680759f2c5bfd3e2"
   integrity sha1-9B8cEL5LAOh7XxPaaAdZ8sW/0+I=
 
-detect-newline@^3.0.0:
+detect-newline@^3.0.0, detect-newline@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
+  resolved "https://registry.qiwi.com/repository/npm/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
 dezalgo@^1.0.0, dezalgo@~1.0.3:
@@ -4173,6 +4205,11 @@ flush-write-stream@^1.0.0:
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
+
+follow-redirects@^1.10.0:
+  version "1.13.0"
+  resolved "https://registry.qiwi.com/repository/npm/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
+  integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -7733,9 +7770,9 @@ prepend-http@^1.0.0, prepend-http@^1.0.1:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
-prettier@^2.0.5:
+prettier@^2.0.5, prettier@^2.1.2:
   version "2.1.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.1.2.tgz#3050700dae2e4c8b67c4c3f666cdb8af405e1ce5"
+  resolved "https://registry.qiwi.com/repository/npm/prettier/-/prettier-2.1.2.tgz#3050700dae2e4c8b67c4c3f666cdb8af405e1ce5"
   integrity sha512-16c7K+x4qVlJg9rEbXl7HEGmQyZlG4R9AgP+oHKRMsMsuk8s+ATStlf1NpDqyBI1HpVyfjLOeMhH2LvuNvV5Vg==
 
 pretty-format@^25.2.1, pretty-format@^25.5.0:
