@@ -61,6 +61,6 @@ describe('exported entities are defined', () => {
 
   entities.forEach(entity => it(entity.name, () => {
     expect(entity).toBeDefined()
-    expect(typeof entity).toEqual('function')
+    expect(entity).toBeInstanceOf(Function)
   }))
 })
