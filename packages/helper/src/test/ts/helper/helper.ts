@@ -12,15 +12,13 @@ describe('NexusContentsHelper', () => {
 
   it('deletes components', async () => {
     const ids = ['1', '2', '3']
-    const mocks = ids.map(id =>
-      nock(basePath)
-        .delete(`/v1/components/${id}`)
-        .reply(200)
+    const mocks = ids.map((id) =>
+      nock(basePath).delete(`/v1/components/${id}`).reply(200),
     )
 
     await helper.deleteComponentsByIds(ids)
 
-    expect(mocks.some(mock => !mock.isDone())).toEqual(false)
+    expect(mocks.some((mock) => !mock.isDone())).toEqual(false)
   })
 
   it('returns package components', async () => {
@@ -30,23 +28,19 @@ describe('NexusContentsHelper', () => {
     const params = {
       repository: 'foo',
       group: 'bar',
-      name: 'baz'
+      name: 'baz',
     }
-    nock(basePath)
-      .get(searchUrl)
-      .query(params)
-      .once()
-      .reply(200, {
-        items,
-        continuationToken
-      })
+    nock(basePath).get(searchUrl).query(params).once().reply(200, {
+      items,
+      continuationToken,
+    })
     nock(basePath)
       .get(searchUrl)
       .query({ ...params, continuationToken })
       .twice()
       .reply(200, {
         items,
-        continuationToken
+        continuationToken,
       })
     nock(basePath)
       .get(searchUrl)

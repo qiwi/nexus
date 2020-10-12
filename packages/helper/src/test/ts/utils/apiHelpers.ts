@@ -2,20 +2,23 @@ import { apiGetAll } from '../../../main/ts/utils'
 
 describe('apiGetAll', () => {
   beforeAll(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => { /* noop */ })
+    jest.spyOn(console, 'error').mockImplementation(() => {
+      /* noop */
+    })
   })
 
   it('invokes api caller several times until gets an error', async () => {
     let numberOfCalls = 5
     const func = jest.fn().mockImplementation(() => {
-      const promise = numberOfCalls > 0
-        ? Promise.resolve({
-          data: {
-            continuationToken: 'foo',
-            items: [numberOfCalls],
-          }
-        })
-        : Promise.reject(new Error('bar'))
+      const promise =
+        numberOfCalls > 0
+          ? Promise.resolve({
+              data: {
+                continuationToken: 'foo',
+                items: [numberOfCalls],
+              },
+            })
+          : Promise.reject(new Error('bar'))
       numberOfCalls--
       return promise
     })
@@ -32,7 +35,7 @@ describe('apiGetAll', () => {
         data: {
           continuationToken: numberOfCalls > 0 && 'foo',
           items: [numberOfCalls],
-        }
+        },
       })
       numberOfCalls--
       return promise

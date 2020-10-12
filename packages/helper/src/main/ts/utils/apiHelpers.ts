@@ -2,12 +2,14 @@ import { AxiosResponse } from 'axios'
 
 import { TPaginatedResult } from '../interfaces'
 
-export type TApiCaller = (token?: string) => Promise<AxiosResponse<TPaginatedResult>>
+export type TApiCaller = (
+  token?: string,
+) => Promise<AxiosResponse<TPaginatedResult>>
 
 export const apiGetAll = async <T = any>(
   apiCaller: TApiCaller,
   res: any[] = [],
-  token?: string
+  token?: string,
 ): Promise<T[]> => {
   try {
     const resp = await apiCaller(token)

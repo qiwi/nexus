@@ -1,6 +1,6 @@
 export type TSlowBatchExecutorOpts<T> = {
-  executor: (...args: any[]) => Promise<any>,
-  params: any[],
+  executor: (...args: any[]) => Promise<any>
+  params: any[]
   start?: number
   step?: number
   timeout?: number
@@ -11,17 +11,15 @@ export type TSlowBatchExecutorOpts<T> = {
 export const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
-export const slowBatchExecutor = async <T = any>(
-  {
-    executor,
-    params,
-    start = 0,
-    step = 25,
-    timeout = 1000,
-    result = [],
-    endFlag = false,
-  }: TSlowBatchExecutorOpts<T>
-): Promise<T[]> => {
+export const slowBatchExecutor = async <T = any>({
+  executor,
+  params,
+  start = 0,
+  step = 25,
+  timeout = 1000,
+  result = [],
+  endFlag = false,
+}: TSlowBatchExecutorOpts<T>): Promise<T[]> => {
   if (endFlag) {
     return result
   }

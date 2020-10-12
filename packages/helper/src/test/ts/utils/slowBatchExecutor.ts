@@ -9,8 +9,8 @@ describe('slowBatchExecutor', () => {
       executor,
       params,
       step: 2,
-      timeout: 0
+      timeout: 0,
     })
-    expect(result).toEqual(params.map(i => i * 10))
+    expect(result).toEqual(params.map((i) => i * 10))
   })
 })
