@@ -1677,7 +1677,7 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@qiwi/libdefkit@^2.0.1", "@qiwi/libdefkit@^2.1.0":
+"@qiwi/libdefkit@^2.0.1", "@qiwi/libdefkit@^2.1.0", "@qiwi/libdefkit@^2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@qiwi/libdefkit/-/libdefkit-2.1.1.tgz#033ca1512675611f60aa557a5590b03a2503f97f"
   integrity sha512-2UpnOgkOnGKrlX5j7fMLcB0OI5aoiuwM6BjVgdvWmwVi3sy+aKGFXftrX+p0BDc5A/LGa6tkKwmEG+Eu+sHpMg==

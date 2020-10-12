@@ -1,5 +1,5 @@
 # @qiwi/nexus-helper
-API for managing Nexus NPM repository contents
+Helper for managing Nexus NPM repository contents
 ## Installation
 ```shell script
 yarn add @qiwi/nexus-helper
