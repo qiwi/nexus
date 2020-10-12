@@ -1,0 +1,32 @@
+{
+    "id": "bWF2ZW4tY2VudHJhbDo4ODQ5MWNkMWQxODVkZDEzNjYwYmUwMjE1MjI2NGUwZQ",
+    "repository": "maven-central",
+    "format": "maven2",
+    "group": "org.apache.httpcomponents",
+    "name": "httpcomponents-client",
+    "version": "4.3.5",
+    "assets": [
+        {
+            "downloadUrl": "http://localhost:8081/repository/maven-central/org/apache/httpcomponents/httpcomponents-client/4.3.5/httpcomponents-client-4.3.5.pom",
+            "path": "org/apache/httpcomponents/httpcomponents-client/4.3.5/httpcomponents-client-4.3.5.pom",
+            "id": "bWF2ZW4tY2VudHJhbDozZjVjYWUwMTc2MDIzM2I2YTFhOGUxOGQxZmFkOGM3Mw",
+            "repository": "maven-central",
+            "format": "maven2",
+            "checksum": {
+                "sha1": "95d80a44673358a5dcbcc2f510770b9f93fe5eba",
+                "md5": "f4769c4e60799ede664414c26c6c5c9d"
+            }
+        },
+        {
+            "downloadUrl": "http://localhost:8081/repository/maven-central/org/apache/httpcomponents/httpcomponents-client/4.3.5/httpcomponents-client-4.3.5.pom.sha1",
+            "path": "org/apache/httpcomponents/httpcomponents-client/4.3.5/httpcomponents-client-4.3.5.pom.sha1",
+            "id": "bWF2ZW4tY2VudHJhbDpmODk4YjM5MDNjYjk5YzU5ZDU3YjFlYjE0MzM1ZTcwMQ",
+            "repository": "maven-central",
+            "format": "maven2",
+            "checksum": {
+                "sha1": "6b98f5cef5d7102f8f45215bdcf48dc843d060af",
+                "md5": "f3b3ac640853fcb887621d13029a1747"
+            }
+        }
+    ]
+}
