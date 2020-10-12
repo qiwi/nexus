@@ -40,5 +40,6 @@
     "@qiwi/libdefkit": "^2.1.1",
     "@qiwi/nexus-infra": "^0.0.0",
     "nock": "^13.0.4"
-  }
+  },
+  "prettier": "prettier-config-qiwi"
 }
