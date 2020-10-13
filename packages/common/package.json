@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/nexus-common",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -41,7 +41,7 @@
     "tslib": "^2.0.1"
   },
   "devDependencies": {
-    "@qiwi/nexus-infra": "*"
+    "@qiwi/nexus-infra": "1.0.0"
   },
   "peerDependencies": {},
   "optionalDependencies": {},
