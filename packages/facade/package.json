@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/nexus-facade",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -39,8 +39,8 @@
   "dependencies": {
     "@qiwi/substrate": "^1.19.0",
     "tslib": "^2.0.1",
-    "@qiwi/nexus-common": "*",
-    "@qiwi/nexus-plugin": "*"
+    "@qiwi/nexus-common": "1.0.0",
+    "@qiwi/nexus-plugin": "1.0.0"
   },
   "devDependencies": {},
   "peerDependencies": {},
