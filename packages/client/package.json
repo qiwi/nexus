@@ -22,6 +22,13 @@
     "test": "yarn jest",
     "jest": "jest -w=1 --config=jest.config.json"
   },
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "target",
+    "typings",
+    "flow-typed"
+  ],
   "devDependencies": {
     "@qiwi/libdefkit": "^2.1.0",
     "@qiwi/nexus-infra": "1.0.0",
