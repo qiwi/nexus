@@ -56,11 +56,13 @@ describe('exported entities are defined', () => {
     StatusApi,
     SupportApi,
     TasksApi,
-    Configuration
+    Configuration,
   ]
 
-  entities.forEach(entity => it(entity.name, () => {
-    expect(entity).toBeDefined()
-    expect(entity).toBeInstanceOf(Function)
-  }))
+  entities.forEach((entity) =>
+    it(entity.name, () => {
+      expect(entity).toBeDefined()
+      expect(entity).toBeInstanceOf(Function)
+    }),
+  )
 })

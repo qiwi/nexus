@@ -24,7 +24,9 @@
   },
   "devDependencies": {
     "@qiwi/libdefkit": "^2.1.0",
+    "@qiwi/nexus-infra": "^0.0.0",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2"
-  }
+  },
+  "prettier": "prettier-config-qiwi"
 }
