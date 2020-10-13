@@ -1,3 +1,10 @@
+## @qiwi/nexus-client [1.0.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-client@1.0.0...@qiwi/nexus-client@1.0.1) (2020-10-13)
+
+
+### Bug Fixes
+
+* **client:** added files section in package.json ([927981c](https://github.com/qiwi/nexus/commit/927981cb3dc0450c7895dcc923d97aed985b1d1f))
+
 # @qiwi/nexus-client 1.0.0 (2020-10-13)
 
 
