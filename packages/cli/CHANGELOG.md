@@ -1,3 +1,14 @@
+## @qiwi/nexus-cli [1.0.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@1.0.0...@qiwi/nexus-cli@1.0.1) (2020-10-13)
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-client:** upgraded to 1.0.1
+* **@qiwi/nexus-helper:** upgraded to 1.0.1
+
 # @qiwi/nexus-cli 1.0.0 (2020-10-13)
 
 
