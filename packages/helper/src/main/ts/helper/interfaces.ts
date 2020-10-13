@@ -19,8 +19,10 @@ export type TDeletePackagesByIdsOpts = {
 export interface INexusHelper {
   getPackageComponents(
     params: TGetPackageVersionsOpts,
-    opts?: TDeletePackagesByIdsOpts,
   ): Promise<TComponent[]>
 
-  deleteComponentsByIds(ids: string[]): void
+  deleteComponentsByIds(
+    ids: string[],
+    opts?: TDeletePackagesByIdsOpts,
+  ): void
 }
