@@ -1,1 +1,1 @@
-export {foo} from '@qiwi/nexus-common'
+export { foo } from '@qiwi/nexus-common'

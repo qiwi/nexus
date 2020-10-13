@@ -54,5 +54,6 @@
   "bugs": {
     "url": "https://github.com/qiwi/nexus/issues"
   },
-  "homepage": "https://github.com/qiwi/nexus/#readme"
+  "homepage": "https://github.com/qiwi/nexus/#readme",
+  "prettier": "prettier-config-qiwi"
 }
