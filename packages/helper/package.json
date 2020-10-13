@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/nexus-helper",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "API for managing Nexus NPM repository contents",
   "main": "target/es5/index.js",
   "repository": "https://github.com/qiwi/nexus.git",
@@ -34,11 +34,11 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/nexus-client": "^0.0.0"
+    "@qiwi/nexus-client": "1.0.0"
   },
   "devDependencies": {
     "@qiwi/libdefkit": "^2.1.1",
-    "@qiwi/nexus-infra": "^0.0.0",
+    "@qiwi/nexus-infra": "1.0.0",
     "nock": "^13.0.4"
   },
   "prettier": "prettier-config-qiwi"
