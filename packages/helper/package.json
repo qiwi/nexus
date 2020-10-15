@@ -7,6 +7,9 @@
   "license": "MIT",
   "source": "target/ts/index.ts",
   "types": "target/es5/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "typescript": {
     "definition": "target/es5/index.d.ts"
   },

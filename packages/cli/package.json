@@ -10,6 +10,9 @@
   "typescript": {
     "definition": "target/es5/index.d.ts"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": "target/es5/cli.js",
   "files": [
     "README.md",
