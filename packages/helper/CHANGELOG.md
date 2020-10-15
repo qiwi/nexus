@@ -1,3 +1,18 @@
+## @qiwi/nexus-helper [1.0.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@1.0.1...@qiwi/nexus-helper@1.0.2) (2020-10-15)
+
+
+### Bug Fixes
+
+* publish configs ([#8](https://github.com/qiwi/nexus/issues/8)) ([1ce2747](https://github.com/qiwi/nexus/commit/1ce2747a51db5cde04a1e0934c6beece040454bb))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-client:** upgraded to 1.0.2
+
 ## @qiwi/nexus-helper [1.0.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@1.0.0...@qiwi/nexus-helper@1.0.1) (2020-10-13)
 
 
