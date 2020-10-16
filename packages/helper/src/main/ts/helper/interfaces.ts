@@ -11,11 +11,6 @@ export type TGetPackageVersionsOpts = {
   timeout?: number
 }
 
-export type TDeletePackagesByIdsOpts = {
-  chunkSize: number
-  pause: number
-}
-
 export interface INexusHelper {
   getPackageComponents(
     params: TGetPackageVersionsOpts,
@@ -23,6 +18,5 @@ export interface INexusHelper {
 
   deleteComponentsByIds(
     ids: string[],
-    opts?: TDeletePackagesByIdsOpts,
-  ): void
+  ): Promise<any>
 }

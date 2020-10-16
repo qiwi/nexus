@@ -8,17 +8,28 @@ describe('NexusContentsHelper', () => {
   const basePath = 'http://localhost/service/rest'
   const componentsApi = new ComponentsApi({ basePath })
   const searchApi = new SearchApi({ basePath })
-  const helper = new NexusComponentsHelper(searchApi, componentsApi)
+  const wrapperOpts = {
+    delay: {
+      period: 100,
+      count: 4,
+    }
+  }
+  const helper = new NexusComponentsHelper(searchApi, componentsApi, wrapperOpts)
 
   it('deletes components', async () => {
-    const ids = ['1', '2', '3']
+    const ids: string[] = Array.from(
+      { length: 12 },
+      (_, i) => i.toString()
+    )
     const mocks = ids.map((id) =>
       nock(basePath).delete(`/v1/components/${id}`).reply(200),
     )
-
+    const startTime = Date.now()
     await helper.deleteComponentsByIds(ids)
+    const endTime = Date.now() - startTime
 
     expect(mocks.some((mock) => !mock.isDone())).toEqual(false)
+    expect(endTime).toBeGreaterThanOrEqual(200)
   })
 
   it('returns package components', async () => {
