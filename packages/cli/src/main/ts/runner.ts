@@ -1,4 +1,4 @@
-import { ComponentsApi, SearchApi } from "@qiwi/nexus-client/target/es5/api"
+import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 
 import { execute } from './executor'
@@ -21,7 +21,16 @@ export const run = (opts: ICliOpts): Promise<void> => {
 
   const searchApi = new SearchApi(apiOptions)
   const componentsApi = new ComponentsApi(apiOptions)
-  const helper = new NexusComponentsHelper(searchApi, componentsApi)
+  const helper = new NexusComponentsHelper(
+    searchApi,
+    componentsApi,
+    {
+      delay: {
+        period: 100,
+        count: 1
+      }
+    }
+  )
 
   return execute(config.package, helper, config.yes)
 }

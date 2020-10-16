@@ -11,11 +11,6 @@ export interface IPackageOpts {
   repo: string
 }
 
-export interface IComponentInfo {
-  id: string
-  version: string
-}
-
 export interface ICliOpts {
   nexus: INexusOpts
   package: IPackageOpts

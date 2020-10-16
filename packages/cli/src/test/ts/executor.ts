@@ -19,7 +19,7 @@ const helperMockFactory = (
   getPackageComponents(): Promise<TComponent[]> {
     return Promise.resolve(components)
   },
-  deleteComponentsByIds(ids: string[]) {
+  async deleteComponentsByIds(ids: string[]) {
     deleteMock(ids)
   }
 })
@@ -41,7 +41,7 @@ describe('execute', () => {
 
     await execute(packageOpts, helperMock)
 
-    expect(questionSpy).toHaveBeenCalledWith(expect.stringContaining(`0 1.0.0\n1 1.0.1\n2 1.0.2`))
+    expect(questionSpy).toHaveBeenCalledWith(expect.stringContaining(`0 1.0.0\n\t1 1.0.1\n\t2 1.0.2`))
     expect(deleteIdsMock).toHaveBeenCalledWith(['0', '1', '2'])
   })
 
@@ -53,7 +53,7 @@ describe('execute', () => {
 
     await execute(packageOpts, helperMock)
 
-    expect(questionSpy).toHaveBeenCalledWith(expect.stringContaining(`0 1.0.0\n1 1.0.1\n2 1.0.2`))
+    expect(questionSpy).toHaveBeenCalledWith(expect.stringMatching(`0 1.0.0\n\t1 1.0.1\n\t2 1.0.2`))
     expect(deleteIdsMock).not.toHaveBeenCalled()
   })
 

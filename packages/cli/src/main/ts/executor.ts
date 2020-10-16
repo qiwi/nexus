@@ -1,8 +1,6 @@
-import { INexusHelper } from '@qiwi/nexus-helper'
-import { satisfies } from 'semver'
-
-import { IComponentInfo, IPackageOpts } from './interfaces'
-import { nullCheckerFactory,question } from './utils'
+import { IComponentInfo, INexusHelper, NexusComponentsHelper } from '@qiwi/nexus-helper'
+import { IPackageOpts } from './interfaces'
+import { question } from './utils'
 
 export const execute = async (
   packageOpts: IPackageOpts,
@@ -15,9 +13,10 @@ export const execute = async (
     name: packageOpts.name,
   })
 
-  const componentsToBeDeleted = components
-    .filter(nullCheckerFactory<IComponentInfo>(v => v && v.version && v.id))
-    .filter(item => satisfies(item.version, packageOpts.range))
+  const componentsToBeDeleted = NexusComponentsHelper.filterComponentsByRange(
+    components,
+    packageOpts.range
+  )
 
   if(componentsToBeDeleted.length === 0) {
     console.log('Components with such parameters are not found')
@@ -26,7 +25,7 @@ export const execute = async (
 
   if (!yes) {
     const componentInfos = componentsToBeDeleted
-      .map(item => `${item.id} ${item.version}`)
+      .map((item: IComponentInfo) => `${item.id} ${item.version}`)
       .join('\n\t')
 
     const answer = await question(`Following components (id, version):\n\t${componentInfos}\nare going to be deleted. Proceed? (yes/no) `)
@@ -35,5 +34,5 @@ export const execute = async (
     }
   }
 
-  return helper.deleteComponentsByIds(componentsToBeDeleted.map(item => item.id))
+  return helper.deleteComponentsByIds(componentsToBeDeleted.map((item: IComponentInfo) => item.id))
 }

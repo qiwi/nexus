@@ -1,14 +1,16 @@
+import { DeepProxy } from '@qiwi/deep-proxy'
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
+import { ratelimit } from 'push-it-to-the-limit'
+import { IWrapperOpts } from 'push-it-to-the-limit/target/es5/interface'
+import { satisfies } from 'semver'
 
-import { TComponent } from '../interfaces'
+import { IComponentInfo, TComponent } from '../interfaces'
 import { apiGetAll, TApiCaller } from '../utils'
+import { isDefined, nullCheckerFactory } from '../utils/types'
 import {
   INexusHelper,
-  TGetPackageVersionsOpts,
+  TGetPackageVersionsOpts
 } from './interfaces'
-import { IWrapperOpts } from 'push-it-to-the-limit/target/es5/interface'
-import { DeepProxy } from '@qiwi/deep-proxy'
-import { ratelimit } from 'push-it-to-the-limit'
 
 export class NexusComponentsHelper implements INexusHelper {
   private searchApi: SearchApi
@@ -59,19 +61,23 @@ export class NexusComponentsHelper implements INexusHelper {
     methodName: string,
     methodBody: Parameters<typeof ratelimit>[0],
     opts: IWrapperOpts
-  ): DeepProxy<T> {
+  ): T {
     const limitedMethod = ratelimit(methodBody, opts)
     return new DeepProxy<T>(
       entity,
       // @ts-ignore
       ({ trapName, key, DEFAULT }) => {
-        if (trapName === 'get') {
-          if (key === methodName) {
-            return limitedMethod
-          }
+        if (trapName === 'get' && key === methodName) {
+          return limitedMethod
         }
         return DEFAULT
       }
     )
+  }
+
+  static filterComponentsByRange(components: TComponent[], range: string): IComponentInfo[] {
+    return components
+      .filter(nullCheckerFactory<IComponentInfo>(v => v && isDefined(v.version) && isDefined(v.id)))
+      .filter(item => satisfies(item.version, range))
   }
 }

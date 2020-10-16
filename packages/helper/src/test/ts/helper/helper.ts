@@ -1,6 +1,7 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import nock from 'nock'
 
+import { TComponent } from '../../../main/ts'
 import { NexusComponentsHelper } from '../../../main/ts/helper'
 import component from './resources/component.json'
 
@@ -60,5 +61,17 @@ describe('NexusContentsHelper', () => {
       .reply(200, { items })
     const data = await helper.getPackageComponents(params)
     expect(data).toEqual([...items, ...items, ...items, ...items])
+  })
+
+  it('filters components by range without corrupted ones', () => {
+    const components: TComponent[] = new Array(10)
+      .fill(component)
+      .map((item, i) => ({ ...item, id: i, version: `1.0.${i}` }))
+    delete components[1].version
+    delete components[3].id
+
+    const filteredComponents = NexusComponentsHelper.filterComponentsByRange(components, '<1.0.5')
+    expect(filteredComponents.map(item => item.id))
+      .toEqual([0, 2, 4])
   })
 })
