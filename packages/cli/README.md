@@ -32,7 +32,7 @@ npx @qiwi/nexus-cli <arguments>
 |---------------------------------------------|----------------------------------------|
 | `nexus.username`, `nexus.password`          | Nexus API credentials                  |
 | `nexus.url`                                 | Nexus API URL                          |
-| `nexus.limit`                               | Components API `deleteComponent` method multiple call limit, see [push-it-to-the-limit](https://github.com/antongolub/push-it-to-the-limit) package |
+| `nexus.rateLimit`                           | Components API `deleteComponent` method multiple call limit. If exists, limitation will be applied. See more at [push-it-to-the-limit](https://github.com/antongolub/push-it-to-the-limit). |
 | `package.repo`                              | name of package repository             |
 | `package.name`                              | package name                           |
 | `package.group`                             | package group                          |
@@ -48,7 +48,13 @@ Options from config file can be overridden.
     "nexus": {
         "username": "foo",
         "password": "bar",
-        "url": "http://localhost"
+        "url": "http://localhost",
+        "rateLimit": {
+            "delay": {
+                "period": 1000,
+                "count": 10
+            }
+        } 
     },
     "package": {
         "group": "qiwi",

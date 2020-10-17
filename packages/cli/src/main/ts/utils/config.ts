@@ -16,7 +16,7 @@ export const resolveConfig = (
     nexus: {
       ...configOpts.nexus,
       ...cliOpts.nexus,
-      limit: cliOpts?.nexus?.limit || configOpts.nexus.limit || defaultLimit
+      rateLimit: cliOpts?.nexus?.rateLimit || configOpts?.nexus?.rateLimit || defaultLimit
     },
     package: {
       ...configOpts.package,
@@ -43,7 +43,7 @@ export const getConfig = (opts: ICliOptsOptional): ICliOpts => {
     throw new Error('Package options are not given. Specify them in args or in config file')
   }
 
-  nexus.limit = nexus.limit || defaultLimit
+  nexus.rateLimit = nexus.rateLimit || defaultLimit
 
   return config
 }

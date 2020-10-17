@@ -24,7 +24,7 @@ export const run = (opts: ICliOptsOptional): Promise<void> => {
   const helper = new NexusComponentsHelper(
     searchApi,
     componentsApi,
-    nexus.limit
+    nexus.rateLimit
   )
 
   return execute(config.package, helper, config.yes)

@@ -10,7 +10,7 @@ const opts: ICliOpts = {
     username: 'foo',
     password: 'bar',
     url: 'baz',
-    limit: defaultLimit
+    rateLimit: defaultLimit
   },
   package: {
     repo: 'foo',
