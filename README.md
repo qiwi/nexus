@@ -1,5 +1,5 @@
 # @qiwi/nexus
-Monorepo of components for working with Nexus
+Monorepo of components for working with [Sonatype Nexus](https://www.sonatype.com/nexus/repository-pro)
 
 ## @qiwi/nexus-client
 Generated clients for working with Nexus APIs.
