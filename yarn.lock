@@ -8355,9 +8355,9 @@ punycode@^2.1.0, punycode@^2.1.1:
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
 push-it-to-the-limit@^1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/push-it-to-the-limit/-/push-it-to-the-limit-1.15.0.tgz#a7103d11c9cd56b3df4a3ed5f43784b32081bfc7"
-  integrity sha512-nyY379lwtCdZ2S991Bv5wrWKOZ3v1cPOB2qv07pJ/SpWwohnzA9sZSL18eO5JKZRx3hgXhBRy6c5PEGosej+yQ==
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/push-it-to-the-limit/-/push-it-to-the-limit-1.15.1.tgz#910eeb397ff997c579cea9c103761a08b285b50f"
+  integrity sha512-ONgB0Y+JQkCFP0K/NbSUbDiZ7H51IJk1jg+CR7xzofDKCNTSVDoHOZUukeH+p319Fo35NfwTWzae8ggXyVoS9A==
   dependencies:
     "@antongolub/repeater" "^1.3.0"
 

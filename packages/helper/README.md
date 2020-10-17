@@ -76,6 +76,7 @@ const components = await helper.getPackageComponents({
 ```
 
 #### Delete components by their ids
+Nexus identifies components by their ids, see [Nexus Components API docs](https://help.sonatype.com/repomanager3/rest-and-integration-api/components-api)
 ```typescript
 const componentsToBeDeleted = NexusComponentsHelper.filterComponentsByRange(
     components,

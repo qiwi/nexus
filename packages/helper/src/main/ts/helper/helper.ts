@@ -1,16 +1,19 @@
 import { DeepProxy } from '@qiwi/deep-proxy'
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { ratelimit } from 'push-it-to-the-limit'
-import { IWrapperOpts } from 'push-it-to-the-limit/target/es5/interface'
+import { IControlled,IWrapperOpts } from 'push-it-to-the-limit/target/es5/interface'
 import { satisfies } from 'semver'
 
 import { IComponentInfo, TComponent } from '../interfaces'
 import { apiGetAll, TApiCaller } from '../utils'
 import { isDefined, nullCheckerFactory } from '../utils/types'
-import {
-  INexusHelper,
-  TGetPackageVersionsOpts
-} from './interfaces'
+import { INexusHelper, TGetPackageVersionsOpts } from './interfaces'
+
+type TMethodCallLimit = {
+  key: string
+  value: Parameters<typeof ratelimit>[0]
+  rateLimitOpts: IWrapperOpts
+}
 
 export class NexusComponentsHelper implements INexusHelper {
   private searchApi: SearchApi
@@ -19,15 +22,20 @@ export class NexusComponentsHelper implements INexusHelper {
   constructor(
     searchApi: SearchApi,
     componentsApi: ComponentsApi,
-    componentsWrapperOpts: IWrapperOpts
+    componentsWrapperOpts?: IWrapperOpts
   ) {
     this.searchApi = searchApi
-    this.componentsApi = NexusComponentsHelper.applyMethodCallLimit(
-      componentsApi,
-      'deleteComponent',
-      componentsApi.deleteComponent.bind(componentsApi),
-      componentsWrapperOpts
-    )
+    this.componentsApi = componentsWrapperOpts
+      ?
+      NexusComponentsHelper.applyCallRateLimits(
+        componentsApi,
+        [{
+          key: 'deleteComponent',
+          value: componentsApi.deleteComponent.bind(componentsApi),
+          rateLimitOpts: componentsWrapperOpts
+        }]
+      )
+      : componentsApi
   }
 
   async deleteComponentsByIds(
@@ -56,19 +64,23 @@ export class NexusComponentsHelper implements INexusHelper {
     return apiGetAll<TComponent>(apiCaller)
   }
 
-  static applyMethodCallLimit<T = any>(
+  static applyCallRateLimits<T = any>(
     entity: T,
-    methodName: string,
-    methodBody: Parameters<typeof ratelimit>[0],
-    opts: IWrapperOpts
+    list: TMethodCallLimit[]
   ): T {
-    const limitedMethod = ratelimit(methodBody, opts)
+    const dict = list.reduce((acc, cur) => {
+      acc[cur.key] = ratelimit(cur.value, cur.rateLimitOpts)
+      return acc
+    }, {} as Record<string, IControlled>)
     return new DeepProxy<T>(
       entity,
       // @ts-ignore
-      ({ trapName, key, DEFAULT }) => {
-        if (trapName === 'get' && key === methodName) {
-          return limitedMethod
+      ({ trapName, key, DEFAULT, value }) => {
+        if (trapName === 'get' && typeof value === 'function') {
+          const limitedMethod = dict[key]
+          if (limitedMethod) {
+            return limitedMethod
+          }
         }
         return DEFAULT
       }

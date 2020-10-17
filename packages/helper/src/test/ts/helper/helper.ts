@@ -1,5 +1,6 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import nock from 'nock'
+import * as PITTL from 'push-it-to-the-limit'
 
 import { TComponent } from '../../../main/ts'
 import { NexusComponentsHelper } from '../../../main/ts/helper'
@@ -16,12 +17,12 @@ describe('NexusContentsHelper', () => {
     }
   }
   const helper = new NexusComponentsHelper(searchApi, componentsApi, wrapperOpts)
+  const ids: string[] = Array.from(
+    { length: 12 },
+    (_, i) => i.toString()
+  )
 
-  it('deletes components', async () => {
-    const ids: string[] = Array.from(
-      { length: 12 },
-      (_, i) => i.toString()
-    )
+  it('deletes components with throttling', async () => {
     const mocks = ids.map((id) =>
       nock(basePath).delete(`/v1/components/${id}`).reply(200),
     )
@@ -31,6 +32,18 @@ describe('NexusContentsHelper', () => {
 
     expect(mocks.some((mock) => !mock.isDone())).toEqual(false)
     expect(endTime).toBeGreaterThanOrEqual(200)
+  })
+
+  it('deletes components without throttling', async () => {
+    const rateLimitSpy = jest.spyOn(PITTL, 'ratelimit')
+    const helper = new NexusComponentsHelper(searchApi, componentsApi)
+
+    const mocks = ids.map((id) =>
+      nock(basePath).delete(`/v1/components/${id}`).reply(200),
+    )
+    await helper.deleteComponentsByIds(ids)
+    expect(mocks.some((mock) => !mock.isDone())).toEqual(false)
+    expect(rateLimitSpy).not.toHaveBeenCalled()
   })
 
   it('returns package components', async () => {
