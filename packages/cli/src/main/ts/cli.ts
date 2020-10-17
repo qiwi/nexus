@@ -17,6 +17,7 @@ const cli = meow(
       --nexus.username,
       --nexus.password - Nexus API credentials;
       --nexus.url - Nexus API URL;
+      --nexus.limit - Nexus Components API limits for deleteComponent, see push-it-to-the-limit package
       --package.repo - name of package repository;
       --package.name - package name (thanks, cap!);
       --package.group - package group;

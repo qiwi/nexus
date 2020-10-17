@@ -1,4 +1,5 @@
 import { IComponentInfo, INexusHelper, NexusComponentsHelper } from '@qiwi/nexus-helper'
+
 import { IPackageOpts } from './interfaces'
 import { question } from './utils'
 

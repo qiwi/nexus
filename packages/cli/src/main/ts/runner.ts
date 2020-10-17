@@ -2,10 +2,10 @@ import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 
 import { execute } from './executor'
-import { ICliOpts } from './interfaces'
+import { ICliOptsOptional } from './interfaces'
 import { getConfig } from './utils'
 
-export const run = (opts: ICliOpts): Promise<void> => {
+export const run = (opts: ICliOptsOptional): Promise<void> => {
   const config = getConfig(opts)
   const { nexus } = config
 
@@ -24,12 +24,7 @@ export const run = (opts: ICliOpts): Promise<void> => {
   const helper = new NexusComponentsHelper(
     searchApi,
     componentsApi,
-    {
-      delay: {
-        period: 100,
-        count: 1
-      }
-    }
+    nexus.limit
   )
 
   return execute(config.package, helper, config.yes)

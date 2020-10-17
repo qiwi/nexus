@@ -32,6 +32,7 @@ npx @qiwi/nexus-cli <arguments>
 |---------------------------------------------|----------------------------------------|
 | `nexus.username`, `nexus.password`          | Nexus API credentials                  |
 | `nexus.url`                                 | Nexus API URL                          |
+| `nexus.limit`                               | Components API `deleteComponent` method multiple call limit, see [push-it-to-the-limit](https://github.com/antongolub/push-it-to-the-limit) package |
 | `package.repo`                              | name of package repository             |
 | `package.name`                              | package name                           |
 | `package.group`                             | package group                          |
