@@ -1,4 +1,4 @@
-import { IComponentInfo, INexusHelper, NexusComponentsHelper } from '@qiwi/nexus-helper'
+import { IComponentInfo, INexusHelper, NexusComponentsHelper, TComponent } from '@qiwi/nexus-helper'
 
 import { IPackageOpts } from './interfaces'
 import { question } from './utils'
@@ -26,10 +26,10 @@ export const execute = async (
 
   if (!yes) {
     const componentInfos = componentsToBeDeleted
-      .map((item: IComponentInfo) => `${item.id} ${item.version}`)
+      .map((item: TComponent) => `${item.repository} ${item.group} ${item.name} ${item.id} ${item.version}`)
       .join('\n\t')
 
-    const answer = await question(`Following components (id, version):\n\t${componentInfos}\nare going to be deleted. Proceed? (yes/no) `)
+    const answer = await question(`Following components (repo, group, name, id, version):\n\t${componentInfos}\nare going to be deleted. Proceed? (yes/no) `)
     if (answer !== 'yes') {
       return
     }

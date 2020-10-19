@@ -2,10 +2,8 @@ import { ICliOpts, ICliOptsOptional } from '../interfaces'
 import { readFileToString } from './misc'
 
 export const defaultLimit = {
-  delay: {
-    period: 1000,
-    count: 10
-  }
+  period: 1000,
+  count: 10
 }
 
 export const resolveConfig = (

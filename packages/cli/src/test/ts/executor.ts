@@ -28,6 +28,9 @@ describe('execute', () => {
   const components: any = Array.from(
     { length: 10 },
     (_, i) => ({
+      repository: 'foo',
+      group: 'bar',
+      name: 'baz',
       id: i.toString(),
       version: `1.0.${i++}`
     })
@@ -41,7 +44,9 @@ describe('execute', () => {
 
     await execute(packageOpts, helperMock)
 
-    expect(questionSpy).toHaveBeenCalledWith(expect.stringContaining(`0 1.0.0\n\t1 1.0.1\n\t2 1.0.2`))
+    expect(questionSpy).toHaveBeenCalledWith(
+      expect.stringContaining(`foo bar baz 0 1.0.0\n\tfoo bar baz 1 1.0.1\n\tfoo bar baz 2 1.0.2`)
+    )
     expect(deleteIdsMock).toHaveBeenCalledWith(['0', '1', '2'])
   })
 
@@ -53,7 +58,9 @@ describe('execute', () => {
 
     await execute(packageOpts, helperMock)
 
-    expect(questionSpy).toHaveBeenCalledWith(expect.stringMatching(`0 1.0.0\n\t1 1.0.1\n\t2 1.0.2`))
+    expect(questionSpy).toHaveBeenCalledWith(
+      expect.stringContaining(`foo bar baz 0 1.0.0\n\tfoo bar baz 1 1.0.1\n\tfoo bar baz 2 1.0.2`)
+    )
     expect(deleteIdsMock).not.toHaveBeenCalled()
   })
 
