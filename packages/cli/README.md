@@ -50,10 +50,8 @@ Options from config file can be overridden.
         "password": "bar",
         "url": "http://localhost",
         "rateLimit": {
-            "delay": {
-                "period": 1000,
-                "count": 10
-            }
+            "period": 1000,
+            "count": 10
         } 
     },
     "package": {
