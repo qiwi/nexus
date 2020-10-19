@@ -11,10 +11,8 @@ describe('NexusContentsHelper', () => {
   const componentsApi = new ComponentsApi({ basePath })
   const searchApi = new SearchApi({ basePath })
   const wrapperOpts = {
-    delay: {
-      period: 100,
-      count: 4,
-    }
+    period: 100,
+    count: 4,
   }
   const helper = new NexusComponentsHelper(searchApi, componentsApi, wrapperOpts)
   const ids: string[] = Array.from(

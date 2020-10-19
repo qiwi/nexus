@@ -1,4 +1,5 @@
 import { SearchApi } from '@qiwi/nexus-client'
+import { IComplexDelay } from 'push-it-to-the-limit/target/es5/interface'
 
 import { TComponent } from '../interfaces'
 
@@ -20,3 +21,5 @@ export interface INexusHelper {
     ids: string[],
   ): Promise<any>
 }
+
+export type TRateLimitOpts = IComplexDelay | IComplexDelay[]

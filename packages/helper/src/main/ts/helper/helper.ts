@@ -1,19 +1,10 @@
-import { DeepProxy } from '@qiwi/deep-proxy'
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
-import { ratelimit } from 'push-it-to-the-limit'
-import { IControlled,IWrapperOpts } from 'push-it-to-the-limit/target/es5/interface'
 import { satisfies } from 'semver'
 
 import { IComponentInfo, TComponent } from '../interfaces'
-import { apiGetAll, TApiCaller } from '../utils'
-import { isDefined, nullCheckerFactory } from '../utils/types'
-import { INexusHelper, TGetPackageVersionsOpts } from './interfaces'
-
-type TMethodCallLimit = {
-  key: string
-  value: Parameters<typeof ratelimit>[0]
-  rateLimitOpts: IWrapperOpts
-}
+import { apiGetAll, isDefined, nullCheckerFactory, TApiCaller } from '../utils'
+import { withRateLimit } from '../utils/withRateLimit'
+import { INexusHelper, TGetPackageVersionsOpts, TRateLimitOpts } from './interfaces'
 
 export class NexusComponentsHelper implements INexusHelper {
   private searchApi: SearchApi
@@ -22,20 +13,15 @@ export class NexusComponentsHelper implements INexusHelper {
   constructor(
     searchApi: SearchApi,
     componentsApi: ComponentsApi,
-    componentsWrapperOpts?: IWrapperOpts
+    rateLimitOpts?: TRateLimitOpts
   ) {
     this.searchApi = searchApi
-    this.componentsApi = componentsWrapperOpts
-      ?
-      NexusComponentsHelper.applyCallRateLimits(
-        componentsApi,
-        [{
-          key: 'deleteComponent',
-          value: componentsApi.deleteComponent.bind(componentsApi),
-          rateLimitOpts: componentsWrapperOpts
-        }]
-      )
-      : componentsApi
+    this.componentsApi = componentsApi
+    return withRateLimit<NexusComponentsHelper>(
+      this,
+      rateLimitOpts,
+      ['componentsApi.deleteComponent']
+    )
   }
 
   async deleteComponentsByIds(
@@ -64,30 +50,7 @@ export class NexusComponentsHelper implements INexusHelper {
     return apiGetAll<TComponent>(apiCaller)
   }
 
-  static applyCallRateLimits<T = any>(
-    entity: T,
-    list: TMethodCallLimit[]
-  ): T {
-    const dict = list.reduce((acc, cur) => {
-      acc[cur.key] = ratelimit(cur.value, cur.rateLimitOpts)
-      return acc
-    }, {} as Record<string, IControlled>)
-    return new DeepProxy<T>(
-      entity,
-      // @ts-ignore
-      ({ trapName, key, DEFAULT, value }) => {
-        if (trapName === 'get' && typeof value === 'function') {
-          const limitedMethod = dict[key]
-          if (limitedMethod) {
-            return limitedMethod
-          }
-        }
-        return DEFAULT
-      }
-    )
-  }
-
-  static filterComponentsByRange(components: TComponent[], range: string): IComponentInfo[] {
+  static filterComponentsByRange(components: TComponent[], range: string): Array<TComponent & IComponentInfo> {
     return components
       .filter(nullCheckerFactory<IComponentInfo>(v => v && isDefined(v.version) && isDefined(v.id)))
       .filter(item => satisfies(item.version, range))
