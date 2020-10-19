@@ -1,4 +1,4 @@
-import { IComplexDelay, ILimit, ILimitStack } from 'push-it-to-the-limit/target/es5/interface'
+import { IComplexDelay, ILimit, ILimitStack } from 'push-it-to-the-limit'
 
 import { TRateLimitOpts } from '../helper'
 

@@ -1,5 +1,5 @@
 import { SearchApi } from '@qiwi/nexus-client'
-import { IComplexDelay } from 'push-it-to-the-limit/target/es5/interface'
+import { IComplexDelay } from 'push-it-to-the-limit'
 
 import { TComponent } from '../interfaces'
 
