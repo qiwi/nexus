@@ -11,7 +11,7 @@ describe('NexusContentsHelper', () => {
   const componentsApi = new ComponentsApi({ basePath })
   const searchApi = new SearchApi({ basePath })
   const wrapperOpts = {
-    period: 100,
+    period: 200,
     count: 4,
   }
   const helper = new NexusComponentsHelper(searchApi, componentsApi, wrapperOpts)
@@ -29,7 +29,7 @@ describe('NexusContentsHelper', () => {
     const endTime = Date.now() - startTime
 
     expect(mocks.some((mock) => !mock.isDone())).toEqual(false)
-    expect(endTime).toBeGreaterThanOrEqual(200)
+    expect(endTime).toBeGreaterThanOrEqual(400)
   })
 
   it('deletes components without throttling', async () => {
