@@ -1,4 +1,5 @@
 import { TProxyHandler } from '@qiwi/deep-proxy'
+
 import { deepProxyHandlerFactory } from '../../../main/ts/utils'
 
 describe('deepProxyHandlerFactory', () => {

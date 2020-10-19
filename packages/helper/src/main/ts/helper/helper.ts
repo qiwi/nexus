@@ -13,14 +13,16 @@ export class NexusComponentsHelper implements INexusHelper {
   constructor(
     searchApi: SearchApi,
     componentsApi: ComponentsApi,
-    rateLimitOpts?: TRateLimitOpts
+    rateLimitOpts?: TRateLimitOpts,
+    rateLimitStorageTtl?: number
   ) {
     this.searchApi = searchApi
     this.componentsApi = componentsApi
     return withRateLimit<NexusComponentsHelper>(
       this,
       rateLimitOpts,
-      ['componentsApi.deleteComponent']
+      ['componentsApi.deleteComponent'],
+      rateLimitStorageTtl
     )
   }
 
