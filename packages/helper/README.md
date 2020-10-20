@@ -17,8 +17,13 @@ import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 const basePath = 'http://localhost/service/rest'
 const componentsApi = new ComponentsApi({ basePath })
 const searchApi = new SearchApi({ basePath })
-const helper = new NexusComponentsHelper(searchApi, componentsApi)
+const rateLimitOpts = {
+  period: 1000,
+  count: 2,
+}
+const helper = new NexusComponentsHelper(searchApi, componentsApi, rateLimitOpts)
 ```
+`rateLimitOpts` is optional, it represents rate limit of `delete` method of Nexus Components API
 #### Get package components
 ```typescript
 const components = await helper.getPackageComponents({
