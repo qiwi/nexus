@@ -1,4 +1,5 @@
 import { TProxyHandler } from '@qiwi/deep-proxy'
+import { Limiter } from 'push-it-to-the-limit'
 
 import { deepProxyHandlerFactory } from '../../../main/ts/utils'
 
@@ -9,7 +10,8 @@ describe('deepProxyHandlerFactory', () => {
     count: 4,
     period: 100,
   }
-  const handler: TProxyHandler = deepProxyHandlerFactory(delay, ['foo.bar.baz'])
+  const limiter = new Limiter([delay])
+  const handler: TProxyHandler = deepProxyHandlerFactory(['foo.bar.baz'], limiter)
 
   it('returns a function', () => {
     expect(handler).toBeInstanceOf(Function)
@@ -49,23 +51,5 @@ describe('deepProxyHandlerFactory', () => {
       path: ['foo', 'bat'],
       value: {},
     })).toEqual(DEFAULT)
-  })
-
-  it('returns limited function and creates it only once', () => {
-    const params = {
-      proxy: {},
-      trapName: 'get',
-      PROXY,
-      DEFAULT,
-      path: ['foo', 'bar'],
-      value: () => { /* noop */ },
-      key: 'baz',
-    }
-    // @ts-ignore
-    const func = handler(params)
-    expect(func).toBeInstanceOf(Function)
-    // @ts-ignore
-    const func2 = handler(params)
-    expect(func2).toEqual(func)
   })
 })
