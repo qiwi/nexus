@@ -35,5 +35,6 @@ export const execute = async (
     }
   }
 
-  return helper.deleteComponentsByIds(componentsToBeDeleted.map((item: IComponentInfo) => item.id))
+  await helper.deleteComponentsByIds(componentsToBeDeleted.map((item: IComponentInfo) => item.id))
+  console.log('Done.')
 }
