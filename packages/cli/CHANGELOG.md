@@ -1,3 +1,20 @@
+## @qiwi/nexus-cli [1.0.3](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@1.0.2...@qiwi/nexus-cli@1.0.3) (2020-10-21)
+
+
+### Performance Improvements
+
+* migrate to deepProxy and rateLimit, small improvements  ([#9](https://github.com/qiwi/nexus/issues/9)) ([6774e1d](https://github.com/qiwi/nexus/commit/6774e1d244bb77bac7c7892563b70947cf6dc4d2))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-client:** upgraded to 1.0.3
+* **@qiwi/nexus-helper:** upgraded to 1.0.3
+* **@qiwi/nexus-infra:** upgraded to 1.0.1
+
 ## @qiwi/nexus-cli [1.0.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@1.0.1...@qiwi/nexus-cli@1.0.2) (2020-10-15)
 
 
