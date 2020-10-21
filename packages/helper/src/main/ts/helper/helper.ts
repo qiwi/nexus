@@ -1,29 +1,33 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
+import { satisfies } from 'semver'
 
-import { TComponent } from '../interfaces'
-import { apiGetAll, slowBatchExecutor, TApiCaller } from '../utils'
-import {
-  INexusHelper,
-  TDeletePackagesByIdsOpts,
-  TGetPackageVersionsOpts,
-} from './interfaces'
+import { IComponentInfo, TComponent } from '../interfaces'
+import { apiGetAll, isDefined, nullCheckerFactory, TApiCaller } from '../utils'
+import { withRateLimit } from '../utils/withRateLimit'
+import { INexusHelper, TGetPackageVersionsOpts, TRateLimitOpts } from './interfaces'
 
 export class NexusComponentsHelper implements INexusHelper {
+  private searchApi: SearchApi
+  private componentsApi: ComponentsApi
+
   constructor(
-    private searchApi: SearchApi,
-    private componentsApi: ComponentsApi,
-  ) {}
+    searchApi: SearchApi,
+    componentsApi: ComponentsApi,
+    rateLimitOpts?: TRateLimitOpts,
+  ) {
+    this.searchApi = searchApi
+    this.componentsApi = componentsApi
+    return withRateLimit<NexusComponentsHelper>(
+      this,
+      rateLimitOpts,
+      ['componentsApi.deleteComponent']
+    )
+  }
 
   async deleteComponentsByIds(
-    ids: string[],
-    opts?: TDeletePackagesByIdsOpts,
-  ): Promise<void> {
-    await slowBatchExecutor<void>({
-      executor: (id) => this.componentsApi.deleteComponent(id),
-      params: ids,
-      step: opts?.chunkSize,
-      timeout: opts?.pause,
-    })
+    ids: string[]
+  ): Promise<any> {
+    return Promise.all(ids.map(id => this.componentsApi.deleteComponent(id)))
   }
 
   async getPackageComponents(
@@ -44,5 +48,11 @@ export class NexusComponentsHelper implements INexusHelper {
       )
 
     return apiGetAll<TComponent>(apiCaller)
+  }
+
+  static filterComponentsByRange(components: TComponent[], range: string): Array<TComponent & IComponentInfo> {
+    return components
+      .filter(nullCheckerFactory<IComponentInfo>(v => v && isDefined(v.version) && isDefined(v.id)))
+      .filter(item => satisfies(item.version, range))
   }
 }

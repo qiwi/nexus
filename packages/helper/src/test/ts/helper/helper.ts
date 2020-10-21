@@ -1,6 +1,8 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import nock from 'nock'
+import * as PITTL from 'push-it-to-the-limit'
 
+import { TComponent } from '../../../main/ts'
 import { NexusComponentsHelper } from '../../../main/ts/helper'
 import component from './resources/component.json'
 
@@ -8,17 +10,38 @@ describe('NexusContentsHelper', () => {
   const basePath = 'http://localhost/service/rest'
   const componentsApi = new ComponentsApi({ basePath })
   const searchApi = new SearchApi({ basePath })
-  const helper = new NexusComponentsHelper(searchApi, componentsApi)
+  const wrapperOpts = {
+    period: 200,
+    count: 4,
+  }
+  const helper = new NexusComponentsHelper(searchApi, componentsApi, wrapperOpts)
+  const ids: string[] = Array.from(
+    { length: 12 },
+    (_, i) => i.toString()
+  )
 
-  it('deletes components', async () => {
-    const ids = ['1', '2', '3']
+  it('deletes components with throttling', async () => {
     const mocks = ids.map((id) =>
       nock(basePath).delete(`/v1/components/${id}`).reply(200),
     )
-
+    const startTime = Date.now()
     await helper.deleteComponentsByIds(ids)
+    const endTime = Date.now() - startTime
 
     expect(mocks.some((mock) => !mock.isDone())).toEqual(false)
+    expect(endTime).toBeGreaterThanOrEqual(400)
+  })
+
+  it('deletes components without throttling', async () => {
+    const rateLimitSpy = jest.spyOn(PITTL, 'ratelimit')
+    const helper = new NexusComponentsHelper(searchApi, componentsApi)
+
+    const mocks = ids.map((id) =>
+      nock(basePath).delete(`/v1/components/${id}`).reply(200),
+    )
+    await helper.deleteComponentsByIds(ids)
+    expect(mocks.some((mock) => !mock.isDone())).toEqual(false)
+    expect(rateLimitSpy).not.toHaveBeenCalled()
   })
 
   it('returns package components', async () => {
@@ -49,5 +72,17 @@ describe('NexusContentsHelper', () => {
       .reply(200, { items })
     const data = await helper.getPackageComponents(params)
     expect(data).toEqual([...items, ...items, ...items, ...items])
+  })
+
+  it('filters components by range without corrupted ones', () => {
+    const components: TComponent[] = new Array(10)
+      .fill(component)
+      .map((item, i) => ({ ...item, id: i, version: `1.0.${i}` }))
+    delete components[1].version
+    delete components[3].id
+
+    const filteredComponents = NexusComponentsHelper.filterComponentsByRange(components, '<1.0.5')
+    expect(filteredComponents.map(item => item.id))
+      .toEqual([0, 2, 4])
   })
 })

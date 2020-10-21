@@ -12,25 +12,25 @@ npm i @qiwi/nexus-helper
 You should create and pass `ContentsApi`, `SearchApi` instances from `@qiwi/nexus-client` to `NexusContentsHelper`'s constructor.
 ```typescript
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
-import { NexusContentsHelper } from '@qiwi/nexus-helper'
+import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 
 const basePath = 'http://localhost/service/rest'
 const componentsApi = new ComponentsApi({ basePath })
 const searchApi = new SearchApi({ basePath })
-const helper = new NexusContentsHelper(searchApi, componentsApi)
+const rateLimitOpts = {
+  period: 1000,
+  count: 2,
+}
+const helper = new NexusComponentsHelper(searchApi, componentsApi, rateLimitOpts)
 ```
+`rateLimitOpts` is optional, it represents rate limit of `delete` method of Nexus Components API
 #### Get package components
 ```typescript
-const data = await helper.getPackageComponents({
+const components = await helper.getPackageComponents({
   repository: 'npm',
   group: 'qiwi',
   name: 'substrate'
 })
-```
-
-#### Delete components by their ids
-```typescript
-await helper.deletePackagesByIds(['foo', 'bar', 'baz'])
 /*
 [
 	{
@@ -78,4 +78,14 @@ await helper.deletePackagesByIds(['foo', 'bar', 'baz'])
     }
 ]
 */
+```
+
+#### Delete components by their ids
+Nexus identifies components by their ids, see [Nexus Components API docs](https://help.sonatype.com/repomanager3/rest-and-integration-api/components-api)
+```typescript
+const componentsToBeDeleted = NexusComponentsHelper.filterComponentsByRange(
+    components,
+    '>1.0.0'
+)
+await helper.deletePackagesByIds(componentsToBeDeleted.map(item => item.id))
 ```

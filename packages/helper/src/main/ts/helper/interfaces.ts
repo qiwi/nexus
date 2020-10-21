@@ -1,4 +1,5 @@
 import { SearchApi } from '@qiwi/nexus-client'
+import { IComplexDelay } from 'push-it-to-the-limit'
 
 import { TComponent } from '../interfaces'
 
@@ -11,11 +12,6 @@ export type TGetPackageVersionsOpts = {
   timeout?: number
 }
 
-export type TDeletePackagesByIdsOpts = {
-  chunkSize: number
-  pause: number
-}
-
 export interface INexusHelper {
   getPackageComponents(
     params: TGetPackageVersionsOpts,
@@ -23,6 +19,7 @@ export interface INexusHelper {
 
   deleteComponentsByIds(
     ids: string[],
-    opts?: TDeletePackagesByIdsOpts,
-  ): void
+  ): Promise<any>
 }
+
+export type TRateLimitOpts = IComplexDelay | IComplexDelay[]

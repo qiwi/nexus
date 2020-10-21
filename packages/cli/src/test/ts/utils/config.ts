@@ -1,10 +1,11 @@
-import { getConfig, resolveConfig } from '../../../main/ts/utils'
+import { defaultLimit as rateLimit, getConfig, resolveConfig } from '../../../main/ts/utils'
 import * as misc from '../../../main/ts/utils/misc'
 
 const nexus = {
   url: 'foo',
   username: 'bar',
   password: 'baz',
+  rateLimit,
 }
 
 const packageOpts = {
@@ -39,6 +40,7 @@ describe('resolveConfig', () => {
         url: 'foo2',
         password: 'baz',
         username: 'bar',
+        rateLimit,
       },
       package: {
         repo: 'bat',
@@ -63,7 +65,11 @@ describe('getConfig', () => {
 
   it('reads config file', () => {
     const opts = {
-      nexus,
+      nexus: {
+        url: 'foo',
+        username: 'bar',
+        password: 'baz',
+      },
       package: packageOpts,
       yes: false,
     }
@@ -78,7 +84,7 @@ describe('getConfig', () => {
     expect(getConfig({
       package: cliPackageOpts,
       config: 'some/path'
-    })).toEqual({ ...opts, package: cliPackageOpts })
+    })).toEqual({ yes: opts.yes, nexus: { ...opts.nexus, rateLimit }, package: cliPackageOpts })
   })
 
   it('throws an error when config path is not given and package opts are absent', () => {

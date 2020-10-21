@@ -1,11 +1,11 @@
-import { ComponentsApi, SearchApi } from "@qiwi/nexus-client/target/es5/api"
+import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 
 import { execute } from './executor'
-import { ICliOpts } from './interfaces'
+import { ICliOptsOptional } from './interfaces'
 import { getConfig } from './utils'
 
-export const run = (opts: ICliOpts): Promise<void> => {
+export const run = (opts: ICliOptsOptional): Promise<void> => {
   const config = getConfig(opts)
   const { nexus } = config
 
@@ -21,7 +21,11 @@ export const run = (opts: ICliOpts): Promise<void> => {
 
   const searchApi = new SearchApi(apiOptions)
   const componentsApi = new ComponentsApi(apiOptions)
-  const helper = new NexusComponentsHelper(searchApi, componentsApi)
+  const helper = new NexusComponentsHelper(
+    searchApi,
+    componentsApi,
+    nexus.rateLimit
+  )
 
   return execute(config.package, helper, config.yes)
 }

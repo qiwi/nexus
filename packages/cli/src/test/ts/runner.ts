@@ -1,8 +1,8 @@
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 
+import { ICliOpts, run } from '../../main/ts'
 import * as executor from '../../main/ts/executor'
-import { ICliOpts } from '../../main/ts/interfaces'
-import { run } from '../../main/ts/runner'
+import { defaultLimit } from '../../main/ts/utils'
 import * as config from '../../main/ts/utils/config'
 
 const opts: ICliOpts = {
@@ -10,6 +10,7 @@ const opts: ICliOpts = {
     username: 'foo',
     password: 'bar',
     url: 'baz',
+    rateLimit: defaultLimit
   },
   package: {
     repo: 'foo',
