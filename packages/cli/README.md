@@ -40,9 +40,9 @@ npx @qiwi/nexus-cli <arguments>
 | `config`                                    | path to config file                              |
 | `no-prompt`                                 | disable destructive action confirmation (delete) |
 
-All options, expect `no-prompt` and `config`, are mandatory until `config` option presents.
+All options except `--no-prompt` must be set through the CLI flags or `--config` JSON data.
 Options from config file can be overridden.
-If you want to use `no-prompt` option in a config file, add it as `"prompt": false`.
+If you want to use `--no-prompt` option in a config file, add it as `"prompt": false`.
 ### Config file
 ```json
 {
