@@ -6,7 +6,7 @@
   "repository": "https://github.com/qiwi/nexus.git",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.20.0"
+    "axios": "^0.21.0"
   },
   "publishConfig": {
     "access": "public"
@@ -33,7 +33,7 @@
     "flow-typed"
   ],
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.1",
+    "@qiwi/libdefkit": "^2.1.4",
     "@qiwi/nexus-infra": "1.0.1",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2"

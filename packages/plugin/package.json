@@ -37,7 +37,7 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/substrate": "^1.19.1",
+    "@qiwi/substrate": "^1.19.2",
     "tslib": "^2.0.3",
     "@qiwi/nexus-common": "1.0.1"
   },

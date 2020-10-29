@@ -45,7 +45,7 @@
     "meow": "^7.1.1"
   },
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.1",
+    "@qiwi/libdefkit": "^2.1.4",
     "@qiwi/nexus-infra": "1.0.1",
     "nock": "^13.0.4",
     "semver": "^7.3.2"

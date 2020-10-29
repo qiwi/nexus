@@ -1,11 +1,11 @@
-import { TProxyHandler } from '@qiwi/deep-proxy'
+import { createDeepProxy, TProxyHandler } from '@qiwi/deep-proxy'
 import { Limiter } from 'push-it-to-the-limit'
 
 import { deepProxyHandlerFactory } from '../../../main/ts/utils'
 
 describe('deepProxyHandlerFactory', () => {
   const DEFAULT = Symbol('DEFAULT')
-  const PROXY = Symbol('PROXY')
+  const PROXY = createDeepProxy
   const delay = {
     count: 4,
     period: 100,

@@ -37,13 +37,13 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/deep-proxy": "^1.4.1",
+    "@qiwi/deep-proxy": "^1.8.1",
     "@qiwi/nexus-client": "1.0.3",
     "push-it-to-the-limit": "^1.17.0",
     "semver": "^7.3.2"
   },
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.1",
+    "@qiwi/libdefkit": "^2.1.4",
     "@qiwi/nexus-infra": "1.0.1",
     "nock": "^13.0.4"
   },
