@@ -21,7 +21,7 @@ describe('resolveConfig', () => {
       {
         nexus,
         package: packageOpts,
-        yes: false,
+        prompt: false,
       },
       {
         nexus: {
@@ -32,7 +32,7 @@ describe('resolveConfig', () => {
           repo: 'bat',
           range: '>1.0.0',
         },
-        yes: true,
+        prompt: true,
         config: '',
       },
     )).toEqual({
@@ -48,7 +48,7 @@ describe('resolveConfig', () => {
         name: 'qux',
         range: '>1.0.0',
       },
-      yes: true,
+      prompt: true,
     })
   })
 })
@@ -58,7 +58,7 @@ describe('getConfig', () => {
     const opts = {
       nexus,
       package: packageOpts,
-      yes: false,
+      prompt: false,
     }
     expect(getConfig(opts)).toEqual(opts)
   })
@@ -71,7 +71,7 @@ describe('getConfig', () => {
         password: 'baz',
       },
       package: packageOpts,
-      yes: false,
+      prompt: false,
     }
     const cliPackageOpts = {
       repo: 'bat2',
@@ -84,7 +84,7 @@ describe('getConfig', () => {
     expect(getConfig({
       package: cliPackageOpts,
       config: 'some/path'
-    })).toEqual({ yes: opts.yes, nexus: { ...opts.nexus, rateLimit }, package: cliPackageOpts })
+    })).toEqual({ prompt: opts.prompt, nexus: { ...opts.nexus, rateLimit }, package: cliPackageOpts })
   })
 
   it('throws an error when config path is not given and package opts are absent', () => {

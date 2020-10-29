@@ -74,15 +74,15 @@ describe('execute', () => {
     ])
     const deleteIdsMock = jest.fn()
     const helperMock = helperMockFactory(corruptedComponents, deleteIdsMock)
-    await execute(packageOpts, helperMock, true)
+    await execute(packageOpts, helperMock, false)
     expect(deleteIdsMock).toHaveBeenCalledWith(['0', '1', '2', '99'])
   })
 
-  it('does not ask for permission with --yes option', async () => {
+  it('does not ask for permission with --no-prompt option', async () => {
     const deleteIdsMock = jest.fn()
     const helperMock = helperMockFactory(components, deleteIdsMock)
 
-    await execute(packageOpts, helperMock, true)
+    await execute(packageOpts, helperMock, false)
 
     expect(deleteIdsMock).toHaveBeenCalledWith(['0', '1', '2'])
   })
@@ -94,7 +94,7 @@ describe('execute', () => {
 
     const logSpy = jest.spyOn(console, 'log')
       .mockImplementation(() => { /* noop */ })
-    await execute(packageOpts, helperMock, true)
+    await execute(packageOpts, helperMock, false)
     expect(questionSpy).not.toHaveBeenCalled()
     expect(deleteIdsMock).not.toHaveBeenCalled()
     expect(logSpy).toHaveBeenCalled()

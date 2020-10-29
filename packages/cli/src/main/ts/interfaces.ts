@@ -17,13 +17,13 @@ export interface IPackageOpts {
 export interface ICliOpts {
   nexus: INexusOpts
   package: IPackageOpts
-  yes?: boolean
+  prompt?: boolean
   config?: string
 }
 
 export interface ICliOptsOptional {
   nexus?: Partial<INexusOpts>
   package?: Partial<IPackageOpts>
-  yes?: boolean
+  prompt?: boolean
   config?: string
 }

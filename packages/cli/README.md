@@ -28,17 +28,17 @@ npx @qiwi/nexus-cli <arguments>
 @qiwi/nexus-cli --config=some/path/config.json --package.repo=npm --package.name=bat --package.group=quz --package.range='<2.0.3'
 ```
 ### Options
-| Option                                      | Description                            |
-|---------------------------------------------|----------------------------------------|
-| `nexus.username`, `nexus.password`          | Nexus API credentials                  |
-| `nexus.url`                                 | Nexus API URL                          |
+| Option                                      | Description                                      |
+|---------------------------------------------|--------------------------------------------------|
+| `nexus.username`, `nexus.password`          | Nexus API credentials                            |
+| `nexus.url`                                 | Nexus API URL                                    |
 | `nexus.rateLimit`                           | Components API `deleteComponent` method multiple call limit. If exists, limitation will be applied. See more at [push-it-to-the-limit](https://github.com/antongolub/push-it-to-the-limit). |
-| `package.repo`                              | name of package repository             |
-| `package.name`                              | package name                           |
-| `package.group`                             | package group                          |
-| `package.range`                             | package versions range to be deleted   |
-| `config`                                    | path to config file                    |
-| `yes`                                       | delete components without confirmation |
+| `package.repo`                              | name of package repository                       |
+| `package.name`                              | package name                                     |
+| `package.group`                             | package group. If you want to get packages, not belonging to any group, set it to `null`                                    |
+| `package.range`                             | package versions range to be deleted             |
+| `config`                                    | path to config file                              |
+| `no-prompt`                                 | disable destructive action confirmation (delete) |
 
 All options are mandatory until `config` option presents.
 Options from config file can be overridden.

@@ -6,7 +6,7 @@ import { question } from './utils'
 export const execute = async (
   packageOpts: IPackageOpts,
   helper: INexusHelper,
-  yes?: boolean
+  prompt = true
 ): Promise<void> => {
   const components = await helper.getPackageComponents({
     repository: packageOpts.repo,
@@ -26,7 +26,7 @@ export const execute = async (
     return
   }
 
-  if (!yes) {
+  if (prompt) {
     const componentInfos = componentsToBeDeleted
       .map((item: TComponent) => `${item.repository} ${item.group} ${item.name} ${item.id} ${item.version}`)
       .join('\n\t')
