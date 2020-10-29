@@ -35,7 +35,7 @@ npx @qiwi/nexus-cli <arguments>
 | `nexus.rateLimit`                           | Components API `deleteComponent` method multiple call limit. If exists, limitation will be applied. See more at [push-it-to-the-limit](https://github.com/antongolub/push-it-to-the-limit). |
 | `package.repo`                              | name of package repository                       |
 | `package.name`                              | package name                                     |
-| `package.group`                             | package group. If you want to get packages, not belonging to any group, set it to `null`                                    |
+| `package.group`                             | package group. To get packages outside of any group (scope) pass `null`                                    |
 | `package.range`                             | package versions range to be deleted             |
 | `config`                                    | path to config file                              |
 | `no-prompt`                                 | disable destructive action confirmation (delete) |
