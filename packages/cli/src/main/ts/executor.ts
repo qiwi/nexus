@@ -15,7 +15,9 @@ export const execute = async (
   })
 
   const componentsToBeDeleted = NexusComponentsHelper.filterComponentsByRange(
-    components,
+    packageOpts.group === null
+      ? components.filter(value => value.group === null)
+      : components,
     packageOpts.range
   )
 
