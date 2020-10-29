@@ -8,7 +8,7 @@ export interface INexusOpts {
 }
 
 export interface IPackageOpts {
-  group: string
+  group?: string
   name: string
   range: string
   repo: string

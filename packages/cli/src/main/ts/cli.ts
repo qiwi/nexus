@@ -23,18 +23,18 @@ const cli = meow(
       --package.group - package group;
       --package.range - package versions range to be deleted;
       --config - path to config file;
-      --yes - process without asking questions.
+      --yes - delete components without confirmation.
   `,
   {
     flags: {
       nexus: {
         type: 'string',
-        isRequired: (flags) => !flags.file,
+        isRequired: (flags) => !flags.config,
         isMultiple: true,
       },
       package: {
         type: 'string',
-        isRequired: (flags) => !flags.file,
+        isRequired: (flags) => !flags.config,
         isMultiple: true,
       },
       config: {

@@ -38,7 +38,7 @@ npx @qiwi/nexus-cli <arguments>
 | `package.group`                             | package group                          |
 | `package.range`                             | package versions range to be deleted   |
 | `config`                                    | path to config file                    |
-| `yes`                                       | process without asking questions       |
+| `yes`                                       | delete components without confirmation |
 
 All options are mandatory until `config` option presents.
 Options from config file can be overridden.
