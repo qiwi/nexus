@@ -1,3 +1,13 @@
+## @qiwi/nexus-plugin [1.0.3](https://github.com/qiwi/nexus/compare/@qiwi/nexus-plugin@1.0.2...@qiwi/nexus-plugin@1.0.3) (2020-10-30)
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-common:** upgraded to 1.0.3
+
 ## @qiwi/nexus-plugin [1.0.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-plugin@1.0.1...@qiwi/nexus-plugin@1.0.2) (2020-10-30)
 
 
