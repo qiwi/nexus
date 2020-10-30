@@ -1,3 +1,10 @@
+## @qiwi/nexus-infra [1.0.3](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.0.2...@qiwi/nexus-infra@1.0.3) (2020-10-30)
+
+
+### Performance Improvements
+
+* updated versions, changed output to table ([#11](https://github.com/qiwi/nexus/issues/11)) ([510ee37](https://github.com/qiwi/nexus/commit/510ee37cf449162841f773f55d11fa76118f8872))
+
 ## @qiwi/nexus-infra [1.0.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.0.1...@qiwi/nexus-infra@1.0.2) (2020-10-30)
 
 
