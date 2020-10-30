@@ -6,6 +6,8 @@ export const defaultLimit = {
   count: 10
 }
 
+const normalizeStringifiedNullable = (value: any) => value === 'null' ? null : value // eslint-disable-line unicorn/no-null
+
 export const resolveConfig = (
   configOpts: ICliOpts,
   cliOpts: ICliOptsOptional,
@@ -20,7 +22,7 @@ export const resolveConfig = (
       ...configOpts.package,
       ...cliOpts.package,
     },
-    yes: cliOpts.yes ?? configOpts.yes,
+    prompt: normalizeStringifiedNullable(cliOpts.prompt ?? configOpts.prompt),
   }
 }
 
@@ -37,7 +39,7 @@ export const getConfig = (opts: ICliOptsOptional): ICliOpts => {
     throw new Error('Nexus options are not given. Specify them in args or in config file')
   }
 
-  if (!packageOpts || !packageOpts.repo || !packageOpts.group || !packageOpts.name || !packageOpts.range) {
+  if (!packageOpts || !packageOpts.repo || !packageOpts.name || !packageOpts.range) {
     throw new Error('Package options are not given. Specify them in args or in config file')
   }
 

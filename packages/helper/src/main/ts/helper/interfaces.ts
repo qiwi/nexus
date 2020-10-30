@@ -5,7 +5,7 @@ import { TComponent } from '../interfaces'
 
 export type TGetPackageVersionsOpts = {
   repository: string
-  group: string
+  group?: string
   name: string
   sortDirection?: Parameters<SearchApi['search']>[2]
   sortField?: Parameters<SearchApi['search']>[1]

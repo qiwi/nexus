@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import meow from 'meow'
+import meow, { Options } from 'meow'
 
 import { run } from './runner'
 
@@ -23,28 +23,29 @@ const cli = meow(
       --package.group - package group;
       --package.range - package versions range to be deleted;
       --config - path to config file;
-      --yes - process without asking questions.
+      --no-prompt Disable destructive action confirmation (delete)
   `,
   {
     flags: {
       nexus: {
         type: 'string',
-        isRequired: (flags) => !flags.file,
+        isRequired: (flags: any) => !flags.config,
         isMultiple: true,
       },
       package: {
         type: 'string',
-        isRequired: (flags) => !flags.file,
+        isRequired: (flags: any) => !flags.config,
         isMultiple: true,
       },
       config: {
         type: 'string'
       },
-      yes: {
-        type: 'boolean'
+      prompt: {
+        type: 'boolean',
+        default: true,
       }
     }
-  }
+  } as Options
 )
 
 run(cli.flags as any)
