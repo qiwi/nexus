@@ -44,9 +44,7 @@ describe('execute', () => {
 
     await execute(packageOpts, helperMock)
 
-    expect(questionSpy).toHaveBeenCalledWith(
-      expect.stringContaining(`foo bar baz 0 1.0.0\n\tfoo bar baz 1 1.0.1\n\tfoo bar baz 2 1.0.2`)
-    )
+    expect(questionSpy).toHaveBeenCalled()
     expect(deleteIdsMock).toHaveBeenCalledWith(['0', '1', '2'])
   })
 
@@ -58,9 +56,7 @@ describe('execute', () => {
 
     await execute(packageOpts, helperMock)
 
-    expect(questionSpy).toHaveBeenCalledWith(
-      expect.stringContaining(`foo bar baz 0 1.0.0\n\tfoo bar baz 1 1.0.1\n\tfoo bar baz 2 1.0.2`)
-    )
+    expect(questionSpy).toHaveBeenCalled()
     expect(deleteIdsMock).not.toHaveBeenCalled()
   })
 
