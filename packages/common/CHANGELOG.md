@@ -1,3 +1,13 @@
+## @qiwi/nexus-common [1.0.3](https://github.com/qiwi/nexus/compare/@qiwi/nexus-common@1.0.2...@qiwi/nexus-common@1.0.3) (2020-10-30)
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-infra:** upgraded to 1.0.3
+
 ## @qiwi/nexus-common [1.0.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-common@1.0.1...@qiwi/nexus-common@1.0.2) (2020-10-30)
 
 
