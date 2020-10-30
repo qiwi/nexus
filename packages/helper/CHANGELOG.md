@@ -1,3 +1,14 @@
+## @qiwi/nexus-helper [1.0.5](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@1.0.4...@qiwi/nexus-helper@1.0.5) (2020-10-30)
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-client:** upgraded to 1.0.5
+* **@qiwi/nexus-infra:** upgraded to 1.0.3
+
 ## @qiwi/nexus-helper [1.0.4](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@1.0.3...@qiwi/nexus-helper@1.0.4) (2020-10-30)
 
 
