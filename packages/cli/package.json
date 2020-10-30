@@ -42,7 +42,7 @@
     "@qiwi/nexus-client": "1.0.4",
     "@qiwi/nexus-helper": "1.0.4",
     "@types/semver": "^7.3.4",
-    "meow": "^7.1.1"
+    "meow": "^8.0.0"
   },
   "devDependencies": {
     "@qiwi/libdefkit": "^2.1.4",

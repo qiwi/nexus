@@ -30,12 +30,10 @@ const cli = meow(
       nexus: {
         type: 'string',
         isRequired: (flags: any) => !flags.config,
-        isMultiple: true,
       },
       package: {
         type: 'string',
         isRequired: (flags: any) => !flags.config,
-        isMultiple: true,
       },
       config: {
         type: 'string'
@@ -45,7 +43,7 @@ const cli = meow(
         default: true,
       }
     }
-  } as Options
+  } as Options<any>
 )
 
 run(cli.flags as any)
