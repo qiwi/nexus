@@ -17,15 +17,15 @@ npx @qiwi/nexus-cli <arguments>
 ```
 ### Basic:
 ```shell script
-@qiwi/nexus-cli --nexus.username=foo --nexus.password=bar --nexus.url=baz --package.repo=npm --package.name=bat --package.group=quz --package.range='<2.0.3'
+nexus-cli --nexus.username=foo --nexus.password=bar --nexus.url=baz --package.repo=npm --package.name=bat --package.group=quz --package.range='<2.0.3'
 ```
 ### With config file:
 ```shell script
-@qiwi/nexus-cli --config=some/path/config.json
+nexus-cli --config=some/path/config.json
 ```
 ### With config file and overriding
 ```shell script
-@qiwi/nexus-cli --config=some/path/config.json --package.repo=npm --package.name=bat --package.group=quz --package.range='<2.0.3'
+nexus-cli --config=some/path/config.json --package.repo=npm --package.name=bat --package.group=quz --package.range='<2.0.3'
 ```
 ### Options
 | Option                                      | Description                                      |
