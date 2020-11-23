@@ -1,3 +1,18 @@
+## @qiwi/nexus-client [1.0.6](https://github.com/qiwi/nexus/compare/@qiwi/nexus-client@1.0.5...@qiwi/nexus-client@1.0.6) (2020-11-23)
+
+
+### Performance Improvements
+
+* fix docs script, fix ts version ([#14](https://github.com/qiwi/nexus/issues/14)) ([6f0b3b0](https://github.com/qiwi/nexus/commit/6f0b3b0cdbe543c8a42b428c8f3ae32fb609f3b2))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-infra:** upgraded to 1.0.4
+
 ## @qiwi/nexus-client [1.0.5](https://github.com/qiwi/nexus/compare/@qiwi/nexus-client@1.0.4...@qiwi/nexus-client@1.0.5) (2020-10-30)
 
 
