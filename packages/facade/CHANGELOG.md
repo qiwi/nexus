@@ -1,3 +1,19 @@
+## @qiwi/nexus-facade [1.0.4](https://github.com/qiwi/nexus/compare/@qiwi/nexus-facade@1.0.3...@qiwi/nexus-facade@1.0.4) (2020-11-23)
+
+
+### Performance Improvements
+
+* fix docs script, fix ts version ([#14](https://github.com/qiwi/nexus/issues/14)) ([6f0b3b0](https://github.com/qiwi/nexus/commit/6f0b3b0cdbe543c8a42b428c8f3ae32fb609f3b2))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-common:** upgraded to 1.0.4
+* **@qiwi/nexus-plugin:** upgraded to 1.0.4
+
 ## @qiwi/nexus-facade [1.0.3](https://github.com/qiwi/nexus/compare/@qiwi/nexus-facade@1.0.2...@qiwi/nexus-facade@1.0.3) (2020-10-30)
 
 
