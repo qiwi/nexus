@@ -1,11 +1,11 @@
 # @qiwi/nexus
+[![Build Status](https://travis-ci.com/qiwi/nexus.svg?branch=master)](https://travis-ci.com/qiwi/nexus)
+[![Maintainability](https://api.codeclimate.com/v1/badges/98447914169b865c87ff/maintainability)](https://codeclimate.com/github/qiwi/nexus/maintainability)
+
 Monorepo of components for working with [Sonatype Nexus](https://www.sonatype.com/nexus/repository-pro)
 
-## @qiwi/nexus-client
+## [@qiwi/nexus-client](https://github.com/qiwi/nexus/tree/master/packages/client)
 Generated clients for working with Nexus APIs.
-
-### Usage
-
 ```typescript
 import { ComponentsApi } from '@qiwi/nexus-client'
 
@@ -27,9 +27,8 @@ api
 
 ```
 
-## @qiwi/nexus-helper
+## [@qiwi/nexus-helper](https://github.com/qiwi/nexus/tree/master/packages/helper)
 Helper for getting and deleting package components.
-#### Usage
 ```typescript
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
@@ -46,9 +45,19 @@ const data = await helper.getPackageComponents({
 await helper.deletePackagesByIds(['foo', 'bar', 'baz'])
 ```
 
-# @qiwi/nexus-cli
+## [@qiwi/nexus-cli](https://github.com/qiwi/nexus/tree/master/packages/cli)
 CLI utility for getting and deleting package components.
-## Usage
 ```shell script
-@qiwi/nexus-cli --nexus.username=foo --nexus.password=bar --nexus.url=baz --package.repo=npm --package.name=bat --package.group=quz --package.range='<2.0.3'
+> @qiwi/nexus-cli --nexus.username=foo --nexus.password=bar --nexus.url=baz --package.repo=npm --package.name=react --package.group=null --package.range='>16.0.0'
+
+┌─────────┬─────────────┬───────┬─────────┬───────────┬────────────────────────────────────────────────────────────┐
+│ (index) │ repository  │ group │  name   │  version  │                             id                             │
+├─────────┼─────────────┼───────┼─────────┼───────────┼────────────────────────────────────────────────────────────┤
+│    0    │ 'npm'       │ null  │ 'react' │ '16.2.0'  │ '12345678901234567890123456789012345678901234567890123456' │
+│    1    │ 'npm'       │ null  │ 'react' │ '16.4.2'  │ '12345678901234567890123456789012345678901234567890123457' │
+│    2    │ 'npm'       │ null  │ 'react' │ '16.8.3'  │ '12345678901234567890123456789012345678901234567890123458' |
+│    3    │ 'npm'       │ null  │ 'react' │ '16.9.0'  │ '12345678901234567890123456789012345678901234567890123459' │
+└─────────┴─────────────┴───────┴─────────┴───────────┴────────────────────────────────────────────────────────────┘
+These components are going to be deleted. Proceed? (yes/no) yes
+Done.
 ```

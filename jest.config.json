@@ -1,10 +1,8 @@
 {
   "collectCoverage": true,
   "projects": [
-    "<rootDir>/packages/common/jest.config.json",
-    "<rootDir>/packages/facade/jest.config.json",
-    "<rootDir>/packages/plugin/jest.config.json",
     "<rootDir>/packages/client/jest.config.json",
     "<rootDir>/packages/helper/jest.config.json",
-    "<rootDir>/packages/cli/jest.config.json"]
+    "<rootDir>/packages/cli/jest.config.json"
+  ]
 }
