@@ -1,3 +1,10 @@
+## @qiwi/nexus-client [1.0.7](https://github.com/qiwi/nexus/compare/@qiwi/nexus-client@1.0.6...@qiwi/nexus-client@1.0.7) (2020-11-25)
+
+
+### Bug Fixes
+
+* null group parsing, remove redundant packages ([#15](https://github.com/qiwi/nexus/issues/15)) ([cbbf257](https://github.com/qiwi/nexus/commit/cbbf257aede87ff91457f34ecca87fc8fb1059a3)), closes [#12](https://github.com/qiwi/nexus/issues/12)
+
 ## @qiwi/nexus-client [1.0.6](https://github.com/qiwi/nexus/compare/@qiwi/nexus-client@1.0.5...@qiwi/nexus-client@1.0.6) (2020-11-23)
 
 
