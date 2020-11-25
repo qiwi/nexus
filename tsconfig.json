@@ -3,9 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./packages",
     "paths": {
-      "@qiwi/nexus-common": ["./common/src/main/ts"],
-      "@qiwi/nexus-facade": ["./facade/src/main/ts"],
-      "@qiwi/nexus-plugin": ["./plugin/src/main/ts"],
+      "@qiwi/nexus-client": ["./client/src/main/ts"],
       "@qiwi/nexus-helper": ["./helper/src/main/ts"],
       "@qiwi/nexus-cli": ["./cli/src/main/ts"]
     }
