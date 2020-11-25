@@ -89,3 +89,7 @@ const componentsToBeDeleted = NexusComponentsHelper.filterComponentsByRange(
 )
 await helper.deletePackagesByIds(componentsToBeDeleted.map(item => item.id))
 ```
+If error occurs, deleting will be stopped. If you want to delete all components despite on errors, pass `true` as the second argument.
+```typescript
+await helper.deletePackagesByIds(componentsToBeDeleted.map(item => item.id), true)
+```

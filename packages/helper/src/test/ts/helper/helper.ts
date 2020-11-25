@@ -85,4 +85,21 @@ describe('NexusContentsHelper', () => {
     expect(filteredComponents.map(item => item.id))
       .toEqual([0, 2, 4])
   })
+
+  it('continues deleting on errors with proceedOnErrors flag', async () => {
+    ids.forEach((id) => {
+      if ((+id) % 4 === 0) {
+        nock(basePath).delete(`/v1/components/${id}`)
+          .replyWithError('Your circuit is dead, there is something wrong')
+      } else {
+        nock(basePath).delete(`/v1/components/${id}`)
+          .reply(200)
+      }
+    })
+    const data = await helper.deleteComponentsByIds(ids, true)
+    expect(Array.isArray(data)).toEqual(true)
+    expect(data.length).toEqual(ids.length)
+    expect(data.filter((res: any) => res.status === 'fulfilled')).toHaveLength(9)
+    expect(data.filter((res: any) => res.status === 'rejected')).toHaveLength(3)
+  })
 })

@@ -25,8 +25,13 @@ export class NexusComponentsHelper implements INexusHelper {
   }
 
   async deleteComponentsByIds(
-    ids: string[]
+    ids: string[],
+    proceedOnErrors = false
   ): Promise<any> {
+    if (proceedOnErrors) {
+      return Promise.allSettled(ids.map(id => this.componentsApi.deleteComponent(id)))
+    }
+
     return Promise.all(ids.map(id => this.componentsApi.deleteComponent(id)))
   }
 

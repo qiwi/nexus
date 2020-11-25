@@ -19,6 +19,7 @@ export interface INexusHelper {
 
   deleteComponentsByIds(
     ids: string[],
+    proceedOnErrors?: boolean
   ): Promise<any>
 }
 
