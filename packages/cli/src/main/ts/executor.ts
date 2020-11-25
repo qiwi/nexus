@@ -6,7 +6,8 @@ import { question } from './utils'
 export const execute = async (
   packageOpts: IPackageOpts,
   helper: INexusHelper,
-  prompt = true
+  prompt = true,
+  proceedOnErrors = false
 ): Promise<void> => {
   const components = await helper.getPackageComponents({
     repository: packageOpts.repo,
@@ -34,6 +35,9 @@ export const execute = async (
     }
   }
 
-  await helper.deleteComponentsByIds(componentsToBeDeleted.map((item: IComponentInfo) => item.id))
+  await helper.deleteComponentsByIds(
+    componentsToBeDeleted.map((item: IComponentInfo) => item.id),
+    proceedOnErrors
+  )
   console.log('Done.')
 }

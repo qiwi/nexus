@@ -42,7 +42,8 @@ describe('run', () => {
     expect(executeSpy).toHaveBeenCalledWith(
       resolvedOpts.package,
       expect.any(NexusComponentsHelper),
-      resolvedOpts.prompt
+      resolvedOpts.prompt,
+      resolvedOpts.proceedOnErrors
     )
   })
 })
