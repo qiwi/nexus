@@ -21,8 +21,9 @@ export const resolveConfig = (
     package: {
       ...configOpts.package,
       ...cliOpts.package,
+      group: cliOpts?.package?.group ? normalizeStringifiedNullable(cliOpts?.package?.group) : configOpts.package.group
     },
-    prompt: normalizeStringifiedNullable(cliOpts.prompt ?? configOpts.prompt),
+    prompt: cliOpts.prompt ?? configOpts.prompt,
   }
 }
 

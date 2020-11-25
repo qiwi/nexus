@@ -51,6 +51,28 @@ describe('resolveConfig', () => {
       prompt: true,
     })
   })
+
+  it('stringifies null from cli opts', () => {
+    expect(resolveConfig(
+      {
+        nexus,
+        package: packageOpts
+      },
+      {
+        package: {
+          group: 'null'
+        }
+      }
+    )).toEqual(
+      {
+        nexus,
+        package: {
+          ...packageOpts,
+          group: null // eslint-disable-line unicorn/no-null
+        }
+      }
+    )
+  })
 })
 
 describe('getConfig', () => {
