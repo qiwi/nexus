@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/nexus-cli",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "CLI for managing Nexus NPM repository contents",
   "main": "target/es5/index.js",
   "repository": "https://github.com/qiwi/nexus.git",
@@ -39,14 +39,14 @@
     "build:local": "yarn build:es5 && chmod +x target/es5/cli.js"
   },
   "dependencies": {
-    "@qiwi/nexus-client": "1.0.7",
-    "@qiwi/nexus-helper": "1.0.7",
+    "@qiwi/nexus-client": "1.0.8",
+    "@qiwi/nexus-helper": "1.1.0",
     "@types/semver": "^7.3.4",
     "meow": "^8.0.0"
   },
   "devDependencies": {
     "@qiwi/libdefkit": "^2.1.4",
-    "@qiwi/nexus-infra": "1.0.4",
+    "@qiwi/nexus-infra": "1.1.0",
     "nock": "^13.0.4",
     "semver": "^7.3.2"
   },
