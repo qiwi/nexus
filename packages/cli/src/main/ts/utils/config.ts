@@ -23,7 +23,7 @@ export const resolveConfig = (
       ...cliOpts.package,
       group: cliOpts?.package?.group ? normalizeStringifiedNullable(cliOpts?.package?.group) : configOpts.package.group
     },
-    proceedOnErrors: cliOpts.proceedOnErrors ?? configOpts.proceedOnErrors,
+    skipErrors: cliOpts.skipErrors ?? configOpts.skipErrors,
     prompt: cliOpts.prompt ?? configOpts.prompt,
   }
 }

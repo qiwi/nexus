@@ -42,7 +42,7 @@ const cli = meow(
         type: 'boolean',
         default: true,
       },
-      proceedOnErrors: {
+      'skip-errors': {
         type: 'boolean'
       }
     }

@@ -19,8 +19,8 @@ export interface INexusHelper {
 
   deleteComponentsByIds(
     ids: string[],
-    proceedOnErrors?: boolean
-  ): Promise<any>
+    skipErrors?: boolean
+  ): Promise<any[]>
 }
 
 export type TRateLimitOpts = IComplexDelay | IComplexDelay[]

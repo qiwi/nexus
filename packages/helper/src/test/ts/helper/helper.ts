@@ -86,7 +86,7 @@ describe('NexusContentsHelper', () => {
       .toEqual([0, 2, 4])
   })
 
-  it('continues deleting on errors with proceedOnErrors flag', async () => {
+  it('continues deleting on errors with skipErrors flag', async () => {
     ids.forEach((id) => {
       if ((+id) % 4 === 0) {
         nock(basePath).delete(`/v1/components/${id}`)

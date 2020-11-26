@@ -27,5 +27,5 @@ export const run = (opts: ICliOptsOptional): Promise<void> => {
     nexus.rateLimit
   )
 
-  return execute(config.package, helper, config.prompt, config.proceedOnErrors)
+  return execute(config.package, helper, config.prompt, config.skipErrors)
 }

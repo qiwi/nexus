@@ -43,7 +43,7 @@ describe('run', () => {
       resolvedOpts.package,
       expect.any(NexusComponentsHelper),
       resolvedOpts.prompt,
-      resolvedOpts.proceedOnErrors
+      resolvedOpts.skipErrors
     )
   })
 })

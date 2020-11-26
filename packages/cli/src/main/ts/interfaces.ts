@@ -19,7 +19,7 @@ export interface ICliOpts {
   package: IPackageOpts
   prompt?: boolean
   config?: string
-  proceedOnErrors?: boolean
+  skipErrors?: boolean
 }
 
 export interface ICliOptsOptional {
@@ -27,5 +27,5 @@ export interface ICliOptsOptional {
   package?: Partial<IPackageOpts>
   prompt?: boolean
   config?: string
-  proceedOnErrors?: boolean
+  skipErrors?: boolean
 }

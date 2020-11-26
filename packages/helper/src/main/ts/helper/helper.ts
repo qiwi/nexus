@@ -26,13 +26,14 @@ export class NexusComponentsHelper implements INexusHelper {
 
   async deleteComponentsByIds(
     ids: string[],
-    proceedOnErrors = false
-  ): Promise<any> {
-    if (proceedOnErrors) {
-      return Promise.allSettled(ids.map(id => this.componentsApi.deleteComponent(id)))
+    skipErrors = false
+  ): Promise<any[]> {
+    const actions = ids.map(id => this.componentsApi.deleteComponent(id))
+    if (skipErrors) {
+      return Promise.allSettled(actions)
     }
 
-    return Promise.all(ids.map(id => this.componentsApi.deleteComponent(id)))
+    return Promise.all(actions)
   }
 
   async getPackageComponents(
