@@ -1,3 +1,19 @@
+# @qiwi/nexus-helper [1.1.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@1.0.7...@qiwi/nexus-helper@1.1.0) (2020-11-26)
+
+
+### Features
+
+* add skipErrors flag ([#16](https://github.com/qiwi/nexus/issues/16)) ([b5fab08](https://github.com/qiwi/nexus/commit/b5fab083004d7d43497f7a56d8be30467852d762))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-client:** upgraded to 1.0.8
+* **@qiwi/nexus-infra:** upgraded to 1.1.0
+
 ## @qiwi/nexus-helper [1.0.7](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@1.0.6...@qiwi/nexus-helper@1.0.7) (2020-11-25)
 
 
