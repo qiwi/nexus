@@ -1,3 +1,10 @@
+# @qiwi/nexus-infra [1.1.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.0.4...@qiwi/nexus-infra@1.1.0) (2020-11-26)
+
+
+### Features
+
+* add skipErrors flag ([#16](https://github.com/qiwi/nexus/issues/16)) ([b5fab08](https://github.com/qiwi/nexus/commit/b5fab083004d7d43497f7a56d8be30467852d762))
+
 ## @qiwi/nexus-infra [1.0.4](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.0.3...@qiwi/nexus-infra@1.0.4) (2020-11-23)
 
 
