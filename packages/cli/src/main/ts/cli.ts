@@ -41,6 +41,9 @@ const cli = meow(
       prompt: {
         type: 'boolean',
         default: true,
+      },
+      'skip-errors': {
+        type: 'boolean'
       }
     }
   } as Options<any>

@@ -1,6 +1,6 @@
 import { INexusHelper, TComponent } from '@qiwi/nexus-helper'
 
-import { execute } from '../../main/ts/executor'
+import { execute, processDeletionResults } from '../../main/ts/executor'
 import * as misc from '../../main/ts/utils/misc'
 
 const packageOpts = {
@@ -14,13 +14,13 @@ beforeEach(() => jest.resetAllMocks())
 
 const helperMockFactory = (
   components: TComponent[],
-  deleteMock: (ids: string[]) => void
+  deleteMock: (ids: string[]) => any
 ): INexusHelper => ({
   getPackageComponents(): Promise<TComponent[]> {
     return Promise.resolve(components)
   },
   async deleteComponentsByIds(ids: string[]) {
-    deleteMock(ids)
+    return deleteMock(ids)
   }
 })
 
@@ -94,5 +94,33 @@ describe('execute', () => {
     expect(questionSpy).not.toHaveBeenCalled()
     expect(deleteIdsMock).not.toHaveBeenCalled()
     expect(logSpy).toHaveBeenCalled()
+  })
+})
+
+describe('processDeletionResults', () => {
+  it('prints "Done" only when at least 1 deletion was successful', () => {
+    const logSpy = jest.spyOn(console, 'log')
+      .mockImplementation(() => { /* noop */ })
+    const responses = [
+      { status: 'rejected', reason: 'foo' },
+      { status: 'rejected', reason: 'bar' },
+      { status: 'fulfilled', value: 'baz' },
+    ]
+    const ids = ['1', '2', '3']
+    processDeletionResults(responses, ids, true)
+    expect(logSpy).toHaveBeenCalledWith('Done.')
+  })
+
+  it('does not print "Done" when all deletions were failed and ', () => {
+    const logSpy = jest.spyOn(console, 'log')
+      .mockImplementation(() => { /* noop */ })
+    const responses = [
+      { status: 'rejected', reason: new Error('foo') },
+      { status: 'rejected', reason: 'bar' },
+      { status: 'rejected', value: 'baz' },
+    ]
+    const ids = ['1', '2', '3']
+    processDeletionResults(responses, ids, true)
+    expect(logSpy).not.toHaveBeenCalledWith('Done.')
   })
 })

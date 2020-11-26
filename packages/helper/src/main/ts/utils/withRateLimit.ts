@@ -1,5 +1,6 @@
 import { DeepProxy, TProxyHandler } from '@qiwi/deep-proxy'
 import { ILimiter, Limiter, ratelimit } from 'push-it-to-the-limit'
+
 import { TRateLimitOpts } from '../helper'
 
 export const deepProxyHandlerFactory = (limitedMethods: string[], limiter: ILimiter): TProxyHandler => {
