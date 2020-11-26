@@ -33,20 +33,23 @@ export const execute = async (
 
   const responses = await helper.deleteComponentsByIds(ids, skipErrors)
 
-  if (skipErrors) {
-    processDeletionResults(responses, ids)
-  } else {
-    console.log('Done.')
-  }
+  processDeletionResults(responses, ids, skipErrors)
 }
 
-export const processDeletionResults = (responses: any[], ids: string[]): void => {
+export const processDeletionResults = (responses: any[], ids: string[], skipErrors: boolean): void => {
+  if (!skipErrors) {
+    console.log('Done.')
+    return
+  }
+
   const rejectedResults = responses
     .map((response: any, i: number) => ({ response, id: ids[i] }))
     .filter(result => result.response.status === 'rejected')
+
   if (rejectedResults.length < responses.length) {
     console.log('Done.')
   }
+
   if (rejectedResults.length > 0) {
     console.log('Following components have not been deleted due to errors')
     rejectedResults.forEach(({ id, response }: any) => console.log(id, response.reason?.message || response.reason))

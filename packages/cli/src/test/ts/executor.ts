@@ -107,7 +107,7 @@ describe('processDeletionResults', () => {
       { status: 'fulfilled', value: 'baz' },
     ]
     const ids = ['1', '2', '3']
-    processDeletionResults(responses, ids)
+    processDeletionResults(responses, ids, true)
     expect(logSpy).toHaveBeenCalledWith('Done.')
   })
 
@@ -120,7 +120,7 @@ describe('processDeletionResults', () => {
       { status: 'rejected', value: 'baz' },
     ]
     const ids = ['1', '2', '3']
-    processDeletionResults(responses, ids)
+    processDeletionResults(responses, ids, true)
     expect(logSpy).not.toHaveBeenCalledWith('Done.')
   })
 })
