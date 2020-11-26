@@ -40,15 +40,17 @@ export const execute = async (
   }
 }
 
-export const processDeletionResults = (responses: any[], ids: string[]) => {
+export const processDeletionResults = (responses: any[], ids: string[]): void => {
   const rejectedResults = responses
     .map((response: any, i: number) => ({ response, id: ids[i] }))
     .filter(result => result.response.status === 'rejected')
   if (rejectedResults.length < responses.length) {
     console.log('Done.')
   }
-  console.log('Following components have not been deleted due to errors')
-  rejectedResults.forEach(({ id, response }: any) => console.log(id, response.reason?.message || response.reason))
+  if (rejectedResults.length > 0) {
+    console.log('Following components have not been deleted due to errors')
+    rejectedResults.forEach(({ id, response }: any) => console.log(id, response.reason?.message || response.reason))
+  }
 }
 
 export const getComponentsToBeDeleted = (components: TComponent[], packageOpts: IPackageOpts): IComponentInfo[] => {
