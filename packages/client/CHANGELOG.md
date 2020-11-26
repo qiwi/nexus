@@ -1,3 +1,13 @@
+## @qiwi/nexus-client [1.0.8](https://github.com/qiwi/nexus/compare/@qiwi/nexus-client@1.0.7...@qiwi/nexus-client@1.0.8) (2020-11-26)
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-infra:** upgraded to 1.1.0
+
 ## @qiwi/nexus-client [1.0.7](https://github.com/qiwi/nexus/compare/@qiwi/nexus-client@1.0.6...@qiwi/nexus-client@1.0.7) (2020-11-25)
 
 
