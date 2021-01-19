@@ -21,13 +21,13 @@
     "postupdate": "yarn && yarn bootstrap && npx yarn-audit-fix --audit-level=moderate && yarn build && yarn test"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.10",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.21",
     "coveralls": "^3.1.0",
     "find-git-root": "^1.0.4",
     "jest": "^26.6.3",
     "lerna": "^3.22.1",
-    "snazzy": "^8.0.0"
+    "snazzy": "^9.0.0"
   },
   "repository": {
     "type": "git",
