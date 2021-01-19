@@ -17,7 +17,6 @@
     "test:concurrent": "lerna run test --concurrency 1 --stream --no-prefix && yarn coverage:merge",
     "coverage:merge": "node scripts/js/coverage-merge.js",
     "coveralls:push": "cat ./coverage/lcov.info | coveralls || echo 'coveralls push failed :(' && exit 0",
-    "docs": "typedoc packages/**/src/main --ignoreCompilerErrors || exit 0",
     "postupdate": "yarn && yarn bootstrap && npx yarn-audit-fix --audit-level=moderate && yarn build && yarn test"
   },
   "devDependencies": {
