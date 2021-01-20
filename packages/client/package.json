@@ -6,14 +6,15 @@
   "repository": "https://github.com/qiwi/nexus.git",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.0"
+    "axios": "^0.21.1"
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "clean": "rimraf target typings flow-typed buildcache docs coverage",
-    "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+    "clean": "rimraf target typings flow-typed buildcache docs coverage buildstamp.json",
+    "prebuild": "yarn clean && buildstamp --git --out.path buildstamp.json",
+    "build": "yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
     "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
     "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
     "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
@@ -30,12 +31,13 @@
     "CHANGELOG.md",
     "target",
     "typings",
-    "flow-typed"
+    "flow-typed",
+    "buildstamp.json"
   ],
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.4",
+    "@qiwi/libdefkit": "^2.1.5",
     "@qiwi/nexus-infra": "1.1.0",
-    "prettier": "^2.1.2",
+    "prettier": "^2.2.1",
     "rimraf": "^3.0.2"
   },
   "prettier": "prettier-config-qiwi"

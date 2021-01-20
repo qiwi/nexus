@@ -19,14 +19,16 @@
     "CHANGELOG.md",
     "target",
     "typings",
-    "flow-typed"
+    "flow-typed",
+    "buildstamp.json"
   ],
   "scripts": {
     "test": "yarn lint && yarn jest",
     "jest": "jest -w=1 --config=jest.config.json",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "yarn lint --fix",
-    "clean": "rimraf target typings flow-typed buildcache docs coverage",
+    "clean": "rimraf target typings flow-typed buildcache docs coverage buildstamp.json",
+    "prebuild": "buildstamp --git --out.path buildstamp.json",
     "build": "yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs && yarn uglify",
     "build:es5": "mkdir -p target/es5 && tsc -p tsconfig.es5.json",
     "build:es6": "mkdir -p target/es6 && tsc -p tsconfig.es6.json",
@@ -42,13 +44,13 @@
     "@qiwi/nexus-client": "1.0.8",
     "@qiwi/nexus-helper": "1.1.0",
     "@types/semver": "^7.3.4",
-    "meow": "^8.0.0"
+    "meow": "^9.0.0"
   },
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.4",
+    "@qiwi/libdefkit": "^2.1.5",
     "@qiwi/nexus-infra": "1.1.0",
-    "nock": "^13.0.4",
-    "semver": "^7.3.2"
+    "nock": "^13.0.5",
+    "semver": "^7.3.4"
   },
   "prettier": "prettier-config-qiwi"
 }
