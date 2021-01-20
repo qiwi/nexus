@@ -1,3 +1,10 @@
+# @qiwi/nexus-infra [1.2.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.1.0...@qiwi/nexus-infra@1.2.0) (2021-01-20)
+
+
+### Features
+
+* add buildstamp, update deps ([#17](https://github.com/qiwi/nexus/issues/17)) ([61585d0](https://github.com/qiwi/nexus/commit/61585d0d96c0fdec46014a3fb64adecc29065ac5))
+
 # @qiwi/nexus-infra [1.1.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.0.4...@qiwi/nexus-infra@1.1.0) (2020-11-26)
 
 
