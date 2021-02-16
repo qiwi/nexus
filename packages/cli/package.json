@@ -47,9 +47,9 @@
     "meow": "^9.0.0"
   },
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.5",
+    "@qiwi/libdefkit": "^2.1.6",
     "@qiwi/nexus-infra": "1.2.0",
-    "nock": "^13.0.5",
+    "nock": "^13.0.7",
     "semver": "^7.3.4"
   },
   "prettier": "prettier-config-qiwi"

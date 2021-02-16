@@ -35,7 +35,7 @@
     "buildstamp.json"
   ],
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.5",
+    "@qiwi/libdefkit": "^2.1.6",
     "@qiwi/nexus-infra": "1.2.0",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2"
