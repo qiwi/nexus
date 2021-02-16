@@ -45,9 +45,9 @@
     "semver": "^7.3.4"
   },
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.5",
+    "@qiwi/libdefkit": "^2.1.6",
     "@qiwi/nexus-infra": "1.2.0",
-    "nock": "^13.0.5"
+    "nock": "^13.0.7"
   },
   "prettier": "prettier-config-qiwi"
 }
