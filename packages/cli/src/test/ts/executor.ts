@@ -1,6 +1,6 @@
-import { INexusHelper, TComponent } from '@qiwi/nexus-helper'
+import { INexusHelper, TAsset, TComponent } from '@qiwi/nexus-helper'
 
-import { execute, processDeletionResults } from '../../main/ts/executor'
+import { execute, processDeletionResults } from '../../main/ts'
 import * as misc from '../../main/ts/utils/misc'
 
 const packageOpts = {
@@ -14,13 +14,22 @@ beforeEach(() => jest.resetAllMocks())
 
 const helperMockFactory = (
   components: TComponent[],
+  assets: TAsset[],
   deleteMock: (ids: string[]) => any
 ): INexusHelper => ({
-  getPackageComponents(): Promise<TComponent[]> {
-    return Promise.resolve(components)
+  getPackageComponents() {
+    return Promise.resolve({ items: components })
   },
-  async deleteComponentsByIds(ids: string[]) {
+  deleteComponentsByIds(ids: string[]) {
     return deleteMock(ids)
+  },
+  deleteComponentsByIdsSettled(ids: string[]) {
+    return deleteMock(ids)
+  },
+  getPackageAssets() {
+    return Promise.resolve({
+      items: assets
+    })
   }
 })
 
@@ -35,10 +44,20 @@ describe('execute', () => {
       version: `1.0.${i++}`
     })
   )
+  const assets: any = Array.from(
+    { length: 5 },
+    (_, i) => ({
+      repository: 'foo',
+      downloadUrl: `http://local/${i}`,
+      name: 'baz',
+      id: i.toString(),
+      version: `1.0.${i++}`
+    })
+  )
 
   it('asks for a permission and deletes components when it is allowed', async () => {
     const deleteIdsMock = jest.fn()
-    const helperMock = helperMockFactory(components, deleteIdsMock)
+    const helperMock = helperMockFactory(components, assets, deleteIdsMock)
     const questionSpy = jest.spyOn(misc, 'question')
       .mockImplementation(() => Promise.resolve('yes'))
 
@@ -50,7 +69,7 @@ describe('execute', () => {
 
   it('asks for a permission and does not delete components when it is not allowed', async () => {
     const deleteIdsMock = jest.fn()
-    const helperMock = helperMockFactory(components, deleteIdsMock)
+    const helperMock = helperMockFactory(components, assets, deleteIdsMock)
     const questionSpy = jest.spyOn(misc, 'question')
       .mockImplementation(() => Promise.resolve('no'))
 
@@ -70,14 +89,14 @@ describe('execute', () => {
       { id: '101' },
     ]
     const deleteIdsMock = jest.fn()
-    const helperMock = helperMockFactory(corruptedComponents, deleteIdsMock)
+    const helperMock = helperMockFactory(corruptedComponents, assets, deleteIdsMock)
     await execute(packageOpts, helperMock, false)
     expect(deleteIdsMock).toHaveBeenCalledWith(['0', '1', '2', '99'])
   })
 
   it('does not ask for permission with --no-prompt option', async () => {
     const deleteIdsMock = jest.fn()
-    const helperMock = helperMockFactory(components, deleteIdsMock)
+    const helperMock = helperMockFactory(components, assets, deleteIdsMock)
 
     await execute(packageOpts, helperMock, false)
 
@@ -86,7 +105,7 @@ describe('execute', () => {
 
   it('does not continue when components are not found', async () => {
     const deleteIdsMock = jest.fn()
-    const helperMock = helperMockFactory([], deleteIdsMock)
+    const helperMock = helperMockFactory([], assets, deleteIdsMock)
     const questionSpy = jest.spyOn(misc, 'question')
 
     const logSpy = jest.spyOn(console, 'log')
@@ -108,7 +127,7 @@ describe('processDeletionResults', () => {
       { status: 'fulfilled', value: 'baz' },
     ]
     const ids = ['1', '2', '3']
-    processDeletionResults(responses, ids, true)
+    processDeletionResults(responses, ids)
     expect(logSpy).toHaveBeenCalledWith('Done.')
   })
 
@@ -121,7 +140,7 @@ describe('processDeletionResults', () => {
       { status: 'rejected', value: 'baz' },
     ]
     const ids = ['1', '2', '3']
-    processDeletionResults(responses, ids, true)
+    processDeletionResults(responses, ids)
     expect(logSpy).not.toHaveBeenCalledWith('Done.')
   })
 })

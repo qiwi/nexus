@@ -9,14 +9,17 @@ export const execute = async (
   prompt = true,
   skipErrors = false
 ): Promise<void> => {
-  const components = await helper.getPackageComponents({
-    repository: packageOpts.repo,
-    group: packageOpts.group,
-    name: packageOpts.name,
-  })
+  const components = await getAllComponents(
+    helper,
+    {
+      repository: packageOpts.repo,
+      group: packageOpts.group,
+      name: packageOpts.name,
+    }
+  )
   const componentsToBeDeleted = getComponentsToBeDeleted(components, packageOpts)
 
-  if(componentsToBeDeleted.length === 0) {
+  if (componentsToBeDeleted.length === 0) {
     console.log('Components with such parameters are not found')
     return
   }
@@ -31,17 +34,17 @@ export const execute = async (
 
   const ids = componentsToBeDeleted.map((item: IComponentInfo) => item.id)
 
-  const responses = await helper.deleteComponentsByIds(ids, skipErrors)
-
-  processDeletionResults(responses, ids, skipErrors)
-}
-
-export const processDeletionResults = (responses: any[], ids: string[], skipErrors: boolean): void => {
-  if (!skipErrors) {
-    console.log('Done.')
+  if (skipErrors) {
+    const responses = await helper.deleteComponentsByIdsSettled(ids)
+    processDeletionResults(responses, ids)
     return
   }
 
+  await helper.deleteComponentsByIds(ids)
+  console.log('Done.')
+}
+
+export const processDeletionResults = (responses: any[], ids: string[]): void => {
   const rejectedResults = responses
     .map((response: any, i: number) => ({ response, id: ids[i] }))
     .filter(result => result.response.status === 'rejected')
@@ -63,4 +66,21 @@ export const getComponentsToBeDeleted = (components: TComponent[], packageOpts: 
       : components,
     packageOpts.range
   )
+}
+
+export const getAllComponents = async (
+  helper: INexusHelper,
+  opts: Parameters<INexusHelper['getPackageComponents']>[0]
+): Promise<TComponent[]> => {
+  const data = await helper.getPackageComponents(opts)
+  let token = data.continuationToken
+  const components = [...(data.items || [])]
+
+  while (token) {
+    const { items, continuationToken } = await helper.getPackageComponents(opts, token)
+    token = continuationToken
+    components.push(...(items || []))
+  }
+
+  return components
 }
