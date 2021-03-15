@@ -33,7 +33,7 @@ const components = await helper.getPackageComponents({
 })
 /*
 {
-    "item": [
+    "items": [
         {
             "id": "12345678901234567890123456789012345678901234567890123456",
             "repository": "npm-proxy",
@@ -116,4 +116,30 @@ await helper.deletePackagesByIds(componentsToBeDeleted.map(item => item.id))
 If error occurs, deleting will be stopped. If you want to delete all components despite on errors, use `deletePackagesByIdsSettled`.
 ```typescript
 await helper.deletePackagesByIdsSettled(componentsToBeDeleted.map(item => item.id))
+```
+#### Get package assets
+This method uses the same pagination as `getPackageComponents`
+```typescript
+const { items, continuationToken } = await helper.getPackageAssets({
+  repository: 'npm',
+  group: 'qiwi',
+  name: 'substrate'
+})
+/*
+{
+    "items": [
+        {
+            "downloadUrl": "https://some.url.com/repository/npm/@qiwi/substrate/-/substrate-0.11.0.tgz",
+            "path": "@qiwi/substrate/-/substrate-0.11.0.tgz",
+            "id": "asdfghjklqwertyuiozxcvbnmasdfghjklqwertyuiozxcvbnmasdfghjasd",
+            "repository": "npm",
+            "format": "npm",
+            "checksum": {
+                "sha1": "1234567890123456789012345678901234567890"
+            }
+        },
+        ...
+     ],
+     "continuationToken": "token"
+ */
 ```
