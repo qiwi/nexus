@@ -18,9 +18,9 @@ export const apiGetAll = async <T = any>(
       return res
     }
     if (continuationToken) {
-      return apiGetAll<T>(apiCaller, res.concat(items), continuationToken)
+      return apiGetAll<T>(apiCaller, [...res, ...items], continuationToken)
     }
-    return res.concat(items)
+    return [...res, ...items]
   } catch (e) {
     console.error(`[apiGetAll]: ${e.message}`)
   }
