@@ -47,7 +47,7 @@
   "devDependencies": {
     "@qiwi/libdefkit": "^2.1.6",
     "@qiwi/nexus-infra": "1.2.1",
-    "nock": "^13.0.7"
+    "nock": "^13.0.11"
   },
   "prettier": "prettier-config-qiwi"
 }
