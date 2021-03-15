@@ -1,9 +1,9 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
+import { AxiosResponse } from 'axios'
 import { satisfies } from 'semver'
 
-import { IComponentInfo, TComponent } from '../interfaces'
-import { apiGetAll, isDefined, nullCheckerFactory, TApiCaller } from '../utils'
-import { withRateLimit } from '../utils/withRateLimit'
+import { IComponentInfo, TComponent, TPaginatedAsset, TPaginatedComponent } from '../interfaces'
+import { isDefined, nullCheckerFactory , withRateLimit } from '../utils'
 import { INexusHelper, TGetPackageVersionsOpts, TRateLimitOpts } from './interfaces'
 
 export class NexusComponentsHelper implements INexusHelper {
@@ -26,34 +26,51 @@ export class NexusComponentsHelper implements INexusHelper {
 
   async deleteComponentsByIds(
     ids: string[],
-    skipErrors = false
-  ): Promise<any[]> {
+  ): Promise<void> {
     const actions = ids.map(id => this.componentsApi.deleteComponent(id))
-    if (skipErrors) {
-      return Promise.allSettled(actions)
-    }
+    await Promise.all(actions)
+  }
 
-    return Promise.all(actions)
+  deleteComponentsByIdsSettled(
+    ids: string[],
+  ): Promise<PromiseSettledResult<AxiosResponse<void>>[]> {
+    return Promise.allSettled(ids.map(id => this.componentsApi.deleteComponent(id)))
   }
 
   async getPackageComponents(
     opts: TGetPackageVersionsOpts,
-  ): Promise<TComponent[]> {
+    token?: string,
+  ): Promise<TPaginatedComponent> {
     const { repository, group, name, timeout, sortDirection, sortField } = opts
-    const apiCaller: TApiCaller = (token) =>
-      this.searchApi.search(
-        token,
-        sortField,
-        sortDirection,
-        timeout,
-        undefined,
-        repository,
-        undefined,
-        group,
-        name,
-      )
+    return this.searchApi.search(
+      token,
+      sortField,
+      sortDirection,
+      timeout,
+      undefined,
+      repository,
+      undefined,
+      group,
+      name,
+    ).then(response => response.data)
+  }
 
-    return apiGetAll<TComponent>(apiCaller)
+  async getPackageAssets(
+    opts: TGetPackageVersionsOpts,
+    token?: string
+  ): Promise<TPaginatedAsset> {
+    const { repository, group, name, timeout, sortDirection, sortField } = opts
+    return this.searchApi.searchAssets(
+      token,
+      sortField,
+      sortDirection,
+      timeout,
+      undefined,
+      repository,
+      undefined,
+      group,
+      name,
+    ).then(response => response.data)
   }
 
   static filterComponentsByRange(components: TComponent[], range: string): Array<TComponent & IComponentInfo> {

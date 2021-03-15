@@ -32,54 +32,78 @@ const components = await helper.getPackageComponents({
   name: 'substrate'
 })
 /*
-[
-	{
-		"id": "12345678901234567890123456789012345678901234567890123456",
-		"repository": "npm-proxy",
-		"format": "npm",
-		"group": "qiwi",
-		"name": "substrate",
-		"version": "1.18.35",
-		"assets": [
-			 {
-                "downloadUrl": "https://some.url/repository/npm/@qiwi/substrate/-/substrate-1.18.35.tgz",
-                "path": "@qiwi/substrate/-/substrate-1.18.35.tgz",
-                "id": "qwertyuiopasdfghjklzxcvbnmqwertyuioasdfghjklzxcvzxcvbnmb",
-                "repository": "npm-proxy",
-                "format": "npm",
-                "checksum": {
-                    "sha1": "abcdef1234567890abcdef1234567890abcdef13"
-                }
-            },
-            ...
-		]
-	},
-    ...,
-    {
-        "id": "12345678901234567890123456789012345678901234567890123457",
-        "repository": "npm-proxy",
-        "format": "npm",
-        "group": "qiwi",
-        "name": "substrate",
-        "version": "1.18.33",
-        "assets": [
-            {
-                "downloadUrl": "https://some.url/repository/npm/@qiwi/substrate/-/substrate-1.18.33.tgz",
-                "path": "@qiwi/substrate/-/substrate-1.18.33.tgz",
-                "id": "qwertyuiopasdfghjklzxcvbnmqwertyuioasdfghjklzxcvzxcvbnma",
-                "repository": "npm-proxy",
-                "format": "npm",
-                "checksum": {
-                    "sha1": "abcdef1234567890abcdef1234567890abcdef12"
-                }
-            },
-            ...
-        ]
-    }
-]
+{
+    "item": [
+        {
+            "id": "12345678901234567890123456789012345678901234567890123456",
+            "repository": "npm-proxy",
+            "format": "npm",
+            "group": "qiwi",
+            "name": "substrate",
+            "version": "1.18.35",
+            "assets": [
+                 {
+                    "downloadUrl": "https://some.url/repository/npm/@qiwi/substrate/-/substrate-1.18.35.tgz",
+                    "path": "@qiwi/substrate/-/substrate-1.18.35.tgz",
+                    "id": "qwertyuiopasdfghjklzxcvbnmqwertyuioasdfghjklzxcvzxcvbnmb",
+                    "repository": "npm-proxy",
+                    "format": "npm",
+                    "checksum": {
+                        "sha1": "abcdef1234567890abcdef1234567890abcdef13"
+                    }
+                },
+                ...
+            ]
+        },
+        ...,
+        {
+            "id": "12345678901234567890123456789012345678901234567890123457",
+            "repository": "npm-proxy",
+            "format": "npm",
+            "group": "qiwi",
+            "name": "substrate",
+            "version": "1.18.33",
+            "assets": [
+                {
+                    "downloadUrl": "https://some.url/repository/npm/@qiwi/substrate/-/substrate-1.18.33.tgz",
+                    "path": "@qiwi/substrate/-/substrate-1.18.33.tgz",
+                    "id": "qwertyuiopasdfghjklzxcvbnmqwertyuioasdfghjklzxcvzxcvbnma",
+                    "repository": "npm-proxy",
+                    "format": "npm",
+                    "checksum": {
+                        "sha1": "abcdef1234567890abcdef1234567890abcdef12"
+                    }
+                },
+                ...
+            ]
+        }
+    ],
+    "continuationToken": "token"
+}
 */
 ```
-
+`continuationToken` is used for pagination, pass it as a second argument to get more components:
+```javascript
+const { items, continuationToken } = await helper.getPackageComponents({
+  repository: 'npm',
+  group: 'qiwi',
+  name: 'substrate'
+})
+const components = [...items]
+let token = continuationToken
+while (token) {
+  const data = await helper.getPackageComponents(
+    {
+        repository: 'npm',
+        group: 'qiwi',
+        name: 'substrate'
+    },
+    token
+  )
+  components.push(...data.items)
+  token = data.continuationToken
+}
+```
 #### Delete components by their ids
 Nexus identifies components by their ids, see [Nexus Components API docs](https://help.sonatype.com/repomanager3/rest-and-integration-api/components-api)
 ```typescript
@@ -89,7 +113,7 @@ const componentsToBeDeleted = NexusComponentsHelper.filterComponentsByRange(
 )
 await helper.deletePackagesByIds(componentsToBeDeleted.map(item => item.id))
 ```
-If error occurs, deleting will be stopped. If you want to delete all components despite on errors, pass `true` as the second argument.
+If error occurs, deleting will be stopped. If you want to delete all components despite on errors, use `deletePackagesByIdsSettled`.
 ```typescript
-await helper.deletePackagesByIds(componentsToBeDeleted.map(item => item.id), true)
+await helper.deletePackagesByIdsSettled(componentsToBeDeleted.map(item => item.id))
 ```

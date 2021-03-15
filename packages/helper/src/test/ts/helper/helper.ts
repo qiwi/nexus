@@ -2,8 +2,7 @@ import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import nock from 'nock'
 import * as PITTL from 'push-it-to-the-limit'
 
-import { TComponent } from '../../../main/ts'
-import { NexusComponentsHelper } from '../../../main/ts/helper'
+import { NexusComponentsHelper,TComponent } from '../../../main/ts'
 import component from './resources/component.json'
 
 describe('NexusContentsHelper', () => {
@@ -62,16 +61,13 @@ describe('NexusContentsHelper', () => {
       .query({ ...params, continuationToken })
       .twice()
       .reply(200, {
-        items,
-        continuationToken,
+        items
       })
-    nock(basePath)
-      .get(searchUrl)
-      .query({ ...params, continuationToken })
-      .once()
-      .reply(200, { items })
-    const data = await helper.getPackageComponents(params)
-    expect(data).toEqual([...items, ...items, ...items, ...items])
+
+    const page = await helper.getPackageComponents(params)
+    expect(page).toEqual({ items, continuationToken })
+    const nextPage = await helper.getPackageComponents(params, continuationToken)
+    expect(nextPage).toEqual({ items })
   })
 
   it('filters components by range without corrupted ones', () => {
@@ -86,7 +82,20 @@ describe('NexusContentsHelper', () => {
       .toEqual([0, 2, 4])
   })
 
-  it('continues deleting on errors with skipErrors flag', async () => {
+  it('deleteComponentsByIds deletes components', async () => {
+    const mocks = [
+      nock(basePath).delete('/v1/components/foo')
+        .reply(200),
+      nock(basePath).delete('/v1/components/bar')
+        .reply(200),
+      nock(basePath).delete('/v1/components/baz')
+        .reply(200),
+    ]
+    await helper.deleteComponentsByIds(['foo', 'bar', 'baz'])
+    expect(mocks.every(mock => mock.isDone()))
+  })
+
+  it('deleteComponentsByIdsSettled continues deleting on errors', async () => {
     ids.forEach((id) => {
       if ((+id) % 4 === 0) {
         nock(basePath).delete(`/v1/components/${id}`)
@@ -96,7 +105,7 @@ describe('NexusContentsHelper', () => {
           .reply(200)
       }
     })
-    const data = await helper.deleteComponentsByIds(ids, true)
+    const data = await helper.deleteComponentsByIdsSettled(ids)
     expect(Array.isArray(data)).toEqual(true)
     expect(data.length).toEqual(ids.length)
     expect(data.filter((res: any) => res.status === 'fulfilled')).toHaveLength(9)

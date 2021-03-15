@@ -1,7 +1,8 @@
 import { SearchApi } from '@qiwi/nexus-client'
+import { AxiosResponse } from 'axios'
 import { IComplexDelay } from 'push-it-to-the-limit'
 
-import { TComponent } from '../interfaces'
+import { TPaginatedAsset, TPaginatedComponent } from '../interfaces'
 
 export type TGetPackageVersionsOpts = {
   repository: string
@@ -15,12 +16,21 @@ export type TGetPackageVersionsOpts = {
 export interface INexusHelper {
   getPackageComponents(
     params: TGetPackageVersionsOpts,
-  ): Promise<TComponent[]>
+    token?: string
+  ): Promise<TPaginatedComponent>
 
   deleteComponentsByIds(
     ids: string[],
-    skipErrors?: boolean
-  ): Promise<any[]>
+  ): Promise<void>
+
+  deleteComponentsByIdsSettled(
+    ids: string[],
+  ): Promise<PromiseSettledResult<AxiosResponse<void>>[]>
+
+  getPackageAssets(
+    params: TGetPackageVersionsOpts,
+    token?: string
+  ): Promise<TPaginatedAsset>
 }
 
 export type TRateLimitOpts = IComplexDelay | IComplexDelay[]
