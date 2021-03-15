@@ -62,12 +62,13 @@ describe('execute', () => {
 
 
   it('ignores components without id and version', async () => {
-    const corruptedComponents = components.concat([
+    const corruptedComponents = [
+      ...components,
       {},
       { version: '0.9.9', id: '99' },
       { version: '0.9.8' },
       { id: '101' },
-    ])
+    ]
     const deleteIdsMock = jest.fn()
     const helperMock = helperMockFactory(corruptedComponents, deleteIdsMock)
     await execute(packageOpts, helperMock, false)
