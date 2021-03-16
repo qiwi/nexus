@@ -1,26 +1,31 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
-import { AxiosResponse } from 'axios'
+import { AxiosInstance, AxiosResponse } from 'axios'
+import { createWriteStream } from 'fs'
+import { join } from 'path'
 import { satisfies } from 'semver'
 
-import { IComponentInfo, TComponent, TPaginatedAsset, TPaginatedComponent } from '../interfaces'
+import { IComponentInfo, TAssetInfo, TComponent, TPaginatedAsset, TPaginatedComponent } from '../interfaces'
 import { isDefined, nullCheckerFactory , withRateLimit } from '../utils'
-import { INexusHelper, TGetPackageVersionsOpts, TRateLimitOpts } from './interfaces'
+import { INexusHelper, TGetPackageVersionsOpts, TPaginatedSettledResult, TRateLimitOpts } from './interfaces'
 
 export class NexusComponentsHelper implements INexusHelper {
   private searchApi: SearchApi
   private componentsApi: ComponentsApi
+  private httpClient: AxiosInstance
 
   constructor(
     searchApi: SearchApi,
     componentsApi: ComponentsApi,
+    httpClient: AxiosInstance,
     rateLimitOpts?: TRateLimitOpts,
   ) {
     this.searchApi = searchApi
     this.componentsApi = componentsApi
+    this.httpClient = httpClient
     return withRateLimit<NexusComponentsHelper>(
       this,
       rateLimitOpts,
-      ['componentsApi.deleteComponent']
+      ['componentsApi.deleteComponent', 'httpClient.get']
     )
   }
 
@@ -71,6 +76,49 @@ export class NexusComponentsHelper implements INexusHelper {
       group,
       name,
     ).then(response => response.data)
+  }
+
+  async downloadPackageAssets(
+    opts: TGetPackageVersionsOpts,
+    cwd: string,
+    token?: string
+  ): Promise<TPaginatedSettledResult<TAssetInfo>> {
+    const { items, continuationToken } = await this.getPackageAssets(opts, token)
+
+    if (!items) {
+      return {
+        items: [] as TPaginatedSettledResult<TAssetInfo>['items'],
+      }
+    }
+
+    return {
+      items: await Promise.allSettled(items.map(({ downloadUrl, path }) => {
+        if (!downloadUrl || !path) {
+          return Promise.reject(new Error('downloadUrl or path is absent in Nexus API response'))
+        }
+        return this.downloadPackageAsset(downloadUrl, path, cwd)
+      })),
+      continuationToken
+    }
+  }
+
+  async downloadPackageAsset(url: string, path: string, cwd: string): Promise<TAssetInfo> {
+    const filePath = join(cwd, path.replace(/\//g, '%2F'))
+    const writer = createWriteStream(filePath)
+    return this.httpClient.get(url, { responseType: 'stream' })
+      .then(response => response.data.pipe(writer))
+      .then(() => ({
+        ...NexusComponentsHelper.extractNameAndVersionFromPath(path),
+        filePath
+      }))
+  }
+
+  static extractNameAndVersionFromPath(path: string): Omit<TAssetInfo, 'filePath'> {
+    const [name, rest] = path.split('/-/')
+    return {
+      name,
+      version: rest.split('-').slice(-1)[0].replace('.tgz', '')
+    }
   }
 
   static filterComponentsByRange(components: TComponent[], range: string): Array<TComponent & IComponentInfo> {

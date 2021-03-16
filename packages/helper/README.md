@@ -9,10 +9,11 @@ or
 npm i @qiwi/nexus-helper
 ```
 ## Usage
-You should create and pass `ContentsApi`, `SearchApi` instances from `@qiwi/nexus-client` to `NexusContentsHelper`'s constructor.
+You should create and pass `ContentsApi`, `SearchApi` from `@qiwi/nexus-client` and `AxiosInstance` from `axios` to `NexusContentsHelper`'s constructor.
 ```typescript
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
+import axios from 'axios'
 
 const basePath = 'http://localhost/service/rest'
 const componentsApi = new ComponentsApi({ basePath })
@@ -21,7 +22,7 @@ const rateLimitOpts = {
   period: 1000,
   count: 2,
 }
-const helper = new NexusComponentsHelper(searchApi, componentsApi, rateLimitOpts)
+const helper = new NexusComponentsHelper(searchApi, componentsApi, axios, rateLimitOpts)
 ```
 `rateLimitOpts` is optional, it represents rate limit of `delete` method of Nexus Components API
 #### Get package components
@@ -44,7 +45,7 @@ const components = await helper.getPackageComponents({
             "assets": [
                  {
                     "downloadUrl": "https://some.url/repository/npm/@qiwi/substrate/-/substrate-1.18.35.tgz",
-                    "path": "@qiwi/substrate/-/substrate-1.18.35.tgz",
+                    "filePath": "@qiwi/substrate/-/substrate-1.18.35.tgz",
                     "id": "qwertyuiopasdfghjklzxcvbnmqwertyuioasdfghjklzxcvzxcvbnmb",
                     "repository": "npm-proxy",
                     "format": "npm",
@@ -66,7 +67,7 @@ const components = await helper.getPackageComponents({
             "assets": [
                 {
                     "downloadUrl": "https://some.url/repository/npm/@qiwi/substrate/-/substrate-1.18.33.tgz",
-                    "path": "@qiwi/substrate/-/substrate-1.18.33.tgz",
+                    "filePath": "@qiwi/substrate/-/substrate-1.18.33.tgz",
                     "id": "qwertyuiopasdfghjklzxcvbnmqwertyuioasdfghjklzxcvzxcvbnma",
                     "repository": "npm-proxy",
                     "format": "npm",
@@ -82,7 +83,7 @@ const components = await helper.getPackageComponents({
 }
 */
 ```
-`continuationToken` is used for pagination, pass it as a second argument to get more components:
+`continuationToken` is used for pagination, pass it as the second argument to get more components:
 ```javascript
 const { items, continuationToken } = await helper.getPackageComponents({
   repository: 'npm',
@@ -117,7 +118,7 @@ If error occurs, deleting will be stopped. If you want to delete all components 
 ```typescript
 await helper.deletePackagesByIdsSettled(componentsToBeDeleted.map(item => item.id))
 ```
-#### Get package assets
+#### Get package assets info
 This method uses the same pagination as `getPackageComponents`
 ```typescript
 const { items, continuationToken } = await helper.getPackageAssets({
@@ -130,7 +131,7 @@ const { items, continuationToken } = await helper.getPackageAssets({
     "items": [
         {
             "downloadUrl": "https://some.url.com/repository/npm/@qiwi/substrate/-/substrate-0.11.0.tgz",
-            "path": "@qiwi/substrate/-/substrate-0.11.0.tgz",
+            "filePath": "@qiwi/substrate/-/substrate-0.11.0.tgz",
             "id": "asdfghjklqwertyuiozxcvbnmasdfghjklqwertyuiozxcvbnmasdfghjasd",
             "repository": "npm",
             "format": "npm",
@@ -143,3 +144,62 @@ const { items, continuationToken } = await helper.getPackageAssets({
      "continuationToken": "token"
  */
 ```
+#### Download package asset
+Saves the asset to the path specified as the third argument
+```javascript
+const data = await helper.downloadPackageAsset(
+  'https://some.url.com/repository/npm/@qiwi/substrate/-/substrate-0.11.0.tgz',
+  '@qiwi/substrate/-/substrate-0.11.0.tgz',
+  'pathToSaveTarball'
+)
+/*
+{
+  name: '@qiwi/substrate',
+  version: '0.11.0',
+  filePath: 'pathToSaveTarball/@qiwi%2Fsubstrate%2F-%2Fsubstrate-0.11.0.tgz'
+}
+ */
+```
+#### Download package assets
+The same as a `getPackageAssets`, but with saving tarballs to given path
+```javascript
+const data = await helper.downloadPackageAssets(
+  {
+    repository: 'npm',
+    group: 'qiwi',
+    name: 'substrate'
+  },
+  'pathToSaveTarball'
+)
+/*
+{
+  "items": [
+    {
+        "status": "fulfilled",
+        "value": {
+            "name": "@qiwi/substrate",
+            "version": "0.11.0",
+            "filePath": "pathToSaveTarball/@qiwi%2Fsubstrate%2F-%2Fsubstrate-0.11.0.tgz"
+        }
+    },
+    {
+        "status": "fulfilled",
+        "value": {
+            "name": "@qiwi/substrate",
+            "version": "0.12.0",
+            "filePath": "pathToSaveTarball/@qiwi%2Fsubstrate%2F-%2Fsubstrate-0.12.0.tgz"
+        }
+    },
+    {
+        "status": "rejected",
+        "reason": {
+            "message": "Not Found",
+        }
+    },
+    ...
+  ],
+  "continuationToken": "token"
+}
+ */
+```
+Tarballs are saved to `value.path`

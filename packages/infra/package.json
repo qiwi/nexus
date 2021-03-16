@@ -31,6 +31,7 @@
     "@qiwi/libdefkit": "^2.1.6",
     "@swissquote/crafty-preset-jest": "^1.14.0",
     "@types/jest": "^26.0.20",
+    "@types/rimraf": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "buildstamp": "^1.4.2",
     "eslint": "^7.22.0",

@@ -8,6 +8,12 @@ export type TPaginatedComponent = PageComponentXO
 
 export type TPaginatedAsset = PageAssetXO
 
+export type TAssetInfo = {
+  name: string
+  version: string
+  filePath: string
+}
+
 export interface IComponentInfo {
   id: string
   version: string
