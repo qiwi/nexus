@@ -44,6 +44,7 @@
     "@qiwi/nexus-client": "1.1.1",
     "@qiwi/nexus-helper": "1.2.2",
     "@types/semver": "^7.3.4",
+    "axios": "^0.21.1",
     "meow": "^9.0.0"
   },
   "devDependencies": {

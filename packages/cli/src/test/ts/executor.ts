@@ -30,6 +30,27 @@ const helperMockFactory = (
     return Promise.resolve({
       items: assets
     })
+  },
+  downloadPackageAsset() {
+    return Promise.resolve({
+      name: 'foo',
+      version: '1.0.0',
+      filePath: 'foo-1.0.0.tgz'
+    })
+  },
+  downloadPackageAssets() {
+    return Promise.resolve({
+      items: [
+        {
+          status: 'fulfilled',
+          value: {
+            name: 'foo',
+            version: '1.0.0',
+            filePath: 'foo-1.0.0.tgz'
+          }
+        }
+      ]
+    })
   }
 })
 

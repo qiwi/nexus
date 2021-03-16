@@ -1,5 +1,6 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
+import axios from 'axios'
 
 import { execute } from './executor'
 import { ICliOptsOptional } from './interfaces'
@@ -24,6 +25,7 @@ export const run = (opts: ICliOptsOptional): Promise<void> => {
   const helper = new NexusComponentsHelper(
     searchApi,
     componentsApi,
+    axios,
     nexus.rateLimit
   )
 

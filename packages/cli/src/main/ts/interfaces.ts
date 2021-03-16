@@ -4,7 +4,7 @@ export interface INexusOpts {
   url: string
   username: string
   password: string
-  rateLimit: ConstructorParameters<typeof NexusComponentsHelper>[2]
+  rateLimit: ConstructorParameters<typeof NexusComponentsHelper>[3]
 }
 
 export interface IPackageOpts {
