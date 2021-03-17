@@ -1,3 +1,5 @@
+import rimraf from 'rimraf'
+
 import { performDownload } from '../../../main/ts/executors/download'
 import * as misc from '../../../main/ts/utils/misc'
 import { assets, components, helperMockFactory } from '../utils'
@@ -9,6 +11,8 @@ const assetInfo = {
 }
 
 describe('performDownload', () => {
+  afterEach(() => rimraf.sync('cwd'))
+
   it('calls proper methods of helper and write meta to file', async () => {
     const writeJsonMock = jest.spyOn(misc, 'writeJson')
       .mockImplementation(() => { /* noop */ })
