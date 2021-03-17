@@ -1,0 +1,10 @@
+{
+  "downloadUrl": "http://localhost/repository/npm/@types/react/-/react-16.9.41.tgz",
+  "path": "@types/react/-/react-16.9.41.tgz",
+  "id": "qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmadfg",
+  "repository": "npm-proxy",
+  "format": "npm",
+  "checksum": {
+    "sha1": "1234567890123456789012345678901234567890"
+  }
+}

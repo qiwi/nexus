@@ -1,123 +1,192 @@
-import { defaultLimit as rateLimit, getConfig, resolveConfig } from '../../../main/ts/utils'
+import { IBaseConfig, TDeleteConfig, TDownloadConfig } from '../../../main/ts'
+import {
+  DeepPartial,
+  getConfig,
+  resolveConfig,
+  resolveDeleteConfig,
+  resolveDownloadConfig,
+} from '../../../main/ts/utils'
 import * as misc from '../../../main/ts/utils/misc'
-
-const nexus = {
-  url: 'foo',
-  username: 'bar',
-  password: 'baz',
-  rateLimit,
-}
-
-const packageOpts = {
-  repo: 'bat',
-  group: 'quz',
-  name: 'qux',
-  range: '>0.0.0',
-}
+import { baseConfig, batch } from '../utils'
 
 describe('resolveConfig', () => {
-  it('overrides config opts with cli opts', () => {
-    expect(resolveConfig(
-      {
-        nexus,
-        package: packageOpts,
-        prompt: false,
+  const testCases: Array<{
+    configA: DeepPartial<IBaseConfig>,
+    configB: DeepPartial<IBaseConfig>,
+    description: string,
+    output: DeepPartial<IBaseConfig>
+  }> = [
+    {
+      description: 'second config has higher priority',
+      configA: {
+        url: 'localhost',
+        action: 'download',
+        data: {}
       },
-      {
-        nexus: {
-          url: 'foo2',
-          password: 'baz',
+      configB: {
+        url: 'localhost:3001',
+        auth: {
+          username: 'usernameB',
+          password: 'password',
+        }
+      },
+      output: {
+        url: 'localhost:3001',
+        action: 'download',
+        auth: {
+          username: 'usernameB',
+          password: 'password',
         },
-        package: {
-          repo: 'bat',
-          range: '>1.0.0',
+        batch,
+        data: {}
+      }
+    },
+    {
+      description: 'it merges nested fields too',
+      configA: {
+        url: 'localhost',
+        action: 'delete',
+        auth: {
+          username: 'username',
+        }
+      },
+      configB: {
+        url: 'localhost',
+        auth: {
+          password: 'password'
+        }
+      },
+      output: {
+        url: 'localhost',
+        action: 'delete',
+        auth: {
+          username: 'username',
+          password: 'password',
         },
-        prompt: true,
-        config: '',
-      },
-    )).toEqual({
-      nexus: {
-        url: 'foo2',
-        password: 'baz',
-        username: 'bar',
-        rateLimit,
-      },
-      package: {
-        repo: 'bat',
-        group: 'quz',
-        name: 'qux',
-        range: '>1.0.0',
-      },
-      prompt: true,
-    })
-  })
+        batch,
+        data: {},
+      }
+    }
+  ]
 
-  it('stringifies null from cli opts', () => {
-    expect(resolveConfig(
-      {
-        nexus,
-        package: packageOpts
+  testCases.forEach(
+    ({ configA, configB, description, output }) => test(description, () => expect(resolveConfig(configA, configB)).toEqual(output))
+  )
+})
+
+describe('resolveDownloadConfig', (() => {
+  const testCases: Array<{
+    description: string,
+    config: TDownloadConfig,
+    output: TDownloadConfig
+  }> = [
+    {
+      description: 'it adds procces.cwd when cwd is absent',
+      config: {
+        ...baseConfig,
+        action: 'download',
+        data: {
+          name: 'name',
+          repo: 'npm',
+        }
       },
-      {
-        package: {
-          group: 'null'
+      output: {
+        ...baseConfig,
+        action: 'download',
+        data: {
+          name: 'name',
+          repo: 'npm',
+          cwd: process.cwd()
         }
       }
-    )).toEqual(
-      {
-        nexus,
-        package: {
-          ...packageOpts,
-          group: null // eslint-disable-line unicorn/no-null
+    },
+    {
+      description: 'it replaces stringified null to null',
+      config: {
+        ...baseConfig,
+        action: 'download',
+        data: {
+          name: 'name',
+          repo: 'npm',
+          cwd: 'cwd',
+          group: 'null',
+        }
+      },
+      output: {
+        ...baseConfig,
+        action: 'download',
+        data: {
+          name: 'name',
+          repo: 'npm',
+          cwd: 'cwd',
+          group: null as any, // eslint-disable-line unicorn/no-null
         }
       }
-    )
-  })
+    },
+  ]
+
+  testCases.forEach(
+    ({ config, description, output }) => test(description, () => expect(resolveDownloadConfig(config)).toEqual(output))
+  )
+}))
+
+describe('resolveDeleteConfig', () => {
+  const testCases: Array<{
+    description: string,
+    config: TDeleteConfig,
+    output: TDeleteConfig
+  }> = [
+    {
+      description: 'it replaces stringified null to null',
+      config: {
+        ...baseConfig,
+        action: 'delete',
+        data: {
+          name: 'name',
+          repo: 'npm',
+          group: 'null',
+          range: '*',
+        }
+      },
+      output: {
+        ...baseConfig,
+        action: 'delete',
+        data: {
+          range: '*',
+          name: 'name',
+          repo: 'npm',
+          group: null as any, // eslint-disable-line unicorn/no-null
+        }
+      }
+    },
+  ]
+
+  testCases.forEach(
+    ({ config, description, output }) => test(description, () => expect(resolveDeleteConfig(config)).toEqual(output))
+  )
 })
 
 describe('getConfig', () => {
-  it('returns the same config, when path is not given', () => {
-    const opts = {
-      nexus,
-      package: packageOpts,
-      prompt: false,
-    }
-    expect(getConfig(opts)).toEqual(opts)
+  it('throws error on unknown action', () => {
+    expect(() => getConfig({ ...baseConfig, action: 'foo', data: {} } as any)).toThrow()
   })
 
-  it('reads config file', () => {
-    const opts = {
-      nexus: {
-        url: 'foo',
-        username: 'bar',
-        password: 'baz',
+  it('reads config from file', () => {
+    const readFileMock = jest.spyOn(misc, 'readFileToString')
+      .mockImplementation(() => JSON.stringify({
+        data: {
+          repo: 'repo',
+        }
+      }))
+
+    expect(getConfig({ ...baseConfig, action: 'download', data: {} }, 'some/path')).toEqual({
+      ...baseConfig,
+      action: 'download',
+      data: {
+        cwd: process.cwd(),
+        repo: 'repo',
       },
-      package: packageOpts,
-      prompt: false,
-    }
-    const cliPackageOpts = {
-      repo: 'bat2',
-      group: 'quz2',
-      name: 'qux2',
-      range: '>1.0.0',
-    }
-    jest.spyOn(misc, 'readFileToString')
-      .mockImplementation(() => JSON.stringify(opts))
-    expect(getConfig({
-      package: cliPackageOpts,
-      config: 'some/path'
-    })).toEqual({ prompt: opts.prompt, nexus: { ...opts.nexus, rateLimit }, package: cliPackageOpts })
-  })
-
-  it('throws an error when config path is not given and package opts are absent', () => {
-    expect(() => getConfig({
-      nexus,
-    })).toThrow()
-  })
-
-  it('throws an error when config path is not given and nexus opts are absent', () => {
-    expect(() => getConfig({
-      package: packageOpts,
-    })).toThrow()
+    })
+    expect(readFileMock).toHaveBeenCalled()
   })
 })

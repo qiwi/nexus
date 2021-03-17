@@ -1,66 +1,21 @@
-import { IComponentInfo, INexusHelper, NexusComponentsHelper, TComponent } from '@qiwi/nexus-helper'
+import { performDelete } from './executors/delete'
+import { performDownload } from './executors/download'
+import { IBaseConfig } from './interfaces'
+import { getConfig, helperFactory } from './utils'
 
-import { IPackageOpts } from './interfaces'
-import { question } from './utils'
-
-export const execute = async (
-  packageOpts: IPackageOpts,
-  helper: INexusHelper,
-  prompt = true,
-  skipErrors = false
+export const runExecutor = (
+  rawConfig: IBaseConfig,
+  configPath?: string
 ): Promise<void> => {
-  const components = await helper.getPackageComponents({
-    repository: packageOpts.repo,
-    group: packageOpts.group,
-    name: packageOpts.name,
-  })
-  const componentsToBeDeleted = getComponentsToBeDeleted(components, packageOpts)
+  const config = getConfig(rawConfig, configPath)
+  const helper = helperFactory(config)
 
-  if(componentsToBeDeleted.length === 0) {
-    console.log('Components with such parameters are not found')
-    return
-  }
-
-  if (prompt) {
-    console.table(componentsToBeDeleted, ['repository', 'group', 'name', 'version', 'id'])
-    const answer = await question(`These components are going to be deleted. Proceed? (yes/no) `)
-    if (answer !== 'yes') {
-      return
+  switch (config.action) {
+    case 'delete': {
+      return performDelete(config.data, helper)
+    }
+    case 'download':{
+      return performDownload(config.data, helper)
     }
   }
-
-  const ids = componentsToBeDeleted.map((item: IComponentInfo) => item.id)
-
-  const responses = await helper.deleteComponentsByIds(ids, skipErrors)
-
-  processDeletionResults(responses, ids, skipErrors)
-}
-
-export const processDeletionResults = (responses: any[], ids: string[], skipErrors: boolean): void => {
-  if (!skipErrors) {
-    console.log('Done.')
-    return
-  }
-
-  const rejectedResults = responses
-    .map((response: any, i: number) => ({ response, id: ids[i] }))
-    .filter(result => result.response.status === 'rejected')
-
-  if (rejectedResults.length < responses.length) {
-    console.log('Done.')
-  }
-
-  if (rejectedResults.length > 0) {
-    console.log('Following components have not been deleted due to errors')
-    rejectedResults.forEach(({ id, response }: any) => console.log(id, response.reason?.message || response.reason))
-  }
-}
-
-export const getComponentsToBeDeleted = (components: TComponent[], packageOpts: IPackageOpts): IComponentInfo[] => {
-  return NexusComponentsHelper.filterComponentsByRange(
-    packageOpts.group === null
-      ? components.filter(value => value.group === null)
-      : components,
-    packageOpts.range
-  )
 }

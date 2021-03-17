@@ -1,5 +1,6 @@
-import { ICliOpts, ICliOptsOptional } from '../interfaces'
-import { readFileToString } from './misc'
+import { IBaseConfig, TDeleteConfig, TDownloadConfig, TDownloadConfigStrict } from '../interfaces'
+import { DeepPartial, readFileToString } from './misc'
+import { validateConfig, validateDeleteConfig, validateDownloadConfig } from './validators'
 
 export const defaultLimit = {
   period: 1000,
@@ -9,43 +10,61 @@ export const defaultLimit = {
 const normalizeStringifiedNullable = (value: any) => value === 'null' ? null : value // eslint-disable-line unicorn/no-null
 
 export const resolveConfig = (
-  configOpts: ICliOpts,
-  cliOpts: ICliOptsOptional,
-): ICliOpts => {
+  configOpts: DeepPartial<IBaseConfig>,
+  cliOpts: DeepPartial<IBaseConfig>,
+): DeepPartial<IBaseConfig> => {
   return {
-    nexus: {
-      ...configOpts.nexus,
-      ...cliOpts.nexus,
-      rateLimit: cliOpts?.nexus?.rateLimit || configOpts?.nexus?.rateLimit || defaultLimit
+    url: cliOpts.url || configOpts.url,
+    auth: {
+      ...configOpts.auth,
+      ...cliOpts.auth,
     },
-    package: {
-      ...configOpts.package,
-      ...cliOpts.package,
-      group: cliOpts?.package?.group ? normalizeStringifiedNullable(cliOpts?.package?.group) : configOpts.package.group
+    batch: {
+      rateLimit: cliOpts.batch?.rateLimit || configOpts.batch?.rateLimit || defaultLimit
     },
-    skipErrors: cliOpts.skipErrors ?? configOpts.skipErrors,
-    prompt: cliOpts.prompt ?? configOpts.prompt,
+    action: cliOpts.action || configOpts.action,
+    data: {
+      ...configOpts.data,
+      ...cliOpts.data,
+    }
   }
 }
 
-export const getConfig = (opts: ICliOptsOptional): ICliOpts => {
-  const fileConfig = opts.config ? JSON.parse(readFileToString(opts.config)) : {}
-  const config = resolveConfig(
-    fileConfig,
-    opts,
+export const resolveDownloadConfig = (config: TDownloadConfig): TDownloadConfigStrict => {
+  return {
+    ...config,
+    data: {
+      ...config.data,
+      group: normalizeStringifiedNullable(config.data.group),
+      cwd: config.data.cwd || process.cwd()
+    }
+  }
+}
+
+export const resolveDeleteConfig = (config: TDeleteConfig): TDeleteConfig => {
+  return {
+    ...config,
+    data: {
+      ...config.data,
+      group: normalizeStringifiedNullable(config.data.group)
+    }
+  }
+}
+
+export const getConfig = (opts: IBaseConfig, configPath?: string): TDownloadConfigStrict | TDeleteConfig => {
+  const config = validateConfig(
+    configPath
+      ? resolveConfig(JSON.parse(readFileToString(configPath)), opts as any) as any
+      : opts
   )
 
-  const { nexus, package: packageOpts } = config
-
-  if (!nexus || !nexus.password || !nexus.username || !nexus.url) {
-    throw new Error('Nexus options are not given. Specify them in args or in config file')
+  if (config.action === 'delete') {
+    return resolveDeleteConfig(validateDeleteConfig(config))
   }
 
-  if (!packageOpts || !packageOpts.repo || !packageOpts.name || !packageOpts.range) {
-    throw new Error('Package options are not given. Specify them in args or in config file')
+  if (config.action === 'download') {
+    return resolveDownloadConfig(validateDownloadConfig(config))
   }
 
-  nexus.rateLimit = nexus.rateLimit || defaultLimit
-
-  return config
+  throw new Error('Unsupported action in config')
 }
