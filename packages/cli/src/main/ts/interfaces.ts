@@ -1,31 +1,45 @@
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 
-export interface INexusOpts {
-  url: string
-  username: string
-  password: string
-  rateLimit: ConstructorParameters<typeof NexusComponentsHelper>[3]
-}
-
 export interface IPackageOpts {
   group?: string
   name: string
+  version?: string
   range: string
   repo: string
 }
 
-export interface ICliOpts {
-  nexus: INexusOpts
-  package: IPackageOpts
-  prompt?: boolean
-  config?: string
-  skipErrors?: boolean
+export type TAction = 'delete' | 'download'
+
+export interface IBaseConfig<TA = TAction, T = any> {
+  url: string
+  auth: {
+    username: string
+    password: string
+  }
+  action: TA
+  batch?: {
+    rateLimit?: ConstructorParameters<typeof NexusComponentsHelper>[3]
+  },
+  data: T,
 }
 
-export interface ICliOptsOptional {
-  nexus?: Partial<INexusOpts>
-  package?: Partial<IPackageOpts>
-  prompt?: boolean
-  config?: string
-  skipErrors?: boolean
+export type TDeleteConfigData = IPackageOpts & { prompt?: boolean }
+
+export type TDeleteConfig = IBaseConfig<'delete', TDeleteConfigData>
+
+export type TPackageAccess = 'public' | 'restricted'
+
+export type TDownloadConfigMetaData = {
+  cwd: string
+  npmBatch?: {
+    access: TPackageAccess
+  }
 }
+
+export type TDownloadConfigData = Partial<IPackageOpts> & Pick<IPackageOpts, 'repo'> & Partial<TDownloadConfigMetaData>
+
+export type TDownloadConfigDataStrict = Partial<IPackageOpts> & Pick<IPackageOpts, 'repo'> & TDownloadConfigMetaData
+
+export type TDownloadConfig = IBaseConfig<'download', TDownloadConfigData>
+
+export type TDownloadConfigStrict = IBaseConfig<'download', TDownloadConfigDataStrict>

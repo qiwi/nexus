@@ -1,6 +1,8 @@
+import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 import readline from 'readline'
 
-import { question } from '../../../main/ts/utils'
+import { helperFactory,question } from '../../../main/ts/utils'
+import { baseConfig } from '../utils'
 
 describe('question', () => {
   it('returns user\'s answer', async () => {
@@ -13,5 +15,12 @@ describe('question', () => {
 
     const answer = await question('bar')
     expect(answer).toEqual('foo')
+  })
+})
+
+describe('helperFactory', () => {
+  it ('return instance', () => {
+    const helper = helperFactory({ ...baseConfig, action: 'delete', data: {} })
+    expect(helper).toBeInstanceOf(NexusComponentsHelper)
   })
 })

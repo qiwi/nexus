@@ -1664,6 +1664,51 @@
   dependencies:
     axios "^0.21.1"
 
+"@qiwi/npm-batch-cli-api@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@qiwi/npm-batch-cli-api/-/npm-batch-cli-api-1.5.1.tgz#b972091a66fa074084e0d3869df46dd50e693b09"
+  integrity sha512-M6EH/ooGEMVDsdGUpbiGBvWBDHv3O4k7+MFk9l1/nbTFzAYLm+x1y8m92Ead20iYUfsYRJYj7EtJM1fUd+NN2A==
+  dependencies:
+    "@qiwi/deep-proxy" "^1.8.1"
+    "@qiwi/npm-batch-client" "1.5.1"
+    "@qiwi/substrate" "^1.20.1"
+    push-it-to-the-limit "^1.17.1"
+    tslib "^2.1.0"
+
+"@qiwi/npm-batch-client@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@qiwi/npm-batch-client/-/npm-batch-client-1.5.1.tgz#51d9d9ad4217d107dc4cba0db565d738978a40c2"
+  integrity sha512-BsHhd++tqsju7WrY5VzIktaFHyquFiMD+LoE/GNT9+vUE0NHnrTCmFrzEJKl8lK8zC6e3Edhp4y1CF2vllXQMw==
+  dependencies:
+    "@qiwi/npm-registry-client" "^8.7.0"
+    "@qiwi/npm-types" "^1.0.2"
+    "@qiwi/substrate" "^1.20.1"
+    tslib "^2.1.0"
+
+"@qiwi/npm-registry-client@^8.7.0":
+  version "8.7.0"
+  resolved "https://registry.yarnpkg.com/@qiwi/npm-registry-client/-/npm-registry-client-8.7.0.tgz#3577c917d2e4f07fb7306095c517be6daad50778"
+  integrity sha512-m5jKnwR+TH/TwEz914BrVjsoMS0I0TXQ9K7MLOofRnkjBaDGHafcYzrdI+QBdatw5iwV+kVLXpP+DEanr94gdw==
+  dependencies:
+    concat-stream "^2.0.0"
+    graceful-fs "^4.2.4"
+    normalize-package-data "~1.0.1 || ^2.0.0 || ^3.0.0"
+    npm-package-arg "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^8.0.0"
+    once "^1.4.0"
+    request "^2.88.2"
+    retry "^0.12.0"
+    safe-buffer "^5.2.1"
+    semver "2 >=2.2.1 || 3.x || 4 || 5 || 7"
+    slide "^1.1.6"
+    ssri "^8.0.0"
+  optionalDependencies:
+    npmlog "2 || ^3.1.0 || ^4.0.0"
+
+"@qiwi/npm-types@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@qiwi/npm-types/-/npm-types-1.0.2.tgz#fe34c05220edc695de7b676796c757b89474ce1f"
+  integrity sha512-uOAYe1Bh9+ot8aZdgkv99pz4XfhnqPvyM8wanv5WOu/7EigxeGdAKVIeFb+Iqv2WVJMXFHmFBXPLVDkO+BFpmQ==
+
 "@qiwi/substrate-abstract@1.19.4":
   version "1.19.4"
   resolved "https://registry.yarnpkg.com/@qiwi/substrate-abstract/-/substrate-abstract-1.19.4.tgz#1a18b06a28930a77a9a6ba4f68db3a0a2fc9dc1c"
@@ -1684,7 +1729,7 @@
   resolved "https://registry.yarnpkg.com/@qiwi/substrate-types/-/substrate-types-1.48.0.tgz#ce86843da9f4c8f2280035027555825018f4cab4"
   integrity sha512-5WLX5w028zTovxG1ReDHta/mAXLeptbm/5kH5E5obSBOoATO3augOzFxS+s3/WfZ/LyoR0yRglG2p6nsRsYkqQ==
 
-"@qiwi/substrate@^1.20.4":
+"@qiwi/substrate@^1.20.1", "@qiwi/substrate@^1.20.4":
   version "1.20.4"
   resolved "https://registry.yarnpkg.com/@qiwi/substrate/-/substrate-1.20.4.tgz#f0bdcf2fcb0fc15d9f67f6856249843b43be97d5"
   integrity sha512-TA5txhh9n7GF2cH2XMioeQuLTAmELnEqtRnEzDOqpoxKtoGs5Ogzm8OLDCBGny3UKM97zcG1n751csl9Rgktdw==
@@ -2376,6 +2421,11 @@ before-after-hook@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/before-after-hook/-/before-after-hook-2.2.0.tgz#09c40d92e936c64777aa385c4e9b904f8147eaf0"
   integrity sha512-jH6rKQIfroBbhEXVmI7XmXe3ix5S/PgJqpzdDPnR8JGLHWNYLsYZ6tK5iWOF/Ra3oqEX0NobXGlzbiylIzVphQ==
+
+blork@^9.3.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/blork/-/blork-9.3.0.tgz#6c0b4fbb6b754998ae5460c26463d95c635e4a35"
+  integrity sha512-9naBrHS2bwCQeGqGR9ptcoll6utsox9jtk1E0SwOAFa4RCV/IQHoBJARdi8AhHQTPPoWkjixMrzHvQKAV5Fx2A==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -3241,9 +3291,9 @@ ecc-jsbn@~0.1.1:
     safer-buffer "^2.1.0"
 
 electron-to-chromium@^1.3.649:
-  version "1.3.689"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.689.tgz#0f4082467c109844b79a7b32a2649c9ab6a6c822"
-  integrity sha512-WCn+ZaU3V8WttlLNSOGOAlR2XpxibGre7slwGrYBB6oTjYPgP29LNDGG6wLvLTMseLdE+G1vno7PfY7JyDV48g==
+  version "1.3.690"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.690.tgz#54df63ec42fba6b8e9e05fe4be52caeeedb6e634"
+  integrity sha512-zPbaSv1c8LUKqQ+scNxJKv01RYFkVVF1xli+b+3Ty8ONujHjAMg+t/COmdZqrtnS1gT+g4hbSodHillymt1Lww==
 
 emittery@^0.7.1:
   version "0.7.2"
@@ -6210,7 +6260,7 @@ normalize-package-data@^2.0.0, normalize-package-data@^2.3.0, normalize-package-
     semver "2 || 3 || 4 || 5"
     validate-npm-package-license "^3.0.1"
 
-normalize-package-data@^3.0.0:
+normalize-package-data@^3.0.0, "normalize-package-data@~1.0.1 || ^2.0.0 || ^3.0.0":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-3.0.1.tgz#98dc56dfe6755d99b1c53f046e1e3d2dde55a1c7"
   integrity sha512-D/ttLdxo71msR4FF3VgSwK4blHfE3/vGByz1NCeE7/Dh8reQOKNJJjk5L10mLq9jxa+ZHzT1/HLgxljzbXE7Fw==
@@ -6270,7 +6320,7 @@ npm-normalize-package-bin@^1.0.0, npm-normalize-package-bin@^1.0.1:
   resolved "https://registry.yarnpkg.com/npm-normalize-package-bin/-/npm-normalize-package-bin-1.0.1.tgz#6e79a41f23fd235c0623218228da7d9c23b8f6e2"
   integrity sha512-EPfafl6JL5/rU+ot6P3gRSCpPDW5VmIzX959Ob1+ySFUuuYHWHekXpwdUZcKP5C+DS4GEtdJluwBjnsNDl+fSA==
 
-npm-package-arg@^8.0.0, npm-package-arg@^8.0.1, npm-package-arg@^8.1.0:
+"npm-package-arg@^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^8.0.0", npm-package-arg@^8.0.0, npm-package-arg@^8.0.1, npm-package-arg@^8.1.0:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/npm-package-arg/-/npm-package-arg-8.1.1.tgz#00ebf16ac395c63318e67ce66780a06db6df1b04"
   integrity sha512-CsP95FhWQDwNqiYS+Q0mZ7FAEDytDZAkNxQqea6IaAFJTAY9Lhhqyl0irU/6PMc7BGfUmnsbHcqxJD7XuVM/rg==
@@ -6326,7 +6376,7 @@ npm-run-path@^4.0.0, npm-run-path@^4.0.1:
   dependencies:
     path-key "^3.0.0"
 
-npmlog@^4.1.2:
+"npmlog@2 || ^3.1.0 || ^4.0.0", npmlog@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.2.tgz#08a7f2a8bf734604779a9efa4ad5cc717abb954b"
   integrity sha512-2uUqazuKlTaSI/dC8AzicUck7+IrEaOnN/e0jd3Xtt1KcGpwx30v50mL7oPyr/h9bL3E4aZccVwpwP+5W9Vjkg==
@@ -7393,7 +7443,7 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
 
-safe-buffer@~5.2.0:
+safe-buffer@^5.2.1, safe-buffer@~5.2.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
@@ -7439,6 +7489,13 @@ saxes@^5.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
+"semver@2 >=2.2.1 || 3.x || 4 || 5 || 7", semver@^7.0.0, semver@^7.1.1, semver@^7.1.3, semver@^7.3.4:
+  version "7.3.4"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.4.tgz#27aaa7d2e4ca76452f98d3add093a72c943edc97"
+  integrity sha512-tCfb2WLjqFAtXn4KEdxIhalnRtoKFN7nAwj0B3ZXCbQloV2tq5eDbcTmT68JJD3nRJq24/XgxtQKFIpQdtvmVw==
+  dependencies:
+    lru-cache "^6.0.0"
+
 "semver@2 || 3 || 4 || 5", semver@^5.4.1, semver@^5.5.0, semver@^5.6.0, semver@^5.7.1:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
@@ -7458,13 +7515,6 @@ semver@^6.0.0, semver@^6.1.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
-
-semver@^7.0.0, semver@^7.1.1, semver@^7.1.3, semver@^7.3.4:
-  version "7.3.4"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.4.tgz#27aaa7d2e4ca76452f98d3add093a72c943edc97"
-  integrity sha512-tCfb2WLjqFAtXn4KEdxIhalnRtoKFN7nAwj0B3ZXCbQloV2tq5eDbcTmT68JJD3nRJq24/XgxtQKFIpQdtvmVw==
-  dependencies:
-    lru-cache "^6.0.0"
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
