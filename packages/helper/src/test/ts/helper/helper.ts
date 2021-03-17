@@ -262,6 +262,40 @@ describe('NexusContentsHelper', () => {
       expect(getAssetsMock.every(mock => mock.isDone()))
       expect(downloadAssetsMock.every(mock => mock.isDone()))
     })
+
+    it('downloads assets with throttling', async () => {
+      const params = {
+        group: 'types',
+        repository: 'npm',
+        name: 'react',
+      }
+      const downloadMock = nock(assetsBasePath)
+        .get('/repository/npm/@types/react/-/react-16.9.41.tgz')
+        .times(10)
+        .reply(200, 'foo')
+      const getMock = nock(basePath)
+        .get(assetsSearchUri)
+        .query(params)
+        .once()
+        .reply(200, { items: new Array(10).fill(asset) })
+      const helper = new NexusComponentsHelper(
+        searchApi,
+        componentsApi,
+        axios,
+        {
+          period: 1000,
+          count: 3
+        }
+      )
+
+      const startTime = Date.now()
+      await helper.downloadPackageAssets(params, tempDirPath)
+      const endTime = Date.now() - startTime
+
+      expect(downloadMock.isDone()).toEqual(true)
+      expect(getMock.isDone()).toEqual(true)
+      expect(endTime).toBeGreaterThan(3000)
+    })
   })
 
   describe('extractNameAndVersionFromPath', () => {
