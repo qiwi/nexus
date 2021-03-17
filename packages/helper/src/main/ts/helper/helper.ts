@@ -6,7 +6,13 @@ import { satisfies } from 'semver'
 
 import { IComponentInfo, TAssetInfo, TComponent, TPaginatedAsset, TPaginatedComponent } from '../interfaces'
 import { isDefined, nullCheckerFactory , withRateLimit } from '../utils'
-import { INexusHelper, TGetPackageVersionsOpts, TPaginatedSettledResult, TRateLimitOpts } from './interfaces'
+import {
+  INexusHelper,
+  TGetPackageAssetsOpts,
+  TGetPackageVersionsOpts,
+  TPaginatedSettledResult,
+  TRateLimitOpts
+} from './interfaces'
 
 export class NexusComponentsHelper implements INexusHelper {
   private searchApi: SearchApi
@@ -46,7 +52,7 @@ export class NexusComponentsHelper implements INexusHelper {
     opts: TGetPackageVersionsOpts,
     token?: string,
   ): Promise<TPaginatedComponent> {
-    const { repository, group, name, timeout, sortDirection, sortField } = opts
+    const { repository, group, name, timeout, sortDirection, sortField, version } = opts
     return this.searchApi.search(
       token,
       sortField,
@@ -57,14 +63,15 @@ export class NexusComponentsHelper implements INexusHelper {
       undefined,
       group,
       name,
+      version,
     ).then(response => response.data)
   }
 
   async getPackageAssets(
-    opts: TGetPackageVersionsOpts,
+    opts: TGetPackageAssetsOpts,
     token?: string
   ): Promise<TPaginatedAsset> {
-    const { repository, group, name, timeout, sortDirection, sortField } = opts
+    const { repository, group, name, timeout, sortDirection, sortField, version } = opts
     return this.searchApi.searchAssets(
       token,
       sortField,
@@ -75,11 +82,12 @@ export class NexusComponentsHelper implements INexusHelper {
       undefined,
       group,
       name,
+      version,
     ).then(response => response.data)
   }
 
   async downloadPackageAssets(
-    opts: TGetPackageVersionsOpts,
+    opts: TGetPackageAssetsOpts,
     cwd: string,
     token?: string
   ): Promise<TPaginatedSettledResult<TAssetInfo>> {

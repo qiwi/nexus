@@ -8,10 +8,13 @@ export type TGetPackageVersionsOpts = {
   repository: string
   group?: string
   name: string
+  version?: string
   sortDirection?: Parameters<SearchApi['search']>[2]
   sortField?: Parameters<SearchApi['search']>[1]
   timeout?: number
 }
+
+export type TGetPackageAssetsOpts = Partial<TGetPackageVersionsOpts> & { repository: string }
 
 export type TPaginatedSettledResult<T> = {
   items: PromiseSettledResult<T>[]
@@ -33,12 +36,13 @@ export interface INexusHelper {
   ): Promise<PromiseSettledResult<AxiosResponse<void>>[]>
 
   getPackageAssets(
-    params: TGetPackageVersionsOpts,
+    params: TGetPackageAssetsOpts,
     token?: string
   ): Promise<TPaginatedAsset>
 
   downloadPackageAssets(
-    params: TGetPackageVersionsOpts,
+    params: TGetPackageAssetsOpts,
+    cwd: string,
     token?: string
   ): Promise<TPaginatedSettledResult<TAssetInfo>>
 
