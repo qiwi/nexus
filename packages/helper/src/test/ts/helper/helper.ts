@@ -206,6 +206,7 @@ describe('NexusContentsHelper', () => {
         { ...asset, downloadUrl: undefined, path: '@types/react/-/react-13.9.41.tgz' },
         { ...asset, downloadUrl: 'http://localhost/repository/npm/@types/react/-/react-12.9.41.tgz', path: '@types/react/-/react-12.9.41.tgz' }
       ]
+      // asset link mocks
       const downloadAssetsMock = [
         nock(assetsBasePath)
           .get('/repository/npm/@types/react/-/react-15.9.41.tgz')
@@ -216,6 +217,7 @@ describe('NexusContentsHelper', () => {
           .once()
           .reply(200, 'foo'),
       ]
+      // package asset mockы
       const getAssetsMock = [
         nock(basePath)
           .get(assetsSearchUri)

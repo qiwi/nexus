@@ -10,8 +10,10 @@ const assetInfo = {
   filePath: 'foo-1.0.0.tgz'
 }
 
+const cwd = 'cwd'
+
 describe('performDownload', () => {
-  afterEach(() => rimraf.sync('cwd'))
+  afterEach(() => rimraf.sync(cwd))
 
   it('calls proper methods of helper and write meta to file', async () => {
     const writeJsonMock = jest.spyOn(misc, 'writeJson')
@@ -23,7 +25,7 @@ describe('performDownload', () => {
     await performDownload(
       {
         name: 'name',
-        cwd: 'cwd',
+        cwd,
         repo: 'repo',
       },
       helper
@@ -46,7 +48,7 @@ describe('performDownload', () => {
     await performDownload(
       {
         name: 'name',
-        cwd: 'cwd',
+        cwd,
         repo: 'repo',
         npmBatch: {
           access: 'public'
@@ -104,7 +106,7 @@ describe('performDownload', () => {
     await performDownload(
       {
         name: 'name',
-        cwd: 'cwd',
+        cwd,
         repo: 'repo',
         npmBatch: {
           access: 'public'
