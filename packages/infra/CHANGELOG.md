@@ -1,3 +1,17 @@
+# @qiwi/nexus-infra [2.0.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.2.2...@qiwi/nexus-infra@2.0.0) (2021-03-17)
+
+
+### Features
+
+* add assets downloading, change helper & cli contract ([#21](https://github.com/qiwi/nexus/issues/21)) ([f087dc2](https://github.com/qiwi/nexus/commit/f087dc227a6c9e6c891d97d1bb872eab915d9cb8))
+
+
+### BREAKING CHANGES
+
+* `getPackageComponents` in `@qiwi/nexus-helper` does not follow pagination anymore, return type is changed
+* deleteComponentsByIds in `@qiwi/nexus-helper` does not take `skipErrors` anymore, use `deleteComponentsByIds` for `skipErrors === false` and `deleteComponentsByIdsSettled` for `true`
+* `@qiwi/nexus-cli` now supports downloading in addition to deleting, arguments and config changed a lot, see README
+
 ## @qiwi/nexus-infra [1.2.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.2.1...@qiwi/nexus-infra@1.2.2) (2021-03-15)
 
 
