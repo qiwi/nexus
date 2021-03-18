@@ -1,3 +1,10 @@
+## @qiwi/nexus-helper [2.0.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@2.0.0...@qiwi/nexus-helper@2.0.1) (2021-03-18)
+
+
+### Bug Fixes
+
+* **helper:** throttling & tarball saving ([#22](https://github.com/qiwi/nexus/issues/22)) ([034c1cd](https://github.com/qiwi/nexus/commit/034c1cd01095da3daee1c6dd78554e44a8d0bd98))
+
 # @qiwi/nexus-helper [2.0.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@1.2.2...@qiwi/nexus-helper@2.0.0) (2021-03-17)
 
 
