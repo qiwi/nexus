@@ -206,6 +206,7 @@ describe('NexusContentsHelper', () => {
         { ...asset, downloadUrl: undefined, path: '@types/react/-/react-13.9.41.tgz' },
         { ...asset, downloadUrl: 'http://localhost/repository/npm/@types/react/-/react-12.9.41.tgz', path: '@types/react/-/react-12.9.41.tgz' }
       ]
+      // asset link mocks
       const downloadAssetsMock = [
         nock(assetsBasePath)
           .get('/repository/npm/@types/react/-/react-15.9.41.tgz')
@@ -216,6 +217,7 @@ describe('NexusContentsHelper', () => {
           .once()
           .reply(200, 'foo'),
       ]
+      // package asset mockы
       const getAssetsMock = [
         nock(basePath)
           .get(assetsSearchUri)
@@ -261,6 +263,40 @@ describe('NexusContentsHelper', () => {
         expect(existsSync(item.filePath)).toEqual(true))
       expect(getAssetsMock.every(mock => mock.isDone()))
       expect(downloadAssetsMock.every(mock => mock.isDone()))
+    })
+
+    it('downloads assets with throttling', async () => {
+      const params = {
+        group: 'types',
+        repository: 'npm',
+        name: 'react',
+      }
+      const downloadMock = nock(assetsBasePath)
+        .get('/repository/npm/@types/react/-/react-16.9.41.tgz')
+        .times(10)
+        .reply(200, 'foo')
+      const getMock = nock(basePath)
+        .get(assetsSearchUri)
+        .query(params)
+        .once()
+        .reply(200, { items: new Array(10).fill(asset) })
+      const helper = new NexusComponentsHelper(
+        searchApi,
+        componentsApi,
+        axios,
+        {
+          period: 1000,
+          count: 3
+        }
+      )
+
+      const startTime = Date.now()
+      await helper.downloadPackageAssets(params, tempDirPath)
+      const endTime = Date.now() - startTime
+
+      expect(downloadMock.isDone()).toEqual(true)
+      expect(getMock.isDone()).toEqual(true)
+      expect(endTime).toBeGreaterThan(3000)
     })
   })
 

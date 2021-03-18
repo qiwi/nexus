@@ -31,7 +31,7 @@ export class NexusComponentsHelper implements INexusHelper {
     return withRateLimit<NexusComponentsHelper>(
       this,
       rateLimitOpts,
-      ['componentsApi.deleteComponent', 'httpClient.get']
+      ['componentsApi.deleteComponent', 'searchApi.searchAssets', 'downloadPackageAsset']
     )
   }
 
@@ -114,7 +114,13 @@ export class NexusComponentsHelper implements INexusHelper {
     const filePath = join(cwd, path.replace(/\//g, '%2F'))
     const writer = createWriteStream(filePath)
     return this.httpClient.get(url, { responseType: 'stream' })
-      .then(response => response.data.pipe(writer))
+      .then(response => {
+        response.data.pipe(writer)
+        return new Promise((resolve, reject) => {
+          writer.on('finish', resolve)
+          writer.on('error', reject)
+        })
+      })
       .then(() => ({
         ...NexusComponentsHelper.extractNameAndVersionFromPath(path),
         filePath
