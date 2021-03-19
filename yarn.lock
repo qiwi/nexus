@@ -1657,13 +1657,6 @@
     pkg-dir "^5.0.0"
     tslib "^2.1.0"
 
-"@qiwi/nexus-client@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@qiwi/nexus-client/-/nexus-client-1.1.1.tgz#249a3ae846556a2eb302321e5b09d3be05d97522"
-  integrity sha512-P9lX6tDBkJejvRos6AmfLk0ZfQJDM5r4NKOX/fcgUhVtRUs19RRp/FhgtxkPr0vpW6gIw1jCWxwlV91pez1PaQ==
-  dependencies:
-    axios "^0.21.1"
-
 "@qiwi/npm-batch-cli-api@^1.5.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@qiwi/npm-batch-cli-api/-/npm-batch-cli-api-1.5.1.tgz#b972091a66fa074084e0d3869df46dd50e693b09"

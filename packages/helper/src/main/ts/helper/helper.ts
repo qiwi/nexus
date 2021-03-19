@@ -125,6 +125,10 @@ export class NexusComponentsHelper implements INexusHelper {
         ...NexusComponentsHelper.extractNameAndVersionFromPath(path),
         filePath
       }))
+      .catch(error => {
+        error.message = `${error.message} url: ${url}`
+        return Promise.reject(error)
+      })
   }
 
   static extractNameAndVersionFromPath(path: string): Omit<TAssetInfo, 'filePath'> {
