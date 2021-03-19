@@ -112,9 +112,9 @@ export class NexusComponentsHelper implements INexusHelper {
 
   async downloadPackageAsset(url: string, path: string, cwd: string): Promise<TAssetInfo> {
     const filePath = join(cwd, path.replace(/\//g, '%2F'))
-    const writer = createWriteStream(filePath)
     return this.httpClient.get(url, { responseType: 'stream' })
       .then(response => {
+        const writer = createWriteStream(filePath)
         response.data.pipe(writer)
         return new Promise((resolve, reject) => {
           writer.on('finish', resolve)
@@ -125,6 +125,10 @@ export class NexusComponentsHelper implements INexusHelper {
         ...NexusComponentsHelper.extractNameAndVersionFromPath(path),
         filePath
       }))
+      .catch(error => {
+        error.message = `${error.message} url: ${url}`
+        return Promise.reject(error)
+      })
   }
 
   static extractNameAndVersionFromPath(path: string): Omit<TAssetInfo, 'filePath'> {

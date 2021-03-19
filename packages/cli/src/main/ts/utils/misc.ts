@@ -26,6 +26,11 @@ export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 }
 
+const defaultRateLimit = {
+  period: 1000,
+  count: 3,
+}
+
 export const helperFactory = (config: IBaseConfig): INexusHelper => {
   const apiOptions = {
     basePath: config.url,
@@ -46,6 +51,6 @@ export const helperFactory = (config: IBaseConfig): INexusHelper => {
     axios.create({
       auth: config.auth
     }),
-    config.batch?.rateLimit
+    config.batch?.rateLimit || defaultRateLimit
   )
 }

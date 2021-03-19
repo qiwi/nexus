@@ -64,4 +64,4 @@ buildcache
 .rts2_cache_umd
 
 nexus-cli-downloads-*
-test-config-*
+test-*
