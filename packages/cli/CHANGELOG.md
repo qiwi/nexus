@@ -1,3 +1,18 @@
+## @qiwi/nexus-cli [2.0.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.0.1...@qiwi/nexus-cli@2.0.2) (2021-03-19)
+
+
+### Bug Fixes
+
+* throttling, docs & bug ([#23](https://github.com/qiwi/nexus/issues/23)) ([b23129f](https://github.com/qiwi/nexus/commit/b23129fe5c525371f0ebed62c59690efae42cc60))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-helper:** upgraded to 2.0.2
+
 ## @qiwi/nexus-cli [2.0.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.0.0...@qiwi/nexus-cli@2.0.1) (2021-03-18)
 
 
