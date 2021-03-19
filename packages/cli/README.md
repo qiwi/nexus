@@ -15,7 +15,6 @@ You can call this utility without installing:
 ```shell script
 npx @qiwi/nexus-cli <arguments>
 ```
-### Basic:
 ### Delete
 ```shell script
 nexus-cli --auth.username foo --auth.password bar --url baz --data.repo npm --data.name bat --data.group quz --data.range '<2.0.3' --action delete
@@ -61,6 +60,7 @@ nexus-cli --config some/path/config.json --data.repo npm --data.name bat --data.
 | `data.name`                              | package name                                     |
 | `data.group`                             | package group. To get packages outside of any group (scope) pass `null`                                    |
 | `data.range`                             | package versions range to be deleted             |
+By default `batch.rateLimit` is 3 requests per 1000 ms
 ### Delete
 
 | Option                                      | Description                                      |
