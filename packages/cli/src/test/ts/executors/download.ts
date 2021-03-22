@@ -13,9 +13,14 @@ const assetInfo = {
 const cwd = 'cwd'
 
 describe('performDownload', () => {
-  afterEach(() => rimraf.sync(cwd))
+  afterEach(() => {
+    rimraf.sync(cwd)
+    jest.clearAllMocks()
+  })
 
   it('calls proper methods of helper and write meta to file', async () => {
+    const readJsonMock = jest.spyOn(misc, 'readFileToString')
+      .mockImplementation(() => '[]')
     const writeJsonMock = jest.spyOn(misc, 'writeJson')
       .mockImplementation(() => { /* noop */ })
     const logMock = jest.spyOn(console, 'log')
@@ -31,14 +36,23 @@ describe('performDownload', () => {
       helper
     )
 
-    expect(logMock).toHaveBeenCalledWith('Assets page #0 has been processed, downloaded 1 asset(s)')
-    expect(writeJsonMock).toHaveBeenCalledWith(
-      [assetInfo],
-      expect.stringMatching('^cwd/nexus-cli-downloads')
+    expect(logMock).toHaveBeenCalledWith('Page #0 \'s been processed, 1 successful, 0 failed download(s), next token is undefined')
+    expect(writeJsonMock).toHaveBeenNthCalledWith(
+      1,
+      [],
+      expect.stringMatching('^cwd/nexus-cli-downloads'), // eslint-disable-line sonarjs/no-duplicate-string
     )
+    expect(writeJsonMock).toHaveBeenNthCalledWith(
+      2,
+      [assetInfo],
+      expect.stringMatching('^cwd/nexus-cli-downloads'),
+    )
+    expect(readJsonMock).toHaveBeenCalled()
   })
 
   it('prints npm batch config', async () => {
+    jest.spyOn(misc, 'readFileToString')
+      .mockImplementation(() => '{"data":[]}')
     const writeJsonMock = jest.spyOn(misc, 'writeJson')
       .mockImplementation(() => { /* noop */ })
     jest.spyOn(console, 'log')
@@ -56,8 +70,22 @@ describe('performDownload', () => {
       },
       helper
     )
-
-    expect(writeJsonMock).toHaveBeenCalledWith(
+    expect(writeJsonMock).toHaveBeenNthCalledWith(
+      1,
+      {
+        registryUrl: '',
+        auth: {
+          username: '',
+          password: '',
+          email: '',
+        },
+        action: 'publish',
+        data: [],
+      },
+      expect.stringMatching('^cwd/nexus-cli-downloads')
+    )
+    expect(writeJsonMock).toHaveBeenNthCalledWith(
+      2,
       {
         registryUrl: '',
         auth: {

@@ -1,4 +1,4 @@
-import { NexusComponentsHelper } from '@qiwi/nexus-helper'
+import { NexusComponentsHelper, TGetPackageAssetsOpts } from '@qiwi/nexus-helper'
 
 export interface IPackageOpts {
   group?: string
@@ -35,6 +35,8 @@ export type TDownloadConfigMetaData = {
   npmBatch?: {
     access: TPackageAccess
   }
+  sortField?: TGetPackageAssetsOpts['sortField'],
+  sortDirection?: TGetPackageAssetsOpts['sortDirection'],
 }
 
 export type TDownloadConfigData = Partial<IPackageOpts> & Pick<IPackageOpts, 'repo'> & Partial<TDownloadConfigMetaData>

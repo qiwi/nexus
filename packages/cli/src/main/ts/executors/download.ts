@@ -4,17 +4,21 @@ import mkdirp from 'mkdirp'
 import { join } from 'path'
 
 import { TDownloadConfigData, TDownloadConfigDataStrict, TPackageAccess } from '../interfaces'
-import { writeJson } from '../utils'
+import { readFileToString, writeJson } from '../utils'
 
 export const performDownload = async (data: TDownloadConfigDataStrict, helper: INexusHelper): Promise<void> => {
-  const { repo, group, name, cwd, npmBatch, range } = data
+  const { repo, group, name, cwd, npmBatch, range, sortDirection, sortField } = data
   const opts = {
     repository: repo,
     group,
     name,
     range,
+    sortField,
+    sortDirection,
   }
   const { downloadsPath, infoOutputPath } = getPathsWithTimestamp(cwd)
+
+  writeJson(npmBatch ? prepareNpmBatchConfig([], npmBatch.access) : [], infoOutputPath)
 
   let token
   let i = 0
@@ -28,13 +32,30 @@ export const performDownload = async (data: TDownloadConfigDataStrict, helper: I
 
     assetInfos.push(...fulfilledResults)
     errors.push(...rejectedResults)
+    appendResults(fulfilledResults, infoOutputPath, npmBatch)
 
     token = continuationToken
-    console.log(`Assets page #${i} has been processed, downloaded ${fulfilledResults.length} asset(s)`)
+    console.log(`Page #${i} 's been processed, ${fulfilledResults.length} successful, ${rejectedResults.length} failed download(s), next token is ${token}`)
     i++
   } while (token)
 
-  processResults(assetInfos, errors, infoOutputPath, downloadsPath, npmBatch)
+  processResults(assetInfos, errors, infoOutputPath, downloadsPath)
+}
+
+export const appendResults = (assetInfos: Array<TAssetInfo>, infoOutputPath: string, npmBatch?: TDownloadConfigData['npmBatch']): void => {
+  try {
+    const file = JSON.parse(readFileToString(infoOutputPath))
+
+    if (npmBatch) {
+      file.data.push(...assetInfos)
+      writeJson(prepareNpmBatchConfig(file.data, npmBatch.access), infoOutputPath)
+      return
+    }
+    file.push(...assetInfos)
+    writeJson(file, infoOutputPath)
+  } catch (e) {
+    console.error(`Error during appending results to ${infoOutputPath}`, e)
+  }
 }
 
 export const processResults = (
@@ -42,13 +63,7 @@ export const processResults = (
   errors: any[],
   infoOutputPath: string,
   downloadsPath: string,
-  npmBatch?: TDownloadConfigData['npmBatch']
 ): void => {
-  writeJson(
-    npmBatch ? prepareNpmBatchConfig(assetInfos, npmBatch.access) : assetInfos,
-    infoOutputPath
-  )
-
   console.log('Done.')
   if (assetInfos.length > 0) {
     console.log(`${assetInfos.length} asset(s) is(are) downloaded to ${downloadsPath}, metadata is written to ${infoOutputPath}`)

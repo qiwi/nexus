@@ -31,6 +31,8 @@ export const validateDownloadConfig = (config: IBaseConfig): TDownloadConfig => 
   check(config.data.cwd, 'config.data.cwd: str?')
   check(config.data.repo, 'config.data.repo: str')
   check(config.data.range, 'config.data.range: str?')
+  check(config.data.sortField, 'config.data.sortField: "group" | "name" | "version" | "repository" | undefined')
+  check(config.data.sortDirection, 'config.data.sortDirection: "asc" | "desc" | undefined')
 
   if (config.data.npmBatch) {
     check(config.data.npmBatch.access, 'config.data.npmBatch.access: "public" | "restricted"')
