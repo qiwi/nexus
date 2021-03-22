@@ -22,7 +22,7 @@ nexus-cli --auth.username foo --auth.password bar --url baz --data.repo npm --da
 ### Download
 For this action utility saves tarballs and prints metadata in given `cwd`
 ```shell script
-nexus-cli --auth.username foo --auth.password bar --url baz --data.repo npm --data.name foo --data.group qiwi --data.range --data.cwd nexus-downloads '<1.0.0' --action download
+nexus-cli --auth.username foo --auth.password bar --url baz --data.repo npm --data.name foo --data.group qiwi --data.range '<1.0.0' --data.cwd nexus-downloads --action download
 ```
 Output in `nexus-downloads/nexus-cli-downloads-meta-2021-03-17T06:48:21.347Z.json`:
 ```json

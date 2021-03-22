@@ -14,7 +14,7 @@ export type TGetPackageVersionsOpts = {
   timeout?: number
 }
 
-export type TGetPackageAssetsOpts = Partial<TGetPackageVersionsOpts> & { repository: string }
+export type TGetPackageAssetsOpts = Partial<TGetPackageVersionsOpts> & { repository: string, range?: string }
 
 export type TPaginatedSettledResult<T> = {
   items: PromiseSettledResult<T>[]

@@ -190,6 +190,51 @@ describe('NexusContentsHelper', () => {
       expect(mock.isDone()).toEqual(true)
     })
 
+    it ('downloads assets which satisfy given range', async () => {
+      const params = {
+        group: 'types',
+        repository: 'npm',
+        name: 'react',
+      }
+      const page = [
+        { ...asset, downloadUrl: 'http://localhost/repository/npm/@types/react/-/react-15.9.41.tgz', path: '@types/react/-/react-15.9.41.tgz' },
+        { ...asset, downloadUrl: 'http://localhost/repository/npm/@types/react/-/react-14.9.41.tgz', path: '@types/react/-/react-14.9.41.tgz' },
+        { ...asset, downloadUrl: 'http://localhost/repository/npm/@types/react/-/react-13.9.41.tgz', path: '@types/react/-/react-13.9.41.tgz' },
+        { ...asset, downloadUrl: 'http://localhost/repository/npm/@types/react/-/react-12.9.41.tgz', path: '@types/react/-/react-12.9.41.tgz' },
+      ]
+      const assetsMockToBeDownloaded = [
+        nock(assetsBasePath)
+          .get('/repository/npm/@types/react/-/react-15.9.41.tgz')
+          .once()
+          .reply(200, 'foo'),
+        nock(assetsBasePath)
+          .get('/repository/npm/@types/react/-/react-14.9.41.tgz')
+          .once()
+          .reply(200, 'foo')
+      ]
+      const assetsMockNotToBeDownloaded = [
+        nock(assetsBasePath)
+          .get('/repository/npm/@types/react/-/react-13.9.41.tgz')
+          .once()
+          .reply(200, 'foo'),
+        nock(assetsBasePath)
+          .get('/repository/npm/@types/react/-/react-12.9.41.tgz')
+          .once()
+          .reply(200, 'foo'),
+      ]
+      const getAssetsMock = nock(basePath)
+        .get(assetsSearchUri)
+        .query(params)
+        .once()
+        .reply(200, { items: page })
+
+      await helper.downloadPackageAssets({ ...params, range: '>14.0.0' }, tempDirPath)
+
+      expect(getAssetsMock.isDone()).toEqual(true)
+      expect(assetsMockToBeDownloaded.every(mock => mock.isDone())).toEqual(true)
+      expect(assetsMockNotToBeDownloaded.every(mock => mock.isDone() === false)).toEqual(true)
+    })
+
     it('returns list of settled promises and creates files', async () => {
       const params = {
         group: 'types',
@@ -217,7 +262,7 @@ describe('NexusContentsHelper', () => {
           .once()
           .reply(200, 'foo'),
       ]
-      // package asset mockы
+      // package asset mocks
       const getAssetsMock = [
         nock(basePath)
           .get(assetsSearchUri)

@@ -100,12 +100,19 @@ export class NexusComponentsHelper implements INexusHelper {
     }
 
     return {
-      items: await Promise.allSettled(items.map(({ downloadUrl, path }) => {
-        if (!downloadUrl || !path) {
-          return Promise.reject(new Error('downloadUrl or path is absent in Nexus API response'))
-        }
-        return this.downloadPackageAsset(downloadUrl, path, cwd)
-      })),
+      items: await Promise.allSettled(
+        items
+          .filter(item => opts.range
+            ? satisfies(NexusComponentsHelper.extractNameAndVersionFromPath(item.path + '').version, opts.range)
+            : true
+          )
+          .map(({ downloadUrl, path }) => {
+            if (!downloadUrl || !path) {
+              return Promise.reject(new Error('downloadUrl or path is absent in Nexus API response'))
+            }
+            return this.downloadPackageAsset(downloadUrl, path, cwd)
+          })
+      ),
       continuationToken
     }
   }
