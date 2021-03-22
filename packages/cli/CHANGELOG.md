@@ -1,3 +1,10 @@
+## @qiwi/nexus-cli [2.2.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.2.0...@qiwi/nexus-cli@2.2.1) (2021-03-22)
+
+
+### Performance Improvements
+
+* **cli:** print errors every iteration ([#26](https://github.com/qiwi/nexus/issues/26)) ([ba46b95](https://github.com/qiwi/nexus/commit/ba46b95e1ea072da904c0a0d5507c888f8eb08df))
+
 # @qiwi/nexus-cli [2.2.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.1.0...@qiwi/nexus-cli@2.2.0) (2021-03-22)
 
 
