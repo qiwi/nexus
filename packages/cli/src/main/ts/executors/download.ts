@@ -8,38 +8,35 @@ import { readFileToString, writeJson } from '../utils'
 
 export const performDownload = async (data: TDownloadConfigDataStrict, helper: INexusHelper): Promise<void> => {
   const { repo, group, name, cwd, npmBatch, range, sortDirection, sortField } = data
-  const opts = {
-    repository: repo,
-    group,
-    name,
-    range,
-    sortField,
-    sortDirection,
-  }
+  const opts = { repository: repo, group, name, range, sortField, sortDirection }
   const { downloadsPath, infoOutputPath } = getPathsWithTimestamp(cwd)
 
   writeJson(npmBatch ? prepareNpmBatchConfig([], npmBatch.access) : [], infoOutputPath)
 
   let token
   let i = 0
-  const assetInfos = []
-  const errors = []
+  let downloadedAssetsCount = 0
+  let failedAssetsCount = 0
 
   do {
     // @ts-ignore
     const { items, continuationToken } = await helper.downloadPackageAssets(opts, downloadsPath, token)
     const { fulfilledResults, rejectedResults } = extractResults(items)
 
-    assetInfos.push(...fulfilledResults)
-    errors.push(...rejectedResults)
+    downloadedAssetsCount += fulfilledResults.length
+    failedAssetsCount += rejectedResults.length
     appendResults(fulfilledResults, infoOutputPath, npmBatch)
+    printErrors(rejectedResults)
 
     token = continuationToken
     console.log(`Page #${i} 's been processed, ${fulfilledResults.length} successful, ${rejectedResults.length} failed download(s), next token is ${token}`)
     i++
   } while (token)
 
-  processResults(assetInfos, errors, infoOutputPath, downloadsPath)
+  console.log()
+  console.log('Done.')
+  console.log(`${downloadedAssetsCount} successful, ${failedAssetsCount} failed downloads`)
+  console.log(`Metadata is written to ${infoOutputPath}, assets are saved to ${downloadsPath}`)
 }
 
 export const appendResults = (assetInfos: Array<TAssetInfo>, infoOutputPath: string, npmBatch?: TDownloadConfigData['npmBatch']): void => {
@@ -58,16 +55,7 @@ export const appendResults = (assetInfos: Array<TAssetInfo>, infoOutputPath: str
   }
 }
 
-export const processResults = (
-  assetInfos: Array<TAssetInfo>,
-  errors: any[],
-  infoOutputPath: string,
-  downloadsPath: string,
-): void => {
-  console.log('Done.')
-  if (assetInfos.length > 0) {
-    console.log(`${assetInfos.length} asset(s) is(are) downloaded to ${downloadsPath}, metadata is written to ${infoOutputPath}`)
-  }
+export const printErrors = (errors: any[]): void => {
   if (errors.length > 0) {
     console.error(`${errors.length} asset(s) is(are) not downloaded due to errors:`)
     errors.forEach(error => console.error(error.message || error))
