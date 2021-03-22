@@ -46,9 +46,9 @@ await helper.deletePackagesByIds(['foo', 'bar', 'baz'])
 ```
 
 ## [@qiwi/nexus-cli](https://github.com/qiwi/nexus/tree/master/packages/cli)
-CLI utility for getting and deleting package components.
+CLI utility for getting, downloading and deleting package components.
 ```shell script
-> @qiwi/nexus-cli --nexus.username=foo --nexus.password=bar --nexus.url=baz --package.repo=npm --package.name=react --package.group=null --package.range='>16.0.0'
+> @qiwi/nexus-cli --auth.username=foo --auth.password=bar --url=baz --data.repo=npm --data.name=react --data.group=null --data.range='>16.0.0' --action=delete
 
 ┌─────────┬─────────────┬───────┬─────────┬───────────┬────────────────────────────────────────────────────────────┐
 │ (index) │ repository  │ group │  name   │  version  │                             id                             │

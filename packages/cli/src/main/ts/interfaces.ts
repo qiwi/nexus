@@ -30,6 +30,7 @@ export type TDeleteConfig = IBaseConfig<'delete', TDeleteConfigData>
 export type TPackageAccess = 'public' | 'restricted'
 
 export type TDownloadConfigMetaData = {
+  range?: string
   cwd: string
   npmBatch?: {
     access: TPackageAccess

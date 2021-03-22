@@ -30,6 +30,8 @@ export const validateDownloadConfig = (config: IBaseConfig): TDownloadConfig => 
   check(config.data.version, 'config.data.version: str?')
   check(config.data.cwd, 'config.data.cwd: str?')
   check(config.data.repo, 'config.data.repo: str')
+  check(config.data.range, 'config.data.range: str?')
+
   if (config.data.npmBatch) {
     check(config.data.npmBatch.access, 'config.data.npmBatch.access: "public" | "restricted"')
   }

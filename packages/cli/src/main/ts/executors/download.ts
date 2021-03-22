@@ -7,11 +7,12 @@ import { TDownloadConfigData, TDownloadConfigDataStrict, TPackageAccess } from '
 import { writeJson } from '../utils'
 
 export const performDownload = async (data: TDownloadConfigDataStrict, helper: INexusHelper): Promise<void> => {
-  const { repo, group, name, cwd, npmBatch } = data
+  const { repo, group, name, cwd, npmBatch, range } = data
   const opts = {
     repository: repo,
     group,
-    name
+    name,
+    range,
   }
   const { downloadsPath, infoOutputPath } = getPathsWithTimestamp(cwd)
 
