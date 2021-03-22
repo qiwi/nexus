@@ -166,8 +166,9 @@ The same as a `getPackageAssets`, but with saving tarballs to given path
 const data = await helper.downloadPackageAssets(
   {
     repository: 'npm',
-    group: 'qiwi',
-    name: 'substrate'
+    group: 'qiwi', // optional
+    name: 'substrate', // optional
+    range: '<1.0.0' // optional
   },
   'pathToSaveTarball'
 )
