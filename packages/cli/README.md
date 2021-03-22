@@ -72,6 +72,8 @@ By default `batch.rateLimit` is 3 requests per 1000 ms
 |---------------------------------------------|--------------------------------------------------|
 | `data.cwd`                                 | cwd path for saving meta and tarballs, by default `process.cwd()` |
 | `data.npmBatch.access`                      | make meta output as [@qiwi/npm-batch-cli](https://github.com/qiwi/npm-batch-action/tree/master/packages/cli) config with blank values & given access, one of `public`, `restricted` |
+| `data.sortField`                      | one of `version`, `name`, `group`, `repository` |
+| `data.sortDirection`                      | one of `asc`, `desc` |
 
 All options except `--no-prompt` must be set through the CLI flags or `--config` JSON data.
 Options from config file can be overridden.
