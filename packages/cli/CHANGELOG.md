@@ -1,3 +1,18 @@
+# @qiwi/nexus-cli [2.1.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.0.2...@qiwi/nexus-cli@2.1.0) (2021-03-22)
+
+
+### Features
+
+* add filtering by range to download ([#24](https://github.com/qiwi/nexus/issues/24)) ([483ac34](https://github.com/qiwi/nexus/commit/483ac3492133a0ccdc0f62a0e46f1535b9db66ff))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-helper:** upgraded to 2.1.0
+
 ## @qiwi/nexus-cli [2.0.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.0.1...@qiwi/nexus-cli@2.0.2) (2021-03-19)
 
 
