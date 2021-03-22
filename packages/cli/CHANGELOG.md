@@ -1,3 +1,10 @@
+# @qiwi/nexus-cli [2.2.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.1.0...@qiwi/nexus-cli@2.2.0) (2021-03-22)
+
+
+### Features
+
+* **cli:** write metadata on every iteration, add sorting ([#25](https://github.com/qiwi/nexus/issues/25)) ([a8fdcce](https://github.com/qiwi/nexus/commit/a8fdcce27be104f702da6ddb067a506d79bb2497))
+
 # @qiwi/nexus-cli [2.1.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.0.2...@qiwi/nexus-cli@2.1.0) (2021-03-22)
 
 
