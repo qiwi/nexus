@@ -2,6 +2,7 @@ import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { createWriteStream } from 'fs'
 import { join } from 'path'
+import { ratelimit } from 'push-it-to-the-limit'
 import { satisfies } from 'semver'
 
 import { IComponentInfo, TAssetInfo, TComponent, TPaginatedAsset, TPaginatedComponent } from '../interfaces'
@@ -17,7 +18,7 @@ import {
 export class NexusComponentsHelper implements INexusHelper {
   private searchApi: SearchApi
   private componentsApi: ComponentsApi
-  private httpClient: AxiosInstance
+  private httpGet: AxiosInstance['get']
 
   constructor(
     searchApi: SearchApi,
@@ -25,14 +26,9 @@ export class NexusComponentsHelper implements INexusHelper {
     httpClient: AxiosInstance,
     rateLimitOpts?: TRateLimitOpts,
   ) {
-    this.searchApi = searchApi
-    this.componentsApi = componentsApi
-    this.httpClient = httpClient
-    return withRateLimit<NexusComponentsHelper>(
-      this,
-      rateLimitOpts,
-      ['componentsApi.deleteComponent', 'searchApi.searchAssets', 'downloadPackageAsset']
-    )
+    this.searchApi = withRateLimit(searchApi, rateLimitOpts, ['searchAssets'])
+    this.componentsApi = withRateLimit(componentsApi, rateLimitOpts, ['deleteComponent'])
+    this.httpGet = rateLimitOpts ? ratelimit(httpClient.get, rateLimitOpts as any) : httpClient.get
   }
 
   async deleteComponentsByIds(
@@ -119,7 +115,7 @@ export class NexusComponentsHelper implements INexusHelper {
 
   async downloadPackageAsset(url: string, path: string, cwd: string): Promise<TAssetInfo> {
     const filePath = join(cwd, path.replace(/\//g, '%2F'))
-    return this.httpClient.get(url, { responseType: 'stream' })
+    return this.httpGet(url, { responseType: 'stream' })
       .then(response => {
         const writer = createWriteStream(filePath)
         response.data.pipe(writer)
