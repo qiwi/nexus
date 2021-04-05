@@ -1,7 +1,7 @@
 import { NexusComponentsHelper } from '@qiwi/nexus-helper'
 import readline from 'readline'
 
-import { helperFactory,question } from '../../../main/ts/utils'
+import { helperFactory, question } from '../../../main/ts/utils'
 import { baseConfig } from '../utils'
 
 describe('question', () => {

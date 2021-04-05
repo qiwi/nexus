@@ -44,11 +44,7 @@ export const helperMockFactory = (
     })
   },
   downloadPackageAsset() {
-    return Promise.resolve({
-      name: 'foo',
-      version: '1.0.0',
-      filePath: 'foo-1.0.0.tgz'
-    })
+    return Promise.resolve()
   },
   downloadPackageAssets() {
     return Promise.resolve({

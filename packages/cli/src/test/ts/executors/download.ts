@@ -40,12 +40,12 @@ describe('performDownload', () => {
     expect(writeJsonMock).toHaveBeenNthCalledWith(
       1,
       [],
-      expect.stringMatching('^cwd/nexus-cli-downloads'), // eslint-disable-line sonarjs/no-duplicate-string
+      "cwd/meta.json", // eslint-disable-line sonarjs/no-duplicate-string
     )
     expect(writeJsonMock).toHaveBeenNthCalledWith(
       2,
       [assetInfo],
-      expect.stringMatching('^cwd/nexus-cli-downloads'),
+      "cwd/meta.json",
     )
     expect(readJsonMock).toHaveBeenCalled()
   })
@@ -82,7 +82,7 @@ describe('performDownload', () => {
         action: 'publish',
         data: [],
       },
-      expect.stringMatching('^cwd/nexus-cli-downloads')
+      'cwd/meta.json'
     )
     expect(writeJsonMock).toHaveBeenNthCalledWith(
       2,
@@ -101,7 +101,7 @@ describe('performDownload', () => {
           }
         ]
       },
-      expect.stringMatching('^cwd/nexus-cli-downloads')
+      'cwd/meta.json'
     )
   })
 
