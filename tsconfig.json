@@ -5,7 +5,8 @@
     "paths": {
       "@qiwi/nexus-client": ["./client/src/main/ts"],
       "@qiwi/nexus-helper": ["./helper/src/main/ts"],
-      "@qiwi/nexus-cli": ["./cli/src/main/ts"]
+      "@qiwi/nexus-cli": ["./cli/src/main/ts"],
+      "@qiwi/nexus-utils": ["./utils/src/main/ts"]
     }
   }
 }
