@@ -1,6 +1,5 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
-import axios from 'axios'
-import { existsSync,mkdirSync } from 'fs'
+import { existsSync, mkdirSync } from 'fs'
 import nock from 'nock'
 import { join } from 'path'
 import * as PITTL from 'push-it-to-the-limit'
@@ -12,7 +11,7 @@ import component from './resources/component.json'
 
 describe('NexusContentsHelper', () => {
   const basePath = 'http://localhost/service/rest'
-  const assetsBasePath = 'http://localhost'
+  const assetsDownloadUri = '/v1/search/assets/download'
   const assetsSearchUri = '/v1/search/assets'
   const componentsApi = new ComponentsApi({ basePath })
   const searchApi = new SearchApi({ basePath })
@@ -20,7 +19,7 @@ describe('NexusContentsHelper', () => {
     period: 200,
     count: 4,
   }
-  const helper = new NexusComponentsHelper(searchApi, componentsApi, axios, wrapperOpts)
+  const helper = new NexusComponentsHelper(searchApi, componentsApi, wrapperOpts)
   const ids: string[] = Array.from(
     { length: 12 },
     (_, i) => i.toString()
@@ -40,7 +39,7 @@ describe('NexusContentsHelper', () => {
 
   it('deletes components without throttling', async () => {
     const rateLimitSpy = jest.spyOn(PITTL, 'ratelimit')
-    const helper = new NexusComponentsHelper(searchApi, componentsApi, axios)
+    const helper = new NexusComponentsHelper(searchApi, componentsApi)
 
     const mocks = ids.map((id) =>
       nock(basePath).delete(`/v1/components/${id}`).reply(200),
@@ -148,19 +147,21 @@ describe('NexusContentsHelper', () => {
 
   it('downloads asset', async () => {
     const tempDirPath = 'temp-helper-test'
+    const fullPath = join(tempDirPath, 'asset.tar.gz')
     mkdirSync(tempDirPath)
 
-    const mock = nock(assetsBasePath)
-      .get('/repository/npm/@types/react/-/react-16.9.41.tgz')
-      .reply(200, 'foo')
-    const data = await helper.downloadPackageAsset(asset.downloadUrl, asset.path, tempDirPath)
-    expect(data).toEqual({
-      name: '@types/react', // eslint-disable-line sonarjs/no-duplicate-string
-      version: '16.9.41',
-      filePath: join(tempDirPath, '@types%2Freact%2F-%2Freact-16.9.41.tgz')
-    })
+    const params = {
+      group: 'foo',
+      repository: 'foo',
+      name: 'baz',
+      version: '1.0.0',
+    }
+    const mock = nock(basePath).get(assetsDownloadUri).query({ ...params, format: 'npm' }).reply(200, 'foo')
+
+    await helper.downloadPackageAsset(params, fullPath)
+
     expect(mock.isDone()).toEqual(true)
-    expect(existsSync(data.filePath)).toEqual(true)
+    expect(existsSync(fullPath)).toEqual(true)
 
     rimraf.sync(tempDirPath)
   })
@@ -203,24 +204,28 @@ describe('NexusContentsHelper', () => {
         { ...asset, downloadUrl: 'http://localhost/repository/npm/@types/react/-/react-12.9.41.tgz', path: '@types/react/-/react-12.9.41.tgz' },
       ]
       const assetsMockToBeDownloaded = [
-        nock(assetsBasePath)
-          .get('/repository/npm/@types/react/-/react-15.9.41.tgz')
+        nock(basePath)
+          .get(assetsDownloadUri)
+          .query({ ...params, format: 'npm', version: '15.9.41' })
           .once()
           .reply(200, 'foo'),
-        nock(assetsBasePath)
-          .get('/repository/npm/@types/react/-/react-14.9.41.tgz')
+        nock(basePath)
+          .get(assetsDownloadUri)
+          .query({ ...params, format: 'npm', version: '14.9.41' })
           .once()
           .reply(200, 'foo')
       ]
       const assetsMockNotToBeDownloaded = [
-        nock(assetsBasePath)
-          .get('/repository/npm/@types/react/-/react-13.9.41.tgz')
+        nock(basePath)
+          .get(assetsDownloadUri)
+          .query({ ...params, format: 'npm', version: '13.9.41' })
           .once()
           .reply(200, 'foo'),
-        nock(assetsBasePath)
-          .get('/repository/npm/@types/react/-/react-12.9.41.tgz')
+        nock(basePath)
+          .get(assetsDownloadUri)
+          .query({ ...params, format: 'npm', version: '12.9.41' })
           .once()
-          .reply(200, 'foo'),
+          .reply(200, 'foo')
       ]
       const getAssetsMock = nock(basePath)
         .get(assetsSearchUri)
@@ -253,12 +258,14 @@ describe('NexusContentsHelper', () => {
       ]
       // asset link mocks
       const downloadAssetsMock = [
-        nock(assetsBasePath)
-          .get('/repository/npm/@types/react/-/react-15.9.41.tgz')
+        nock(basePath)
+          .get(assetsDownloadUri)
+          .query({ ...params, format: 'npm', version: '15.9.41' })
           .once()
           .reply(200, 'foo'),
-        nock(assetsBasePath)
-          .get('/repository/npm/@types/react/-/react-12.9.41.tgz')
+        nock(basePath)
+          .get(assetsDownloadUri)
+          .query({ ...params, format: 'npm', version: '12.9.41' })
           .once()
           .reply(200, 'foo'),
       ]
@@ -316,8 +323,9 @@ describe('NexusContentsHelper', () => {
         repository: 'npm',
         name: 'react',
       }
-      const downloadMock = nock(assetsBasePath)
-        .get('/repository/npm/@types/react/-/react-16.9.41.tgz')
+      const downloadMock = nock(basePath)
+        .get(assetsDownloadUri)
+        .query({ ...params, format: 'npm', version: '16.9.41' })
         .times(10)
         .reply(200, 'foo')
       const getMock = nock(basePath)
@@ -326,9 +334,8 @@ describe('NexusContentsHelper', () => {
         .once()
         .reply(200, { items: new Array(10).fill(asset) })
       const helper = new NexusComponentsHelper(
-        searchApi,
-        componentsApi,
-        axios,
+        new SearchApi({ basePath }),
+        new ComponentsApi({ basePath }),
         {
           period: 1000,
           count: 3
@@ -350,6 +357,7 @@ describe('NexusContentsHelper', () => {
       { filePath: '@qiwi/foo-bar-baz/-/foo-bar-baz-0.11.0.tgz', result: { name: '@qiwi/foo-bar-baz', version: '0.11.0' } },
       { filePath: 'foo-bar-baz/-/foo-bar-baz-0.70.0.tgz', result: { name: 'foo-bar-baz', version: '0.70.0' } },
       { filePath: '@types/react/-/react-16.9.41.tgz', result: { name: '@types/react', version: '16.9.41' } },
+      { filePath: 'foo-bar/-/foo-bar-1.56.1-1779.tgz', result: { name: 'foo-bar', version: '1.56.1-1779' } },
     ]
 
     testCases.forEach(({ filePath, result }) =>

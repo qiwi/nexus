@@ -1,12 +1,11 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
-import { AxiosInstance, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import { createWriteStream } from 'fs'
 import { join } from 'path'
-import { ratelimit } from 'push-it-to-the-limit'
 import { satisfies } from 'semver'
 
 import { IComponentInfo, TAssetInfo, TComponent, TPaginatedAsset, TPaginatedComponent } from '../interfaces'
-import { isDefined, nullCheckerFactory , withRateLimit } from '../utils'
+import { callWithRetry, isDefined, nullCheckerFactory, withRateLimit } from '../utils'
 import {
   INexusHelper,
   TGetPackageAssetsOpts,
@@ -18,17 +17,14 @@ import {
 export class NexusComponentsHelper implements INexusHelper {
   private searchApi: SearchApi
   private componentsApi: ComponentsApi
-  private httpGet: AxiosInstance['get']
 
   constructor(
     searchApi: SearchApi,
     componentsApi: ComponentsApi,
-    httpClient: AxiosInstance,
     rateLimitOpts?: TRateLimitOpts,
   ) {
-    this.searchApi = withRateLimit(searchApi, rateLimitOpts, ['searchAssets'])
+    this.searchApi = withRateLimit(searchApi, rateLimitOpts, ['searchAssets', 'searchAndDownloadAssets'])
     this.componentsApi = withRateLimit(componentsApi, rateLimitOpts, ['deleteComponent'])
-    this.httpGet = rateLimitOpts ? ratelimit(httpClient.get, rateLimitOpts as any) : httpClient.get
   }
 
   async deleteComponentsByIds(
@@ -106,39 +102,82 @@ export class NexusComponentsHelper implements INexusHelper {
             if (!downloadUrl || !path) {
               return Promise.reject(new Error('downloadUrl or path is absent in Nexus API response'))
             }
-            return this.downloadPackageAsset(downloadUrl, path, cwd)
+            const { version, name } = NexusComponentsHelper.extractNameAndVersionFromPath(path)
+            const filePath = join(cwd, path.replace(/\//g, '%2F'))
+            return this.downloadPackageAsset({ ...opts, version }, filePath)
+              .then(() => ({ version, name, filePath }))
+              .catch(error => {
+                error.message = `${error.message} for: ${opts.name}@${version}`
+                return Promise.reject(error)
+              })
           })
       ),
       continuationToken
     }
   }
 
-  async downloadPackageAsset(url: string, path: string, cwd: string): Promise<TAssetInfo> {
-    const filePath = join(cwd, path.replace(/\//g, '%2F'))
-    return this.httpGet(url, { responseType: 'stream' })
-      .then(response => {
+  async downloadPackageAsset(
+    opts: TGetPackageAssetsOpts,
+    filePath: string,
+    retryCount = 5
+  ): Promise<void> {
+    const fn = () => this.searchApi.searchAndDownloadAssets(
+      opts.sortField,
+      opts.sortDirection,
+      undefined,
+      undefined,
+      opts.repository,
+      'npm',
+      opts.group,
+      opts.name,
+      opts.version,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      { responseType: 'stream' },
+    )
+      .then((response: any) => {
         const writer = createWriteStream(filePath)
         response.data.pipe(writer)
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
           writer.on('finish', resolve)
           writer.on('error', reject)
         })
       })
-      .then(() => ({
-        ...NexusComponentsHelper.extractNameAndVersionFromPath(path),
-        filePath
-      }))
-      .catch(error => {
-        error.message = `${error.message} url: ${url}`
-        return Promise.reject(error)
-      })
+
+    return callWithRetry<void>(fn, retryCount)
   }
 
   static extractNameAndVersionFromPath(path: string): Omit<TAssetInfo, 'filePath'> {
-    const [name, rest] = path.split('/-/')
+    const [, group, name, version] = /^(@[a-z-]+[a-z]+)?\/?([a-z-]+)\/-\/[a-z-]+-([\d.-]+).tgz$/.exec(path) || []
     return {
-      name,
-      version: rest.split('-').slice(-1)[0].replace('.tgz', '')
+      name: `${group ? group + '/' : ''}${name}`,
+      version
     }
   }
 
