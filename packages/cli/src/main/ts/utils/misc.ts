@@ -1,6 +1,5 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { INexusHelper, NexusComponentsHelper } from '@qiwi/nexus-helper'
-import axios from 'axios'
 import { readFileSync, writeFileSync } from 'fs'
 import { createInterface } from 'readline'
 
@@ -48,9 +47,8 @@ export const helperFactory = (config: IBaseConfig): INexusHelper => {
   return new NexusComponentsHelper(
     searchApi,
     componentsApi,
-    axios.create({
-      auth: config.auth
-    }),
     config.batch?.rateLimit || defaultRateLimit
   )
 }
+
+export { callWithRetry } from '@qiwi/nexus-utils'

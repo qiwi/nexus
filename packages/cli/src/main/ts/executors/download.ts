@@ -1,31 +1,45 @@
-import { INexusHelper, TAssetInfo } from '@qiwi/nexus-helper'
+import { INexusHelper, TAssetInfo, TPaginatedSettledResult } from '@qiwi/nexus-helper'
 import { TPublishConfig } from '@qiwi/npm-batch-cli-api'
 import mkdirp from 'mkdirp'
 import { join } from 'path'
 
-import { TDownloadConfigData, TDownloadConfigDataStrict, TPackageAccess } from '../interfaces'
-import { readFileToString, writeJson } from '../utils'
+import { TDownloadConfigDataStrict, TNpmBatchOpts } from '../interfaces'
+import { callWithRetry, readFileToString, writeJson } from '../utils'
 
 export const performDownload = async (data: TDownloadConfigDataStrict, helper: INexusHelper): Promise<void> => {
-  const { repo, group, name, cwd, npmBatch, range, sortDirection, sortField } = data
+  const { repo, group, name, cwd, npmBatch, range, sortDirection, sortField, retryCount } = data
   const opts = { repository: repo, group, name, range, sortField, sortDirection }
-  const { downloadsPath, infoOutputPath } = getPathsWithTimestamp(cwd)
+  const { downloadsPath, infoOutputPath } = getPaths(cwd)
 
-  writeJson(npmBatch ? prepareNpmBatchConfig([], npmBatch.access) : [], infoOutputPath)
+  writeJson(npmBatch ? prepareNpmBatchConfig([], npmBatch) : [], infoOutputPath)
 
-  let token
+  let token: string | undefined
   let i = 0
   let downloadedAssetsCount = 0
   let failedAssetsCount = 0
+  const acc: Record<any, boolean> = {}
 
   do {
-    // @ts-ignore
-    const { items, continuationToken } = await helper.downloadPackageAssets(opts, downloadsPath, token)
+    const { items, continuationToken } = await callWithRetry<TPaginatedSettledResult<TAssetInfo>>(
+      () => helper.downloadPackageAssets(opts, downloadsPath, token),
+      retryCount || 4
+    )
     const { fulfilledResults, rejectedResults } = extractResults(items)
 
     downloadedAssetsCount += fulfilledResults.length
     failedAssetsCount += rejectedResults.length
     appendResults(fulfilledResults, infoOutputPath, npmBatch)
+
+    // Sometimes Nexus Rest API response contains duplicates
+    // TODO: remove after bugfix
+    fulfilledResults?.forEach(item => {
+      if (acc[item.version || '']) {
+        writeJson((helper as any).acc, 'test-double-found-error.json')
+        throw new Error('Found duplicate')
+      }
+      acc[item.version || ''] = true
+    })
+
     printErrors(rejectedResults)
 
     token = continuationToken
@@ -39,13 +53,13 @@ export const performDownload = async (data: TDownloadConfigDataStrict, helper: I
   console.log(`Metadata is written to ${infoOutputPath}, assets are saved to ${downloadsPath}`)
 }
 
-export const appendResults = (assetInfos: Array<TAssetInfo>, infoOutputPath: string, npmBatch?: TDownloadConfigData['npmBatch']): void => {
+export const appendResults = (assetInfos: Array<TAssetInfo>, infoOutputPath: string, npmBatch?: TNpmBatchOpts): void => {
   try {
     const file = JSON.parse(readFileToString(infoOutputPath))
 
     if (npmBatch) {
       file.data.push(...assetInfos)
-      writeJson(prepareNpmBatchConfig(file.data, npmBatch.access), infoOutputPath)
+      writeJson(prepareNpmBatchConfig(file.data, npmBatch), infoOutputPath)
       return
     }
     file.push(...assetInfos)
@@ -62,10 +76,9 @@ export const printErrors = (errors: any[]): void => {
   }
 }
 
-export const getPathsWithTimestamp = (cwd: string): { infoOutputPath: string, downloadsPath: string } => {
-  const date = new Date()
-  const infoOutputPath = join(cwd, `nexus-cli-downloads-meta-${date.toISOString()}.json`)
-  const downloadsPath = join(cwd, `nexus-cli-downloads-${date.toISOString()}`)
+export const getPaths = (cwd: string): { infoOutputPath: string, downloadsPath: string } => {
+  const infoOutputPath = join(cwd, `meta.json`)
+  const downloadsPath = join(cwd, `downloads`)
 
   mkdirp.sync(downloadsPath)
 
@@ -85,13 +98,14 @@ export const extractResults = (
     .map(item => item.reason)
 })
 
-export const prepareNpmBatchConfig = (assetInfos: TAssetInfo[], access: TPackageAccess): TPublishConfig => ({
-  registryUrl: '',
-  auth: {
+export const prepareNpmBatchConfig = (assetInfos: TAssetInfo[], npmBatch: TNpmBatchOpts): TPublishConfig => ({
+  registryUrl: npmBatch.registryUrl || '',
+  auth: npmBatch.auth || {
     username: '',
     password: '',
     email: '',
   },
+  batch: npmBatch.batch,
   action: 'publish',
-  data: assetInfos.map(item => ({ ...item, access }))
+  data: assetInfos.map(item => ({ ...item, access: npmBatch.access }))
 })

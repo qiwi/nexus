@@ -47,10 +47,10 @@ export interface INexusHelper {
   ): Promise<TPaginatedSettledResult<TAssetInfo>>
 
   downloadPackageAsset(
-    url: string,
-    path: string,
-    cwd: string
-  ): Promise<TAssetInfo>
+    opts: TGetPackageAssetsOpts,
+    filePath: string,
+    retryCount?: number,
+  ): Promise<void>
 }
 
 export type TRateLimitOpts = IComplexDelay | IComplexDelay[]

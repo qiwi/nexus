@@ -1,4 +1,5 @@
 import { NexusComponentsHelper, TGetPackageAssetsOpts } from '@qiwi/nexus-helper'
+import { TPublishConfig } from '@qiwi/npm-batch-cli-api'
 
 export interface IPackageOpts {
   group?: string
@@ -18,7 +19,7 @@ export interface IBaseConfig<TA = TAction, T = any> {
   }
   action: TA
   batch?: {
-    rateLimit?: ConstructorParameters<typeof NexusComponentsHelper>[3]
+    rateLimit?: ConstructorParameters<typeof NexusComponentsHelper>[2]
   },
   data: T,
 }
@@ -29,12 +30,18 @@ export type TDeleteConfig = IBaseConfig<'delete', TDeleteConfigData>
 
 export type TPackageAccess = 'public' | 'restricted'
 
+export type TNpmBatchOpts = {
+  access: TPackageAccess
+  batch?: TPublishConfig['batch']
+  registryUrl?: TPublishConfig['registryUrl']
+  auth?: TPublishConfig['auth']
+}
+
 export type TDownloadConfigMetaData = {
+  retryCount?: number
   range?: string
   cwd: string
-  npmBatch?: {
-    access: TPackageAccess
-  }
+  npmBatch?: TNpmBatchOpts
   sortField?: TGetPackageAssetsOpts['sortField'],
   sortDirection?: TGetPackageAssetsOpts['sortDirection'],
 }
