@@ -1,3 +1,18 @@
+# @qiwi/nexus-helper [2.2.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@2.1.0...@qiwi/nexus-helper@2.2.0) (2021-04-06)
+
+
+### Features
+
+* add workaround for duplicates, @qiwi/nexus-utils, specifying npm-batch config values, change downloadPackageAsset ([cb7e39b](https://github.com/qiwi/nexus/commit/cb7e39b36ad2dc1125e4a3bfe3c672da0e3ed336))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-utils:** upgraded to 1.0.0
+
 # @qiwi/nexus-helper [2.1.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@2.0.2...@qiwi/nexus-helper@2.1.0) (2021-03-22)
 
 
