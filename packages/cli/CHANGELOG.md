@@ -1,3 +1,19 @@
+# @qiwi/nexus-cli [2.3.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.2.1...@qiwi/nexus-cli@2.3.0) (2021-04-06)
+
+
+### Features
+
+* add workaround for duplicates, @qiwi/nexus-utils, specifying npm-batch config values, change downloadPackageAsset ([cb7e39b](https://github.com/qiwi/nexus/commit/cb7e39b36ad2dc1125e4a3bfe3c672da0e3ed336))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-helper:** upgraded to 2.2.0
+* **@qiwi/nexus-utils:** upgraded to 1.0.0
+
 ## @qiwi/nexus-cli [2.2.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.2.0...@qiwi/nexus-cli@2.2.1) (2021-03-22)
 
 
