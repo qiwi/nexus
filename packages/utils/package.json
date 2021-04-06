@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/nexus-utils",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Common entities for @qiwi/nexus packages",
   "main": "target/es5/index.js",
   "repository": "https://github.com/qiwi/nexus.git",
