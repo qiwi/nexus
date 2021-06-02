@@ -1616,7 +1616,7 @@
   dependencies:
     "@octokit/openapi-types" "^5.3.2"
 
-"@qiwi/deep-proxy@^1.8.1":
+"@qiwi/deep-proxy@^1.8.1", "@qiwi/deep-proxy@^1.8.2":
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/@qiwi/deep-proxy/-/deep-proxy-1.8.2.tgz#53a94ac63a98d61a872e7247320dfa3cbe9f783f"
   integrity sha512-yMVzGtIbYabOYrl3KKOWgF40M3BsO/MdKgSpdd5fLupgT0kY2rzDrHRx6vjgQCyZkyCccmdFn1QHiW5tug5gzw==
@@ -6181,7 +6181,7 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-nock@^13.0.11, nock@^13.1.0:
+nock@^13.1.0:
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/nock/-/nock-13.1.0.tgz#41c8ce8b35ab7d618c4cbf40de1d5bce319979ba"
   integrity sha512-3N3DUY8XYrxxzWazQ+nSBpiaJ3q6gcpNh4gXovC/QBxrsvNp4tq+wsLHF6mJ3nrn3lPLn7KCJqKxy/9aD+0fdw==
@@ -7045,7 +7045,7 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-push-it-to-the-limit@^1.17.1:
+push-it-to-the-limit@^1.17.1, push-it-to-the-limit@^1.17.2:
   version "1.17.2"
   resolved "https://registry.yarnpkg.com/push-it-to-the-limit/-/push-it-to-the-limit-1.17.2.tgz#cee1d6034f5cba7f26f684dea8a5df69e1d91dbb"
   integrity sha512-PYoo4wXgt021XcxbhJzedJIhb7cl435XyiIRntd63aGx3alvJ2juELeeAh5ona142ITAXXSdE1R6FTxRqws38Q==
