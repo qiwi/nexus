@@ -1,3 +1,13 @@
+## @qiwi/nexus-utils [1.0.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-utils@1.0.0...@qiwi/nexus-utils@1.0.1) (2021-06-02)
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-infra:** upgraded to 2.0.1
+
 # @qiwi/nexus-utils 1.0.0 (2021-04-06)
 
 
