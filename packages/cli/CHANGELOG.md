@@ -1,3 +1,21 @@
+## @qiwi/nexus-cli [2.3.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.3.0...@qiwi/nexus-cli@2.3.1) (2021-06-02)
+
+
+### Performance Improvements
+
+* update deps ([#28](https://github.com/qiwi/nexus/issues/28)) ([f8c2e07](https://github.com/qiwi/nexus/commit/f8c2e0793eee5cab9e532f3f3b25ffb81c00a206))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/nexus-client:** upgraded to 1.1.4
+* **@qiwi/nexus-helper:** upgraded to 2.2.1
+* **@qiwi/nexus-utils:** upgraded to 1.0.1
+* **@qiwi/nexus-infra:** upgraded to 2.0.1
+
 # @qiwi/nexus-cli [2.3.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.2.1...@qiwi/nexus-cli@2.3.0) (2021-04-06)
 
 
