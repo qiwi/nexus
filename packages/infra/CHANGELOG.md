@@ -1,3 +1,10 @@
+## @qiwi/nexus-infra [2.0.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@2.0.0...@qiwi/nexus-infra@2.0.1) (2021-06-02)
+
+
+### Performance Improvements
+
+* update deps ([#28](https://github.com/qiwi/nexus/issues/28)) ([f8c2e07](https://github.com/qiwi/nexus/commit/f8c2e0793eee5cab9e532f3f3b25ffb81c00a206))
+
 # @qiwi/nexus-infra [2.0.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-infra@1.2.2...@qiwi/nexus-infra@2.0.0) (2021-03-17)
 
 
