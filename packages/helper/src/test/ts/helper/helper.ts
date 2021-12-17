@@ -358,10 +358,28 @@ describe('NexusContentsHelper', () => {
       { filePath: 'foo-bar-baz/-/foo-bar-baz-0.70.0.tgz', result: { name: 'foo-bar-baz', version: '0.70.0' } },
       { filePath: '@types/react/-/react-16.9.41.tgz', result: { name: '@types/react', version: '16.9.41' } },
       { filePath: 'foo-bar/-/foo-bar-1.56.1-1779.tgz', result: { name: 'foo-bar', version: '1.56.1-1779' } },
+      { filePath: '@qiwi-foo-bar/baz-bat-qux/-/baz-bat-qux-1.1150.0.tgz', result: { name: '@qiwi-foo-bar/baz-bat-qux', version: '1.1150.0' } },
+      { filePath: '@qiwi-foo-123/b2b-bar-baz/-/b2b-bar-baz-1.1150.0.tgz', result: { name: '@qiwi-foo-123/b2b-bar-baz', version: '1.1150.0' } },
+      { filePath: 'qiwi-foo-bar/-/qiwi-foo-bar-0.0.2-feature-Bat.14.tgz', result: { name: 'qiwi-foo-bar', version: '0.0.2-feature-Bat.14' } },
+      { filePath: '@qiwi/qiwi-foo-bar/-/qiwi-foo-bar-0.0.2-feature-bat.tgz', result: { name: '@qiwi/qiwi-foo-bar', version: '0.0.2-feature-bat' } },
     ]
 
     testCases.forEach(({ filePath, result }) =>
       it(filePath, () => expect(NexusComponentsHelper.extractNameAndVersionFromPath(filePath)).toEqual(result))
+    )
+  })
+
+  describe('extractNexusNameAndGroupFromName', () => {
+    const testCases = [
+      { name: '@qiwi-foo/bar-baz', result: { name: 'bar-baz', group: 'qiwi-foo' } },
+      { name: '@qiwi/bar-baz', result: { name: 'bar-baz', group: 'qiwi' } },
+      { name: 'bar-baz', result: { name: 'bar-baz' } },
+      { name: 'bar', result: { name: 'bar' } },
+      { name: '', result: { } },
+    ]
+
+    testCases.forEach(({ name, result }) =>
+      it(name, () => expect(NexusComponentsHelper.extractNexusNameAndGroupFromName(name)).toEqual(result))
     )
   })
 })

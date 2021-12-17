@@ -174,7 +174,7 @@ export class NexusComponentsHelper implements INexusHelper {
   }
 
   static extractNameAndVersionFromPath(path: string): Omit<TAssetInfo, 'filePath'> {
-    const [, group, name, version] = /^(@[a-z-]+[a-z]+)?\/?([a-z-]+)\/-\/[a-z-]+-([\d.-]+).tgz$/.exec(path) || []
+    const [, group, name, version] = /^(@[\da-z-]+[\da-z]+)?\/?([\da-z-]+)\/-\/[\da-z-]+-([\d.A-z-]+).tgz$/.exec(path) || []
     return {
       name: `${group ? group + '/' : ''}${name}`,
       version
@@ -185,5 +185,13 @@ export class NexusComponentsHelper implements INexusHelper {
     return components
       .filter(nullCheckerFactory<IComponentInfo>(v => v && isDefined(v.version) && isDefined(v.id)))
       .filter(item => satisfies(item.version, range))
+  }
+
+  static extractNexusNameAndGroupFromName(name: string): { group?: string, name?: string }  {
+    const [,, group, nexusName] = /^(@?([a-z-]+[a-z]+)?\/)?([\da-z-]+)$/.exec(name) || [] // eslint-disable-line unicorn/no-unreadable-array-destructuring
+    return {
+      group,
+      name: nexusName,
+    }
   }
 }
