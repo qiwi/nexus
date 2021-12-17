@@ -95,7 +95,7 @@ export const performDownload = async (data: TDownloadConfigDataStrict, helper: I
       })
       .catch(error => {
         console.log(error)
-        console.error(`${name}@${version} ${error}`)
+        console.error(`${asset.path} ${error}`)
         failedAssetsCount++
       })
   }

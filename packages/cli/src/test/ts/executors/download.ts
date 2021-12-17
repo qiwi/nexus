@@ -129,6 +129,6 @@ describe('performDownload', () => {
       },
       helper as any
     )
-    expect(errorSpy).toHaveBeenCalledWith('@qiwi-foo-bar/baz-bat@1.1.0 Error: foo')
+    expect(errorSpy).toHaveBeenCalledWith('@qiwi-foo-bar/baz-bat/-/baz-bat-1.1.0.tgz Error: foo')
   })
 })

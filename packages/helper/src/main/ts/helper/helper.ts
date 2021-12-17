@@ -174,7 +174,7 @@ export class NexusComponentsHelper implements INexusHelper {
   }
 
   static extractNameAndVersionFromPath(path: string): Omit<TAssetInfo, 'filePath'> {
-    const [, group, name, version] = /^(@[\da-z-]+[\da-z]+)?\/?([\da-z-]+)\/-\/[\da-z-]+-([\d.-]+).tgz$/.exec(path) || []
+    const [, group, name, version] = /^(@[\da-z-]+[\da-z]+)?\/?([\da-z-]+)\/-\/[\da-z-]+-([\d.A-z-]+).tgz$/.exec(path) || []
     return {
       name: `${group ? group + '/' : ''}${name}`,
       version
