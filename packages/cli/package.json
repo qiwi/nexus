@@ -43,7 +43,7 @@
     "build:es6": "mkdir -p target/es6 && tsc -p tsconfig.es6.json",
     "build:ts": "cp -r src/main/ts/ target/ts/",
     "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
-    "docs": "typedoc --readme README.md --tsconfig tsconfig.es5.json src/main",
+    "docs": "typedoc",
     "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
     "postupdate": "yarn && yarn build && yarn test",
     "format": "prettier --write 'src/**/*.ts'",
@@ -53,17 +53,17 @@
     "@qiwi/nexus-client": "1.1.4",
     "@qiwi/nexus-helper": "2.2.2",
     "@qiwi/nexus-utils": "1.0.2",
-    "@types/semver": "^7.3.6",
-    "axios": "^0.21.1",
+    "@types/semver": "^7.3.9",
+    "axios": "^0.24.0",
     "blork": "^9.3.0",
     "meow": "^9.0.0",
     "mkdirp": "^1.0.4"
   },
   "devDependencies": {
-    "@qiwi/libdefkit": "^2.1.8",
+    "@qiwi/libdefkit": "^3.1.2",
     "@qiwi/nexus-infra": "2.0.1",
     "@qiwi/npm-batch-cli-api": "^2.0.0",
-    "nock": "^13.1.0",
+    "nock": "^13.2.1",
     "semver": "^7.3.5"
   },
   "prettier": "prettier-config-qiwi"
