@@ -1,3 +1,10 @@
+## @qiwi/nexus-utils [1.0.2](https://github.com/qiwi/nexus/compare/@qiwi/nexus-utils@1.0.1...@qiwi/nexus-utils@1.0.2) (2021-12-17)
+
+
+### Bug Fixes
+
+* diplication bug, versions with letters ([#29](https://github.com/qiwi/nexus/issues/29)) ([e5c5a82](https://github.com/qiwi/nexus/commit/e5c5a821fd6502e1b9184e26c366fae0ac3ad150))
+
 ## @qiwi/nexus-utils [1.0.1](https://github.com/qiwi/nexus/compare/@qiwi/nexus-utils@1.0.0...@qiwi/nexus-utils@1.0.1) (2021-06-02)
 
 
