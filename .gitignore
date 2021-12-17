@@ -53,6 +53,7 @@ typings
 # Temp
 temp
 *.tmp
+temp-*
 
 # Typescript
 *.tsbuildinfo

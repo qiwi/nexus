@@ -1,7 +1,8 @@
-import { INexusHelper, TAssetInfo, TPaginatedSettledResult } from '@qiwi/nexus-helper'
+import { INexusHelper, NexusComponentsHelper, TAsset, TAssetInfo, TGetPackageAssetsOpts } from '@qiwi/nexus-helper'
 import { TPublishConfig } from '@qiwi/npm-batch-cli-api'
 import mkdirp from 'mkdirp'
 import { join } from 'path'
+import { satisfies } from 'semver'
 
 import { TDownloadConfigDataStrict, TNpmBatchOpts } from '../interfaces'
 import { callWithRetry, readFileToString, writeJson } from '../utils'
@@ -14,38 +15,92 @@ export const performDownload = async (data: TDownloadConfigDataStrict, helper: I
   writeJson(npmBatch ? prepareNpmBatchConfig([], npmBatch) : [], infoOutputPath)
 
   let token: string | undefined
-  let i = 0
   let downloadedAssetsCount = 0
   let failedAssetsCount = 0
-  const acc: Record<any, boolean> = {}
+  const downloadedAssetsMap: Record<string, string> = {}
 
-  do {
-    const { items, continuationToken } = await callWithRetry<TPaginatedSettledResult<TAssetInfo>>(
-      () => helper.downloadPackageAssets(opts, downloadsPath, token),
-      retryCount || 4
-    )
-    const { fulfilledResults, rejectedResults } = extractResults(items)
+  const getAssets = async (opts: TGetPackageAssetsOpts, token: string | undefined) => {
+    const downloadedAssetsArrayOfCurPage: any[] = []
+    const { items, continuationToken } = await helper.getPackageAssets(opts, token)
 
-    downloadedAssetsCount += fulfilledResults.length
-    failedAssetsCount += rejectedResults.length
-    appendResults(fulfilledResults, infoOutputPath, npmBatch)
+    if (!items) {
+      return Promise.reject(new Error('Got empty items'))
+    }
 
-    // Sometimes Nexus Rest API response contains duplicates
-    // TODO: remove after bugfix
-    fulfilledResults?.forEach(item => {
-      if (acc[item.version || '']) {
-        writeJson((helper as any).acc, 'test-double-found-error.json')
-        throw new Error('Found duplicate')
+    for (const item of items) {
+      if (!item.path) {
+        console.error(`Got asset without path ${item.id}`)
+      } else {
+        if (downloadedAssetsMap[item.path] || downloadedAssetsArrayOfCurPage.find(it => it.name === item.path)) {
+          console.error(`Got double for ${item.path}, current: ${token} saved: ${downloadedAssetsMap[item.path] || token}`)
+        } else {
+          downloadedAssetsArrayOfCurPage.push({ name: item.path, token })
+        }
       }
-      acc[item.version || ''] = true
+    }
+
+    const filteredItems =  items
+      .filter(item => opts.range
+        ? item.path
+          ? satisfies(NexusComponentsHelper.extractNameAndVersionFromPath(item.path).version, opts.range)
+          : false
+        : true
+      )
+
+    downloadedAssetsArrayOfCurPage.forEach(item => {
+      downloadedAssetsMap[item.name] = item.token
     })
 
-    printErrors(rejectedResults)
+    return { items: filteredItems, continuationToken }
+  }
+
+  const links: TAsset[] = []
+
+  do {
+    const { items, continuationToken } = await callWithRetry(
+      () => getAssets(opts, token),
+      retryCount || 5,
+    )
+
+    links.push(...items)
 
     token = continuationToken
-    console.log(`Page #${i} 's been processed, ${fulfilledResults.length} successful, ${rejectedResults.length} failed download(s), next token is ${token}`)
-    i++
   } while (token)
+
+  console.log(`Got data about ${links.length} assets`)
+
+  const results: TAssetInfo[] = []
+
+  for (const asset of links) {
+    if (!asset.path) {
+      console.error(`Got asset without path ${asset.id}`)
+      continue
+    }
+
+    const { name, version } = NexusComponentsHelper.extractNameAndVersionFromPath(asset.path)
+    const filePath = join(cwd, 'downloads', `${name.replace('/', '%2F')}@${version}`)
+
+    if (!group && !name) {
+      console.log(`Could not extract nexus name and group from ${name}`)
+      failedAssetsCount++
+      continue
+    }
+
+    process.stdout.write(`${name}@${version}...`)
+    await helper.downloadPackageAsset({ group, name, version, repository: repo }, filePath)
+      .then(() => {
+        console.log('Downloaded!')
+        results.push({ version, name, filePath })
+        downloadedAssetsCount++
+      })
+      .catch(error => {
+        console.log(error)
+        console.error(`${name}@${version} ${error}`)
+        failedAssetsCount++
+      })
+  }
+
+  appendResults(results, infoOutputPath, npmBatch)
 
   console.log()
   console.log('Done.')
@@ -87,14 +142,14 @@ export const getPaths = (cwd: string): { infoOutputPath: string, downloadsPath: 
   }
 }
 
-export const extractResults = (
-  items: PromiseSettledResult<TAssetInfo>[]
-): { fulfilledResults: TAssetInfo[], rejectedResults: any[] } => ({
+export const extractResults = <T = TAssetInfo>(
+  items: PromiseSettledResult<T>[]
+): { fulfilledResults: T[], rejectedResults: any[] } => ({
   fulfilledResults: items
-    .filter((item: PromiseSettledResult<TAssetInfo>): item is PromiseFulfilledResult<TAssetInfo> => item.status === 'fulfilled')
+    .filter((item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => item.status === 'fulfilled')
     .map(item => item.value),
   rejectedResults: items
-    .filter((item: PromiseSettledResult<TAssetInfo>): item is PromiseRejectedResult => item.status === 'rejected')
+    .filter((item: PromiseSettledResult<T>): item is PromiseRejectedResult => item.status === 'rejected')
     .map(item => item.reason)
 })
 

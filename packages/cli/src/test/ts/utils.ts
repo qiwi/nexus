@@ -17,10 +17,11 @@ export const assets: any = Array.from(
   { length: 5 },
   (_, i) => ({
     repository: 'foo',
+    path: `@qiwi-foo-bar/baz-bat/-/baz-bat-1.${i}.0.tgz`,
     downloadUrl: `http://local/${i}`,
     name: 'baz',
     id: i.toString(),
-    version: `1.0.${i++}`
+    version: `1.${i}.0`,
   })
 )
 
