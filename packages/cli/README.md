@@ -75,6 +75,17 @@ By default `batch.rateLimit` is 3 requests per 1000 ms
 | `data.sortField`                      | one of `version`, `name`, `group`, `repository` |
 | `data.sortDirection`                      | one of `asc`, `desc` |
 
+### Compare
+
+| Option                                      | Description                                      |
+|---------------------------------------------|--------------------------------------------------|
+| `data.repo`                              | name of package repository                       |
+| `data.packages[].name`                              | name of package to compare                       |
+| `data.packages[].group`                              | group of package to compare. To get packages outside of any group (scope) pass `null`                       |
+| `data.repoToCompare.repo`                                 | name of repository to compare |
+| `data.repoToCompare.url`                      | url of repository to compare |
+| `data.repoToCompare.auth.username`, `data.repoToCompare.auth.password`          | credentials of repository to compare |
+
 All options except `--no-prompt` must be set through the CLI flags or `--config` JSON data.
 Options from config file can be overridden.
 If you want to use `--no-prompt` option in a config file, add it as `"prompt": false`.

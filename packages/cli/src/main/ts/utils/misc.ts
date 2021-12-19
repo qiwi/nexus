@@ -1,7 +1,8 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { INexusHelper, NexusComponentsHelper } from '@qiwi/nexus-helper'
-import { readFileSync, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { createInterface } from 'readline'
+import { sep } from 'path'
 
 import { IBaseConfig } from '../interfaces'
 
@@ -18,8 +19,16 @@ export const question = (message: string): Promise<string> => {
 
 export const readFileToString = (path: string): string => readFileSync(path).toString()
 
-export const writeJson = (obj: Record<string, any>, path: string): void =>
+export const writeJson = (obj: Record<string, any>, path: string): void => {
+  const dirPath = path
+    .split(sep)
+    .slice(0, -1)
+    .join(sep)
+
+  mkdirSync(dirPath, { recursive: true})
+
   writeFileSync(path, JSON.stringify(obj, null, '\t')) // eslint-disable-line unicorn/no-null
+}
 
 export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;

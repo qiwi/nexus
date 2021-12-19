@@ -9,7 +9,7 @@ export interface IPackageOpts {
   repo: string
 }
 
-export type TAction = 'delete' | 'download'
+export type TAction = 'delete' | 'download' | 'compare'
 
 export interface IBaseConfig<TA = TAction, T = any> {
   url: string
@@ -27,6 +27,21 @@ export interface IBaseConfig<TA = TAction, T = any> {
 export type TDeleteConfigData = IPackageOpts & { prompt?: boolean }
 
 export type TDeleteConfig = IBaseConfig<'delete', TDeleteConfigData>
+
+export type TCompareRegistryOpts = Pick<IBaseConfig, 'url' | 'auth'> & {
+  repo: string
+}
+
+export type TCompareConfigData = {
+  primaryRegistry: TCompareRegistryOpts
+  secondaryRegistry: TCompareRegistryOpts
+  packages: Array<Pick<IPackageOpts, 'name' | 'group'>>
+  cwd: string
+}
+
+export type TCompareConfig = IBaseConfig<'compare', TCompareConfigData>
+
+export type TDownloadListItem = Pick<TGetPackageAssetsOpts, 'group' | 'name' | 'version'>
 
 export type TPackageAccess = 'public' | 'restricted'
 

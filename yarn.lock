@@ -1896,7 +1896,18 @@
     semver "^7.3.5"
     tslib "^2.1.0"
 
-"@qiwi/npm-registry-client@^8.9.0":
+"@qiwi/npm-batch-client@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@qiwi/npm-batch-client/-/npm-batch-client-2.1.0.tgz#8b0c3d1af64a09a8a87e7452f7c8bb3402219d31"
+  integrity sha512-OlG8jHyVosGY2SDWE5e/FiFhYpabLowrf3FxwTuJFeUylGKcaP/SEimriHxuLoxLZYQJtGZX+6wvv+cSwJwYGw==
+  dependencies:
+    "@qiwi/npm-registry-client" "^8.9.1"
+    "@qiwi/npm-types" "^1.0.3"
+    "@qiwi/substrate" "^1.20.11"
+    semver "^7.3.5"
+    tslib "^2.3.1"
+
+"@qiwi/npm-registry-client@^8.9.0", "@qiwi/npm-registry-client@^8.9.1":
   version "8.9.1"
   resolved "https://registry.yarnpkg.com/@qiwi/npm-registry-client/-/npm-registry-client-8.9.1.tgz#1769f6501a436ec39c496ca0a9a2fab9db7718df"
   integrity sha512-rZF+mG+NfijR0SHphhTLHRr4aM4gtfdwoAMY6we2VGQam8vkN1cxGG1Lg/Llrj8Dd0Mu6VjdFQRyMMRZxtZR2A==
@@ -1919,6 +1930,11 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@qiwi/npm-types/-/npm-types-1.0.2.tgz#fe34c05220edc695de7b676796c757b89474ce1f"
   integrity sha512-uOAYe1Bh9+ot8aZdgkv99pz4XfhnqPvyM8wanv5WOu/7EigxeGdAKVIeFb+Iqv2WVJMXFHmFBXPLVDkO+BFpmQ==
+
+"@qiwi/npm-types@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@qiwi/npm-types/-/npm-types-1.0.3.tgz#8d5be29939ea2a1e596a45e8279b37d16fd1e7f2"
+  integrity sha512-fHUud+Fo8JiGOPMmnVaOYd/crEnBM+qB8qXrSRz1AkYZAj8BtudFYcsiFweL6DcYXguq7+iXKdzx42dGCEPHiQ==
 
 "@qiwi/substrate-abstract@1.20.2":
   version "1.20.2"
