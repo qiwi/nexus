@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/nexus-cli",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "CLI for managing Nexus NPM repository contents",
   "main": "target/es5/index.js",
   "repository": "https://github.com/qiwi/nexus.git",

@@ -1,3 +1,10 @@
+# @qiwi/nexus-cli [2.4.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.3.3...@qiwi/nexus-cli@2.4.0) (2021-12-19)
+
+
+### Features
+
+* **cli:** add new action compare ([#31](https://github.com/qiwi/nexus/issues/31)) ([667d6b2](https://github.com/qiwi/nexus/commit/667d6b2406205d3687b558f30cf89dc2691a3c5e))
+
 ## @qiwi/nexus-cli [2.3.3](https://github.com/qiwi/nexus/compare/@qiwi/nexus-cli@2.3.2...@qiwi/nexus-cli@2.3.3) (2021-12-19)
 
 
