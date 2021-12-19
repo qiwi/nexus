@@ -66,7 +66,7 @@ Output in `${cwd}/missing.json`
   }
 ]
 ```
-Output in `${cwd}/missing.json`
+Output in `${cwd}/extra.json`
 ```json
 [
   {

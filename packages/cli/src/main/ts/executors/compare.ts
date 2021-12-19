@@ -1,8 +1,16 @@
 import { NpmRegClientWrapper } from '@qiwi/npm-batch-client'
 import { join } from 'path'
 
-import { TCompareConfigData, TDownloadListItem } from '../interfaces'
+import { TCompareConfigData, TCompareRegistryOpts, TDownloadListItem } from '../interfaces'
 import { writeJson } from '../utils'
+
+const clientFactory = (opts: TCompareRegistryOpts) =>  new NpmRegClientWrapper(
+  opts.url,
+  {
+    ...opts.auth,
+    email: '',
+  }
+)
 
 export const performCompare = async (config: TCompareConfigData): Promise<void> => {
   const {
@@ -12,21 +20,8 @@ export const performCompare = async (config: TCompareConfigData): Promise<void> 
     cwd,
   } = config
 
-  const primaryRegClient = new NpmRegClientWrapper(
-    primaryRegistry.url,
-    {
-      ...primaryRegistry.auth,
-      email: '',
-    }
-  )
-
-  const secondaryRegClient = new NpmRegClientWrapper(
-    secondaryRegistry.url,
-    {
-      ...secondaryRegistry.auth,
-      email: '',
-    }
-  )
+  const primaryRegClient = clientFactory(primaryRegistry)
+  const secondaryRegClient = clientFactory(secondaryRegistry)
 
   const downloadListMissing: TDownloadListItem[] = []
   const downloadListExtra: TDownloadListItem[] = []
