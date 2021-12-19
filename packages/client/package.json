@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/nexus-client",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Nexus TS client, created by Open API generator",
   "main": "target/es5/index.js",
   "repository": "https://github.com/qiwi/nexus.git",
@@ -36,7 +36,7 @@
   ],
   "devDependencies": {
     "@qiwi/libdefkit": "^3.1.2",
-    "@qiwi/nexus-infra": "2.0.1",
+    "@qiwi/nexus-infra": "2.0.2",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2"
   },
