@@ -1,15 +1,17 @@
 import { check } from 'blork'
 
-import { IBaseConfig, TDeleteConfig, TDownloadConfig } from '../interfaces'
+import { IBaseConfig, TCompareConfig, TDeleteConfig, TDownloadConfig } from '../interfaces'
 import { DeepPartial } from './misc'
 
 export const validateConfig = (config: DeepPartial<IBaseConfig>): IBaseConfig => {
   const { url, auth, action, batch } = config
+  check(action, 'config.action: "download" | "delete" | "compare"')
 
-  check(url, 'config.url: string')
-  check(auth, 'config.auth: { "username": str, "password": str }')
-  check(action, 'config.action: "download" | "delete"')
-  check(batch, 'config.batch: { "skipErrors": bool? }')
+  if (action !== 'compare') {
+    check(url, 'config.url: string')
+    check(auth, 'config.auth: { "username": str, "password": str }')
+    check(batch, 'config.batch: { "skipErrors": bool? }')
+  }
 
   return config as IBaseConfig
 }
@@ -39,4 +41,22 @@ export const validateDownloadConfig = (config: IBaseConfig): TDownloadConfig => 
   }
 
   return config as TDownloadConfig
+}
+
+export const validateCompareConfig = (config: IBaseConfig): TCompareConfig => {
+  check(config.data.cwd, 'config.data.cwd: str')
+
+  check(config.data.packages, 'config.data.packages: arr+')
+  config.data.packages.forEach((item: any, i: number) =>
+    check(item,`config.data.packages[${i}]: { "name": str, "group": str | "null" | undefined }`)
+  )
+  check(config.data.primaryRegistry.repo, 'config.data.primaryRegistry.repo: str')
+  check(config.data.primaryRegistry.url, 'config.data.primaryRegistry.url: string')
+  check(config.data.primaryRegistry.auth, 'config.data.primaryRegistry.auth: { "username": str, "password": str }')
+
+  check(config.data.secondaryRegistry.repo, 'config.data.primaryRegistry.repo: str')
+  check(config.data.secondaryRegistry.url, 'config.data.primaryRegistry.url: string')
+  check(config.data.secondaryRegistry.auth, 'config.data.primaryRegistry.auth: { "username": str, "password": str }')
+
+  return config as TCompareConfig
 }

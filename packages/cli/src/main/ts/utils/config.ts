@@ -1,6 +1,6 @@
-import { IBaseConfig, TDeleteConfig, TDownloadConfig, TDownloadConfigStrict } from '../interfaces'
+import { IBaseConfig, TCompareConfig, TDeleteConfig, TDownloadConfig, TDownloadConfigStrict } from '../interfaces'
 import { DeepPartial, readFileToString } from './misc'
-import { validateConfig, validateDeleteConfig, validateDownloadConfig } from './validators'
+import { validateCompareConfig, validateConfig, validateDeleteConfig, validateDownloadConfig } from './validators'
 
 export const defaultLimit = {
   period: 1000,
@@ -51,7 +51,7 @@ export const resolveDeleteConfig = (config: TDeleteConfig): TDeleteConfig => {
   }
 }
 
-export const getConfig = (opts: IBaseConfig, configPath?: string): TDownloadConfigStrict | TDeleteConfig => {
+export const getConfig = (opts: IBaseConfig, configPath?: string): TDownloadConfigStrict | TDeleteConfig | TCompareConfig => {
   const config = validateConfig(
     configPath
       ? resolveConfig(JSON.parse(readFileToString(configPath)), opts as any) as any
@@ -64,6 +64,10 @@ export const getConfig = (opts: IBaseConfig, configPath?: string): TDownloadConf
 
   if (config.action === 'download') {
     return resolveDownloadConfig(validateDownloadConfig(config))
+  }
+
+  if (config.action === 'compare') {
+    return validateCompareConfig(config)
   }
 
   throw new Error('Unsupported action in config')
