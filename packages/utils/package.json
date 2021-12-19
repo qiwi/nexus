@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/nexus-utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Common entities for @qiwi/nexus packages",
   "main": "target/es5/index.js",
   "repository": "https://github.com/qiwi/nexus.git",
@@ -40,7 +40,7 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "devDependencies": {
-    "@qiwi/nexus-infra": "2.0.1"
+    "@qiwi/nexus-infra": "2.0.2"
   },
   "prettier": "prettier-config-qiwi"
 }
