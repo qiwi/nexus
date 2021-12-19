@@ -1,8 +1,8 @@
+import { performCompare } from './executors/compare'
 import { performDelete } from './executors/delete'
 import { performDownload } from './executors/download'
 import { IBaseConfig } from './interfaces'
 import { getConfig, helperFactory } from './utils'
-import { performCompare } from './executors/compare'
 
 export const runExecutor = (
   rawConfig: IBaseConfig,
@@ -19,7 +19,7 @@ export const runExecutor = (
       return performDownload(config.data, helper)
     }
     case 'compare': {
-      return performCompare(config.data, helper)
+      return performCompare(config.data)
     }
   }
 }

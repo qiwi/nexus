@@ -28,9 +28,7 @@ export type TDeleteConfigData = IPackageOpts & { prompt?: boolean }
 
 export type TDeleteConfig = IBaseConfig<'delete', TDeleteConfigData>
 
-export type TCompareRegistryOpts = Pick<IBaseConfig, 'url' | 'auth'> & {
-  repo: string
-}
+export type TCompareRegistryOpts = Pick<IBaseConfig, 'url' | 'auth'>
 
 export type TCompareConfigData = {
   primaryRegistry: TCompareRegistryOpts

@@ -39,6 +39,39 @@ Output in `nexus-downloads/nexus-cli-downloads-meta-2021-03-17T06:48:21.347Z.jso
 	}
 ]
 ```
+### Compare
+Utility will write list of missing packages and list of missing extra for primary registry in comparison with secondary one.
+
+Output in `${cwd}/missing.json`
+```json
+[
+  {
+    "group": "null",
+    "name": "buildstamp",
+    "version": "1.0.2"
+  },
+  {
+    "group": "null",
+    "name": "buildstamp",
+    "version": "1.2.2"
+  },
+  {
+    "group": "null",
+    "name": "buildstamp",
+    "version": "1.3.0"
+  }
+]
+```
+Output in `${cwd}/missing.json`
+```json
+[
+  {
+    "group": "null",
+    "name": "buildstamp",
+    "version": "1.0.1",
+  }
+]
+```
 ### With config file:
 ```shell script
 nexus-cli --config some/path/config.json
@@ -51,21 +84,21 @@ nexus-cli --config some/path/config.json --data.repo npm --data.name bat --data.
 #### Common
 | Option                                      | Description                                      |
 |---------------------------------------------|--------------------------------------------------|
-| `auth.username`, `auth.password`          | Nexus API credentials                            |
-| `url`                                 | Nexus API URL                                    |
+| `auth.username`, `auth.password`          | Nexus API credentials, optional if action is 'compare'                             |
+| `url`                                 | Nexus API URL, optional if action is 'compare'                                    |
 | `batch.rateLimit`                           | Components API `deleteComponent` method multiple call limit. If exists, limitation will be applied. See more at [push-it-to-the-limit](https://github.com/antongolub/push-it-to-the-limit). |
 | `config`                                    | path to config file                              
 | `action`                                    | one of `delete`, `download`                              |
-| `data.repo`                              | name of package repository                       |
-| `data.name`                              | package name                                     |
-| `data.group`                             | package group. To get packages outside of any group (scope) pass `null`                                    |
-| `data.range`                             | package versions range to be deleted             |
 By default `batch.rateLimit` is 3 requests per 1000 ms
 ### Delete
 
 | Option                                      | Description                                      |
 |---------------------------------------------|--------------------------------------------------|
 | `data.no-prompt`                                 | disable destructive action confirmation (delete) |
+| `data.repo`                              | name of package repository                       |
+| `data.name`                              | package name                                     |
+| `data.group`                             | package group. To get packages outside of any group (scope) pass `null`                                    |
+| `data.range`                             | package versions range to be deleted             |
 ### Download
 
 | Option                                      | Description                                      |
@@ -74,17 +107,20 @@ By default `batch.rateLimit` is 3 requests per 1000 ms
 | `data.npmBatch.access`                      | make meta output as [@qiwi/npm-batch-cli](https://github.com/qiwi/npm-batch-action/tree/master/packages/cli) config with blank values & given access, one of `public`, `restricted` |
 | `data.sortField`                      | one of `version`, `name`, `group`, `repository` |
 | `data.sortDirection`                      | one of `asc`, `desc` |
+| `data.repo`                              | name of package repository                       |
+| `data.name`                              | package name                                     |
+| `data.group`                             | package group. To get packages outside of any group (scope) pass `null`                                    |
 
 ### Compare
 
 | Option                                      | Description                                      |
 |---------------------------------------------|--------------------------------------------------|
-| `data.repo`                              | name of package repository                       |
 | `data.packages[].name`                              | name of package to compare                       |
 | `data.packages[].group`                              | group of package to compare. To get packages outside of any group (scope) pass `null`                       |
-| `data.repoToCompare.repo`                                 | name of repository to compare |
-| `data.repoToCompare.url`                      | url of repository to compare |
-| `data.repoToCompare.auth.username`, `data.repoToCompare.auth.password`          | credentials of repository to compare |
+| `data.primaryRegistry.url`                      | url of primary repository to compare |
+| `data.primaryRegistry.auth.username`, `data.primaryRegistry.auth.password`          | credentials of primary repository |
+| `data.secondaryRegistry.url`                      | url of secondary repository to compare |
+| `data.secondaryRegistry.auth.username`, `data.secondaryRegistry.auth.password`          | credentials of secondary repository |
 
 All options except `--no-prompt` must be set through the CLI flags or `--config` JSON data.
 Options from config file can be overridden.
@@ -127,4 +163,42 @@ If you want to use `--no-prompt` option in a config file, add it as `"prompt": f
         }
     }
 }
+```
+#### Compare
+```json
+{
+  "action": "compare",
+  "data": {
+    "cwd": "temp-compare",
+    "primaryRegistry": {
+      "url": "http://foo.qiwi.com:8081/repository/npm-foo",
+      "auth": {
+        "username": "username",
+        "password": "password"
+      }
+    },
+    "secondaryRegistry": {
+      "url": "https://bar.qiwi.com/repository/npm-foo",
+      "auth": {
+        "username": "username",
+        "password": "password"
+      }
+    },
+    "packages": [
+      {
+        "name": "baz",
+        "group": "qiwi-bar"
+      },
+      {
+        "name": "foo-bar",
+        "group": "qiwi"
+      },
+      {
+        "name": "common",
+        "group": "null"
+      }
+    ]
+  }
+}
+
 ```

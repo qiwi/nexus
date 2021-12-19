@@ -1,11 +1,10 @@
-import { INexusHelper } from '@qiwi/nexus-helper'
 import { NpmRegClientWrapper } from '@qiwi/npm-batch-client'
 import { join } from 'path'
 
 import { TCompareConfigData, TDownloadListItem } from '../interfaces'
 import { writeJson } from '../utils'
 
-export const performCompare = async (config: TCompareConfigData, _: INexusHelper): Promise<void> => {
+export const performCompare = async (config: TCompareConfigData): Promise<void> => {
   const {
     secondaryRegistry,
     primaryRegistry,
@@ -18,7 +17,6 @@ export const performCompare = async (config: TCompareConfigData, _: INexusHelper
     {
       ...primaryRegistry.auth,
       email: '',
-      alwaysAuth: true,
     }
   )
 
@@ -27,7 +25,6 @@ export const performCompare = async (config: TCompareConfigData, _: INexusHelper
     {
       ...secondaryRegistry.auth,
       email: '',
-      alwaysAuth: true,
     }
   )
 
@@ -56,7 +53,7 @@ export const performCompare = async (config: TCompareConfigData, _: INexusHelper
         .filter(item => !secondaryVersions.includes(item))
         .forEach(version => downloadListExtra.push({ version, name: item.name, group: item.group }))
     } catch (e) {
-      console.error(`Could not get data packuments for ${name}: `, e)
+      console.error(`Could not get data packuments for ${name}:`, e)
     }
   }
 

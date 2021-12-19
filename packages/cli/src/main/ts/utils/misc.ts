@@ -1,8 +1,8 @@
 import { ComponentsApi, SearchApi } from '@qiwi/nexus-client'
 import { INexusHelper, NexusComponentsHelper } from '@qiwi/nexus-helper'
-import { readFileSync, writeFileSync, mkdirSync } from 'fs'
-import { createInterface } from 'readline'
+import { mkdirSync,readFileSync, writeFileSync } from 'fs'
 import { sep } from 'path'
+import { createInterface } from 'readline'
 
 import { IBaseConfig } from '../interfaces'
 

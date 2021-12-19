@@ -5,11 +5,13 @@ import { DeepPartial } from './misc'
 
 export const validateConfig = (config: DeepPartial<IBaseConfig>): IBaseConfig => {
   const { url, auth, action, batch } = config
-
-  check(url, 'config.url: string')
-  check(auth, 'config.auth: { "username": str, "password": str }')
   check(action, 'config.action: "download" | "delete" | "compare"')
-  check(batch, 'config.batch: { "skipErrors": bool? }')
+
+  if (action !== 'compare') {
+    check(url, 'config.url: string')
+    check(auth, 'config.auth: { "username": str, "password": str }')
+    check(batch, 'config.batch: { "skipErrors": bool? }')
+  }
 
   return config as IBaseConfig
 }

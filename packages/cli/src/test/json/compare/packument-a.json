@@ -1,0 +1,1619 @@
+{
+  "_id": "buildstamp",
+  "_rev": "13-c99402909b6544406a96898ab1284af3",
+  "name": "buildstamp",
+  "dist-tags": {
+    "latest": "1.4.3"
+  },
+  "versions": {
+    "1.0.0": {
+      "name": "buildstamp",
+      "version": "1.0.0",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "cp -r src/main/ts/ target/ts/",
+        "build:libdef": "dts-generator --project ./ --out typings/index.d.ts --prefix buildstamp/target/es5 --name buildstamp --main buildstamp/target/es5/index --moduleResolution node && libdeffix --dts=./typings/index.d.ts --prefix=buildstamp/target/es5 && flowgen typings/index.d.ts --output-file flow-typed/index.flow.js",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write \"src/**/*.ts\""
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^1.0.3",
+        "@qiwi/license": "^1.1.3",
+        "@qiwi/semantic-release-gh-pages-plugin": "^4.0.3",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/github": "^7.0.7",
+        "@semantic-release/npm": "^7.0.5",
+        "@swissquote/crafty-preset-jest": "^1.12.0",
+        "@types/jest": "^26.0.13",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.6.4",
+        "@types/rimraf": "^3.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.0.1",
+        "@typescript-eslint/parser": "^4.0.1",
+        "coveralls": "^3.1.0",
+        "eslint": "^7.8.1",
+        "eslint-config-qiwi": "^1.7.0",
+        "jest": "^26.4.2",
+        "prettier": "^2.1.1",
+        "rimraf": "^3.0.2",
+        "semantic-release": "^17.1.1",
+        "terser": "^5.3.0",
+        "ts-jest": "^26.3.0",
+        "tslint-config-qiwi": "^1.5.0",
+        "typedoc": "^0.19.1",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.2"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^7.1.1",
+        "tslib": "^2.0.1"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "release": {
+        "branch": "master",
+        "verifyConditions": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ],
+        "prepare": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git"
+        ],
+        "publish": [
+          "@semantic-release/npm",
+          "@semantic-release/github",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ]
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "gitHead": "9975010a8dd47cbed0abaf1d15c98443d0157cf3",
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.0.0",
+      "_nodeVersion": "12.18.3",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-lFPs7sbYQlSdbhqwwMIIoSrMV6/tcCUPaOohvKDipGtM4CkN98a1p8Uhm5Ms8MWekK6OgzllOlpjGbeg7y9NZA==",
+        "shasum": "a1085382192ac7347f7569014f28e12ec29a03f4",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.0.0.tgz",
+        "fileCount": 81,
+        "unpackedSize": 46336,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfU+eECRA9TVsSAnZWagAAw9sP/1p5Wy3djLdGxdDoxaGd\n3HWfA0MWiyNtF9rclXhn7AC06TTY1+Mez3TxVaFXZKohivraM5yQRbUgXt2A\nKGtEj/sm+hqBgdIxQFPvxPc30BxhLnjU0sWDflVJpJmiz9MddaZjaFaqIDPQ\nTaMwXnwL13iCKnYefmcMAZ1kN0TLaSm7tc0azm098EdZjG+nOT1UPZ0kTsFW\nSjU+LtMp/CYcaQDHetC1jGdITpoPzsHC9tHA8ZTxwhnkx76HsXGg2K0vHYV4\nmJeUD+QHXWWwOQretK3NZaSiXoIKBXsDeKBLrpd4K4YmhUSUGCUztMXDt61+\nJCjmIRg4Av5uPOSeQJT45FPRYPdctfzIMOnB79Vw4D98aNRU8BClHHDx4cF2\niZF8RaTrB3NLZjygTecwTtb5fjWdpbSqT9bjk4qAS26LO5gyKegMScdSqXgB\nrNO09j6Z3HnABxoWoWKL6D6sU9hrlW7ugJRO4Ffj2//4AU7mU0WsCWWl7LZK\nkhmE6lUdF+Ky/OHENjTrVQHst3OUmfGIL+Ms6tVnhiRA3ADSzJEXJWgtyGgS\nxuoIS1o36S4jfdZT0HJUXanG/9RFtDOEew2wMC5sboNUkz1r5lETbbIM9Lo9\n+pb5FqMik26tOSFTfLaH1t9g20aY1tBjU3Rf/fGW1+lfMckOwZqH/igQv+dV\nd5SJ\r\n=49WS\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.0.0_1599334275220_0.7272020433644699"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.0.2": {
+      "name": "buildstamp",
+      "version": "1.0.2",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "target/es5/index.d.ts",
+      "typescript": {
+        "definition": "target/es5/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "cp -r src/main/ts/ target/ts/",
+        "build:libdef": "dts-generator --project ./ --out typings/index.d.ts --prefix buildstamp/target/es5 --name buildstamp --main buildstamp/target/es5/index --moduleResolution node && libdeffix --dts=./typings/index.d.ts --prefix=buildstamp/target/es5 && flowgen typings/index.d.ts --output-file flow-typed/index.flow.js",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write \"src/**/*.ts\""
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^1.1.0",
+        "@qiwi/license": "^1.1.3",
+        "@qiwi/semantic-release-gh-pages-plugin": "^4.0.3",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/github": "^7.0.7",
+        "@semantic-release/npm": "^7.0.5",
+        "@swissquote/crafty-preset-jest": "^1.12.0",
+        "@types/jest": "^26.0.13",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.6.4",
+        "@types/rimraf": "^3.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.0.1",
+        "@typescript-eslint/parser": "^4.0.1",
+        "coveralls": "^3.1.0",
+        "eslint": "^7.8.1",
+        "eslint-config-qiwi": "^1.7.0",
+        "jest": "^26.4.2",
+        "prettier": "^2.1.1",
+        "rimraf": "^3.0.2",
+        "semantic-release": "^17.1.1",
+        "terser": "^5.3.0",
+        "ts-jest": "^26.3.0",
+        "tslint-config-qiwi": "^1.5.0",
+        "typedoc": "^0.19.1",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.2"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^7.1.1",
+        "tslib": "^2.0.1"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "release": {
+        "branch": "master",
+        "verifyConditions": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ],
+        "prepare": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git"
+        ],
+        "publish": [
+          "@semantic-release/npm",
+          "@semantic-release/github",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ]
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "gitHead": "69bb9b3180d567a446b80eca1abe0543b07e696d",
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.0.2",
+      "_nodeVersion": "12.18.4",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-8wOpejCkuSGXTNNaTGOcV4xzCxmwW/7HN6ARXIBnC3dR8soUrhDqx2uizEXAQey0cZDITV/p53l4/khVfjsS1Q==",
+        "shasum": "0ed840cdf06aea2676a5aceb270d7c26d3461480",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.0.2.tgz",
+        "fileCount": 81,
+        "unpackedSize": 47270,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfZNgYCRA9TVsSAnZWagAAnSgP/2GoyWEgkOD9Wi+TV2TW\nrycb/7gulHvt2+jlLUqyjGHsObMw5MZivCFfKiBhRA8Y72+TFqSI+li8oTC8\nKD3GFEaueRfa06cJ1TUYRA+R9cswJm7/AbpLu+oOqCwLhJs33C1QepCM7ZUP\nqH6u0Q6bF9HzdpxuobQA02u8fNROPPyGJMjSY+Ej1Ga8NTDpLgUTz/7md3e+\n52onp+0KUUcS6wBS21kdJXY1n83jyKm9BGgLSQJNUUEkGozCMWxCqnsC+QSd\nLvu6KHNqNvV2m9NW6tx8fxEM+D+5u0OGaCJMWi1O0xi8qOrx0aoy+x1IWdv6\nr0LnMBtFy1PpmdZa7MdCHoLX2s3uiVmnpEZlH982PaRglLqfnLTGSD4svd4R\nQglLChu49ReMdJ4bCKdTMJQG9Rk+L3thBtJBJ80hrZ3Ck1s+RGLDOtRjunaZ\nX5U2dsZ/nzWO75UvHebUuY6nV3/n/ghranW1pf7PTKAilq+8AQwUL7+z4cXJ\nFowN5vDDcHFYYnfTSn+S3MCbxJnc/V6F7BrZzhcKiLuxFoWtnCDBK82ZYFJc\nK41jVFc6XMpxDFCkCBK3U45mM7siUrUj9kh6N1R8Jsz5889vih9WxleML0PI\nPgRvZeMuwfpG+EU1ox7NS7ha86u0IzsPFZFLUJcF38D4kw4QSYHQatSV/Wzn\nQEm4\r\n=yH1c\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.0.2_1600444439899_0.7704583169422203"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.0.3": {
+      "name": "buildstamp",
+      "version": "1.0.3",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "cp -r src/main/ts/ target/ts/",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write \"src/**/*.ts\""
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.0.1",
+        "@qiwi/license": "^1.1.3",
+        "@qiwi/semantic-release-gh-pages-plugin": "^4.0.3",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/github": "^7.1.1",
+        "@semantic-release/npm": "^7.0.6",
+        "@swissquote/crafty-preset-jest": "^1.12.0",
+        "@types/jest": "^26.0.14",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.11.2",
+        "@types/rimraf": "^3.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.2.0",
+        "@typescript-eslint/parser": "^4.2.0",
+        "coveralls": "^3.1.0",
+        "eslint": "^7.9.0",
+        "eslint-config-qiwi": "^1.7.0",
+        "jest": "^26.4.2",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "semantic-release": "^17.1.2",
+        "terser": "^5.3.2",
+        "ts-jest": "^26.4.0",
+        "tslint-config-qiwi": "^1.5.0",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.3"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^7.1.1",
+        "tslib": "^2.0.1"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "release": {
+        "branch": "master",
+        "verifyConditions": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ],
+        "prepare": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git"
+        ],
+        "publish": [
+          "@semantic-release/npm",
+          "@semantic-release/github",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ]
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "gitHead": "034481eefa39683204c1aa21b34985cfa75a1823",
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.0.3",
+      "_nodeVersion": "12.18.4",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-1eiOLsKh0S+9h0jWBLZDV31W1S7PIv1G4+sbYJTeqFwiLOoHPTf6NISynoyaIO/0oCWzZEDrif+xyL+22Xbieg==",
+        "shasum": "75c818f0f07a0844ede8842c814d36f12d39f924",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.0.3.tgz",
+        "fileCount": 81,
+        "unpackedSize": 44853,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfa3vkCRA9TVsSAnZWagAA6wEP/1/t1q0tedRF4td2uQzH\nn+hjFES7FPfMWsu8j+Sd9TmZFoDsk+7uKdGnHs09g/cwIxpM7lvlX2kwGGNg\nBrhAvMiAmhgDEBsOnaJtOdB0N8EUYdGHjzUp38FWPNy3fsZ8gQ0z1sw8gwvc\nTJaOwJwy5QmpCyg2+mV+6nqrjOe7cNb+Ioek7+0bHM30j3+Y075kkcNZn1Ov\n9ILwofHwxn0YgN3YcrshosPNb/YGy3MA2WBmixHLO2JUDXHtNbSF+bh8kioZ\n5XEWasmBwMAz/7/Pfef5wJpFjeOdtwTBHn6mwP2ubGe1uZWtbniepASEuOnm\nTRS2b922JBbbi/GDKNQfwcF74uk/KjP8bs6cMa0oO6D6wkUFjO7iJw3E6rzO\nkuKUaV7M4yu8pit90ytHfIAgVqGnFfm0L2zZaX0bjLK+HwMvUtjAyP1WmUaY\nfktwfzHeXsI3XhEh5IZ/MCkOQRS1SIGA0OWyvpHOFjOnAoI8vJdxnbm9wuEV\nE/WtUa+bqPFoyLnTEgkM2DIxhRz0c5W+47GEE7VBFJn1vHnESLM5EcmDhegc\nPiJTLGqzpuCvpOV3+Ikc8ZlqamXsRWuPwpXxPTIQPDSpnnFlVHBmNQBztOsy\nPICpnAb4ZMFKTzmw5KqUi5AVrmtrGrb+XzXy/qK0eZYIs2D9lEUHe7Qrji8F\n1VNA\r\n=banf\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.0.3_1600879587867_0.6451579604396729"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.0.4": {
+      "name": "buildstamp",
+      "version": "1.0.4",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "cp -r src/main/ts/ target/ts/",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write \"src/**/*.ts\""
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.0.1",
+        "@qiwi/license": "^1.1.3",
+        "@qiwi/semantic-release-gh-pages-plugin": "^4.0.3",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/github": "^7.1.1",
+        "@semantic-release/npm": "^7.0.6",
+        "@swissquote/crafty-preset-jest": "^1.12.0",
+        "@types/jest": "^26.0.14",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.11.2",
+        "@types/rimraf": "^3.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.2.0",
+        "@typescript-eslint/parser": "^4.2.0",
+        "coveralls": "^3.1.0",
+        "eslint": "^7.9.0",
+        "eslint-config-qiwi": "^1.7.0",
+        "jest": "^26.4.2",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "semantic-release": "^17.1.2",
+        "terser": "^5.3.2",
+        "ts-jest": "^26.4.0",
+        "tslint-config-qiwi": "^1.5.0",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.3"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^7.1.1",
+        "tslib": "^2.0.1"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "release": {
+        "branch": "master",
+        "verifyConditions": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ],
+        "prepare": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git"
+        ],
+        "publish": [
+          "@semantic-release/npm",
+          "@semantic-release/github",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ]
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "gitHead": "620c5d3393685bb07bafedd7871ac6479857df47",
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.0.4",
+      "_nodeVersion": "12.19.0",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-uZLC7hhK/CIsEKa6Xf0yU9K/7N9szmcjzb4sTRQusf61Ffy5+cZe2Sl5h5VLJ2IAAZBRKMpUOHWDT6oCeIsAQw==",
+        "shasum": "f5858bd9d35004fb19dcd83b2606f1ff8c12a157",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.0.4.tgz",
+        "fileCount": 81,
+        "unpackedSize": 45158,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfkY0KCRA9TVsSAnZWagAAFqwP/13jO1DMaxnwIsS1T60E\nnl749AXXlEGxDC+Mn9Z6FysEyJy/rfNar0Qfp1CL4saQO85TsUi0rP0T336W\nzOZ6Hyg6s5FuzeA4JdKLasAT1/smVJeFInGYVesf6ChEDwwaRjJdQkkz80Or\n4zdnCnraBci8wcc7ylUz8xPmcOcOrqyWMSYsEOTvNmD2p2D8ocmgF58ReNSv\n5m/OaVoXq2TTAPDLHKJp6J3BGQs08Q0+/gyO1thoZS5n/ssPJ+4WefsuRgI1\naGVVmeCo7Mw3XsQWbyqYdp1ee8CLOPPunow/ENnCY4EKmU8NcKbKEpY0pr68\n1Xf6T99TW0xfNq+NWPafFJoprr6stbRJzov8oAR2M4SDPUtixxJY9wsKCdDT\n592+MUbh/r9CxoMPHbqigf+RHPiUg/UgHT4VMOW4zDeFkZ+5vokN5iLXGCEw\n2VnU99uH/caReig9V6IbxCBPbLbIr1bccjUdsATYr090VDhG4XIKD1mDLbJ9\n+SLUww3Wgv16N5K9Iw86PfIpnY3gy+hjLBurE2dtEtIIkiTKzF2pFTLOdLnJ\n77rw84cdEfVnbiEt6ERii2zSj27d7LTgIhZEoHHUGlEWQu4fhlqcIQIS6fqo\ne+Zc07WBB3nmy+zooVMx6qr6NWvmzuhvi5oJELqwOi+w3/MzJyRcduSbkoTz\nkPxJ\r\n=BAlw\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.0.4_1603374345490_0.3140771647849039"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.1.0": {
+      "name": "buildstamp",
+      "version": "1.1.0",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "cp -r src/main/ts/ target/ts/",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write \"src/**/*.ts\""
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.0.1",
+        "@qiwi/license": "^1.1.3",
+        "@qiwi/semantic-release-gh-pages-plugin": "^4.0.3",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/github": "^7.1.1",
+        "@semantic-release/npm": "^7.0.6",
+        "@swissquote/crafty-preset-jest": "^1.12.0",
+        "@types/jest": "^26.0.14",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.11.2",
+        "@types/rimraf": "^3.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.2.0",
+        "@typescript-eslint/parser": "^4.2.0",
+        "coveralls": "^3.1.0",
+        "eslint": "^7.9.0",
+        "eslint-config-qiwi": "^1.7.0",
+        "jest": "^26.4.2",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "semantic-release": "^17.1.2",
+        "terser": "^5.3.2",
+        "ts-jest": "^26.4.0",
+        "tslint-config-qiwi": "^1.5.0",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.3"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^7.1.1",
+        "tslib": "^2.0.1"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "release": {
+        "branch": "master",
+        "verifyConditions": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ],
+        "prepare": [
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git"
+        ],
+        "publish": [
+          "@semantic-release/npm",
+          "@semantic-release/github",
+          "@qiwi/semantic-release-gh-pages-plugin"
+        ]
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "gitHead": "037de2cc6c12f6778adf47431b6b4558de7a5cb8",
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.1.0",
+      "_nodeVersion": "12.19.0",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-Onm28GZCdCwF0u3rGP07WRomDv06m6KTr8HkSCYgbtPWtdt0PhW92e2TMVf5oKgMm8yO1RVsESPrp80W6IQx+A==",
+        "shasum": "c9d1ad8832277389a5d8a49d199f883127a9744c",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.1.0.tgz",
+        "fileCount": 86,
+        "unpackedSize": 48452,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJflx0FCRA9TVsSAnZWagAA0D4QAIyLhzUjQkJM7MK1hzLe\n9J94zHUFyCFdTN21m1qDma4c9HP/tB2cneGWZmARTYleAEvrPIxQ8I+LeRM4\n0ah4UGt+ebOjy46YD/XjzmG7Oo69sRcLGuoSGuD6r1fpke7P6S3UA6jXRHpn\ncf/GynPzMucCdsztDGeXimfM+NozZux+evvy0ts7BQIY37Ba/B4z6zhBOrGB\nFt60aOjPyoegYR8RK7ZJqgNnQE+VCiQEY6U3UmxkrHKLSfIx4VmJSkJ6ZMk9\nkJX500qfGkpe5VdtbJX3R231km0V7oGFbL6rJ1hYoq8MOzJlokAA7epgiR6a\n3jKJEELkVUsP5M4V4KAppOS2nPpuXj2GUD+VlxtBaxknstMGbk5lZf28FykO\nMmuJMlePKUMRkOQ8OvZRLWf4PMMmp9XNhohR2RK2oQLeCMZ4xL677acvQu2/\n9ulWubPdRKV+BFi9NVnoC1OmD2VGg7yR/5SbdMj7KFEki38oi6No4at6zQ0p\nbOS6i+5LwQ22rKMkpDaX3yXEMpwBkbw/cpYdoMfRV6KJOxVv1dm3JS8+I1R9\nnI6vJgka5MsHgP/JyldDFksPmhNNwV3QozTTUtQK//Fd0UEsXJvczgjjEVF4\n3JhsL3+bs8WIRr56b2bEmJx25KTcfFtYPgOThTaDs3p8nU+eJqrCxWmrh52W\nSD/F\r\n=Ev5D\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.1.0_1603738885251_0.0259220874715822"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.2.1": {
+      "name": "buildstamp",
+      "version": "1.2.1",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write 'src/**/*.ts'"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.0.1",
+        "@qiwi/license": "^1.1.3",
+        "@swissquote/crafty-preset-jest": "^1.12.0",
+        "@types/jest": "^26.0.14",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.11.2",
+        "@types/rimraf": "^3.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.2.0",
+        "@typescript-eslint/parser": "^4.2.0",
+        "coveralls": "^3.1.0",
+        "eslint": "^7.9.0",
+        "eslint-config-qiwi": "^1.7.0",
+        "jest": "^26.4.2",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "semantic-release": "^17.1.2",
+        "terser": "^5.3.2",
+        "ts-jest": "^26.4.0",
+        "tslint-config-qiwi": "^1.5.0",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.3"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^7.1.1",
+        "tslib": "^2.0.1"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "pkg": {
+        "scripts": "../core/target/es5/**/*.js"
+      },
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.2.1",
+      "_nodeVersion": "12.19.0",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-UW/DELNMv2ZDVSQDQe4XdtO7smskugZW5ahIaJCOAresABZkkpBVXFsUpxYKulVF29oaY8lLIP+dMSNhz5SkPg==",
+        "shasum": "c6b9910cd121449c783a5e82131199f596192fbe",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.2.1.tgz",
+        "fileCount": 117,
+        "unpackedSize": 63647,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfmowwCRA9TVsSAnZWagAA7SUQAKUfozQ4zWRBNAUJcp85\nXRBjGrLb8iq8VuD84rPUE7Czs41Yoal3I+kHPLmIgbBRrGuFbg+DX1T2fOCF\n7rG408eQ5Yz0eodwcDoxULLKN4uB27z2Lg3+pLulrUt05hshFjKMrpYsz4jP\nAP/k4pkKKnNr5cgeSHVLjdYb7pVVrZzyAXpR0MBNkoHoOGO3b2/dIzDHS7i7\njlkuWkjHsrfYd3r6Dj/j4HF1iV9gmzqcrwCqP7J1EVcjAqU+HbFtd3abuJJB\nb8ObZwWyVXgKvGep7M4LvKEocLtehzS1qb3gyVeAJtxSwsMWY9fw6OGcTTl0\nf3UVsfWoL1hDw9uBHc8ilrUhIcm72lFenGOt20PERS9nqNNUwUVAbm8Jze/C\n5WbCpmXUZ3u8e836JYJpS48OiIAQCUgJu59QWNbbStDiE3ivjkQVnNyv+9DS\npLmpP1mVLITb4W814dwSV+fS/+n1AEwNOnlypMfhQiwzVwc74Ehx4SWjZnpd\nuFVmObzMK0SNzbrPl3gChExRm1tX/v59smsGkjtn0/4zPQIkYLxWhSnJE5Jh\npWs2GR6OKWOiu0KsVLlxIb9MiKhjdmZ31oUSvm52JWHY91Ff7XCJcjLdj6Hp\nxcCwyEWL4aUV5W6VruuRCRq+Jzn4X3vuUY/fybuOXuf8kAYFoK6VhfpfJF8u\n3yTD\r\n=0hVR\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.2.1_1603963951851_0.6877714142933462"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.2.2": {
+      "name": "buildstamp",
+      "version": "1.2.2",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write 'src/**/*.ts'"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.1.4",
+        "@qiwi/license": "^1.1.3",
+        "@swissquote/crafty-preset-jest": "^1.13.7",
+        "@types/jest": "^26.0.15",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.14.6",
+        "@types/rimraf": "^3.0.0",
+        "coveralls": "^3.1.0",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "terser": "^5.3.8",
+        "ts-jest": "^26.4.3",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.5"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^8.0.0",
+        "tslib": "^2.0.3"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "pkg": {
+        "scripts": "../core/target/es5/**/*.js"
+      },
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.2.2",
+      "_nodeVersion": "12.19.0",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-Kc+pefXSECg7qGN7YyguEQtD5xV6DMnpScbEgeZ/VraTKbHFHtr20eF09hNfAhnTXNb7pVK/WFvOAh6N0BTIlA==",
+        "shasum": "f1843d1d70a6faa2bf81fc068cb34b5b5a0afd63",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.2.2.tgz",
+        "fileCount": 117,
+        "unpackedSize": 63835,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfm/kBCRA9TVsSAnZWagAAGmQQAIuXeo0sOvGRHv4DDEzr\ntjQ5amhetTz0ar6IKytVYXWj0quhbA0bFurKnvORVp0d8gpd06aYONyefpWl\nZkfMtMYVlLlc0gTQ+nEl8heqmT6sJnxFR3GsIuALVa49SniBukzfynhqYBX2\nUATNKrV/uJAjFzghmpyl+4CRIIZo6EOdtO3GkQE3LL5GyPYWCn/T/fALAer3\n6jOIw4slFTLwdOhn8/67MhI4LgnpkYgI5+LW7AEA66ZrAmuirrLPZIYxITsG\npqrk6/mNgO512oJwQI+iuPuAmkAmBoQjx1Ajw5Wq6kPDWfgvt5JU2hz3q5Gr\nHUtqQKackBqEda7B9/NRvbiqgC2w5hRAumvNiEgYr5QwBVJMbNu3UfGgjToN\nnoWbRkxzec05wdFL4N+Wf9DihTVQZPPjZOXS+IGUKFsySV1QSD8ShA7mUHcT\n1tS6828ZA2xvSK3s7tOm/9wcC8hLDngEopsGiB9cvs+IRwoQCpL69cCTROKF\nlG0YMRV6KC/VISrFuK1tmzYIKW8juPfux1Mnx6LDtRhCQ01iic3Gn1MORjvY\ncUEqfdTipP9YVGurJJODzsKls95Vk0zVhjx/UI6ROag4FPkRFxnuC5HBS+Dc\nnzIMdeFb46cjjxijjwAZQ6dfLa6DuHXMXGUyxi4oiBK+cHEln2/BJvpL/V+V\nD0cV\r\n=wRfk\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.2.2_1604057345536_0.19976727651578852"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.2.3": {
+      "name": "buildstamp",
+      "version": "1.2.3",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write 'src/**/*.ts'"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.1.4",
+        "@qiwi/license": "^1.1.3",
+        "@swissquote/crafty-preset-jest": "^1.13.7",
+        "@types/jest": "^26.0.15",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.14.6",
+        "@types/rimraf": "^3.0.0",
+        "coveralls": "^3.1.0",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "terser": "^5.3.8",
+        "ts-jest": "^26.4.3",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.5"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^8.0.0",
+        "tslib": "^2.0.3"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "pkg": {
+        "scripts": "../core/target/es5/**/*.js"
+      },
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.2.3",
+      "_nodeVersion": "12.19.0",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-/qC571dG3EQfTrzzVq/n8AjZQuzXIggN2uqpaGrdK5wMXkV2DhlcD0YF9ILge9vIwqqZ3ZVoO4xMEcKYTtpQww==",
+        "shasum": "dab7ee28343db9efb1971d53c84ac2e937e20659",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.2.3.tgz",
+        "fileCount": 117,
+        "unpackedSize": 64670,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfnGZ9CRA9TVsSAnZWagAAz0sP/jB4Ljq61H/t+BySB+UI\n0vWb+NqgYnj3uhlca9cUfq+Ua1Za99utI4fJjKGe8czoZMs3pOI1wtFugLE3\nWqE4LidcgLqcV1UaVY4WSRjvO3ghjLcEuZZmFq4gewez3kYTCHZfj9f66t2V\nvZoBaTIND9yhMowweXFgqeOpiR2H4spYulyKB90iJVHntlPMQFDUYl7DAAiW\nD2gNzMhorZegoa4Z5MZ7yGWcMKsZRE3CjBEE9F6mOSpkR3gi/+VSZBJ8nV1n\nLNB5exXtqTHTyA6Tf8dMebmHKJOP0vWHiswsdf02PzRSykoExojCt90vffDR\neE5gLC16J0iT8WTINGz46o4RErBYB3S1yDDgGFNCNC05ABo/69N6E4HQYX03\nsWkFBeWZizWG/taVv4NssOx26RdSPTNBkwzNMZOKwV/l5GZyXgbZKm0nZwhx\n3PRb8TKNLAOH84lEITkZVBEZVKkJ5qpq+FQstBVtszOWsV/t/sHPA3NzqVaS\nFli63/nBgejM729g9p1x9yGunuHD3GvY358IL6T99XuMKzrR5UdqoNvkJwGS\nHOmzUOUuuGqdM/uTtfMpEi2H2xt2onLEW9unWEtVLhnkssiz8UG0YvTf934t\nhxB1Rv26jX0uGIfZDE0z5xNYkWWjjw7xE9LoumiFyHGwjt3koVFBPpHqCRKI\nBFCh\r\n=idhz\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.2.3_1604085373011_0.4514519036462241"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.3.0": {
+      "name": "buildstamp",
+      "version": "1.3.0",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write 'src/**/*.ts'"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.1.4",
+        "@qiwi/license": "^1.1.3",
+        "@swissquote/crafty-preset-jest": "^1.13.7",
+        "@types/jest": "^26.0.15",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.14.6",
+        "@types/rimraf": "^3.0.0",
+        "coveralls": "^3.1.0",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "terser": "^5.3.8",
+        "ts-jest": "^26.4.3",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.5"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^8.0.0",
+        "tslib": "^2.0.3"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "pkg": {
+        "scripts": "../core/target/es5/**/*.js"
+      },
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.3.0",
+      "_nodeVersion": "12.19.0",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-OagV2di3bvxqyRlO3eIdIfsls6SwCHG+s80tkuCeikcWYLMrnbWe9OGx+ao3kc47UFRX6QjQs/XLdc8Yb0ozOw==",
+        "shasum": "44f212a331e5027438cb82a4746cf2dea0636fac",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.3.0.tgz",
+        "fileCount": 117,
+        "unpackedSize": 65855,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfpFMiCRA9TVsSAnZWagAAiRAP/2rWalM6T8lUeeqsPrC7\nO+2u01iGDlapIz3/IehiA31mxnKg2C5vco5e7Kpi8KdKE4c0XI2Tm5YtMyHu\nl5KiRUaU2HHRutH9+jfMcjF1gvKAvLgxraOOrrK1gJzNz/YW7vo+C3MP/ZBt\ngr/if4Zprl2RC1itVaLlVOy/u9g+Vt7YI+2A9mMsLWl/WjQC8vrZApvrVerO\n+/8KPYjKvKUnzH5SurfC/trP5J4Hs/7wkwObT8/rIikzmBvSnf91yBvmkfKk\nsR5qNwXJbH408Gv170nrTC8BrFF1IAh1zpiCBCA6JSny2mot4YP/5bD7fZm6\nxjtf4VO+U8JGimEKMzIRDZuH999m4KsCffqG03tDE+Bpk7HOfrUr5QpV8x+J\n8ZxKUIGOkv6YNqhJjMQYqnCy678WahBdJMFiug1jcKobC5hjGf/xvSih5F8y\nHqFEAuy19iRwBYecILyzoYbNgbLeQi3/eEt0052tH0dfl6WZkoEx/eXGymAv\nUDNqFnv7qtSA5V3nOcb+LbYf1v9LI4+pKYeXQKFlsJzbJ+MSpfrGwHIcdhyQ\nJaoAiq4pjS7K/vPiDXkh8VPiRazymsR20+tWBcdNmP9bwupjgwJEt0tAPwWd\nvD7vhpkxJ2p8cUHOZPde/4CM4I2utsyX3LCHoZvp+pCCUseR09FFZuiZsYRR\nKG71\r\n=oHyy\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.3.0_1604604705458_0.8073863143850981"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.4.0": {
+      "name": "buildstamp",
+      "version": "1.4.0",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
+        "build:local": "yarn build:es5 && chmod +x target/es5/cli.js",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write 'src/**/*.ts'"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.1.4",
+        "@qiwi/license": "^1.1.3",
+        "@swissquote/crafty-preset-jest": "^1.13.7",
+        "@types/jest": "^26.0.15",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.14.6",
+        "@types/rimraf": "^3.0.0",
+        "coveralls": "^3.1.0",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "terser": "^5.3.8",
+        "ts-jest": "^26.4.3",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.5"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^8.0.0",
+        "tslib": "^2.0.3"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "pkg": {
+        "scripts": "../core/target/es5/**/*.js"
+      },
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.4.0",
+      "_nodeVersion": "12.19.0",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-ZTHgSexp+sTCdHIl+bVoBcEuigonRraQ7wJAjOCrpW6vJxX4wxH+99TcIjhdfJARmZmhXQv2+zpEB8+mXzXuRQ==",
+        "shasum": "eea6f438970b3c8a239ae5652cc23bd5c2f38763",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.4.0.tgz",
+        "fileCount": 117,
+        "unpackedSize": 67048,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfqPFOCRA9TVsSAnZWagAAnfQP/1tS+A3tzbSaRde//Jeg\n4oBVJEYFW0RhFaDBE+VkiV7/ZGoadJY3i2YOFjUdeeU6w9yCJes2e5ZmaVj6\nVm/Isx3ZjZlTCpVae0NmtxHodCBqwJYVIo/9jgSq/7pEEdm1LzoOc1Apd4s2\nsfzt3Letv5IRyKv4GHoc1TGBVIbDbjO07b6SMJGmqSDMm2rylLGBZFTpjAip\nWfxp9XZo4RG52oZBnD7FTrQ8cl57p+nc5uhqu5+6tlpHzWg9sE70ddJikxPe\niEk+9MpQ+Dh3f5FoVGIWOkcg65yhvYBomCbRxi0mFpbwte2xt4LCs1SMNlHJ\n+JOpKons1vs9UrA5xfoHcHGm9Wty5NFxO7a5mX5bSAL81AnqWGI22kuSZGWI\nAMvobYIhrpO6xUN/dqow+sXP61SU9IbF3UkI2SK31wckTQIIfg/LHwppJnOO\nUzHfEvrvXveVtg1agpUsFDhI0sjnwwK8HfTg1AB0vWqMjHJTvZtIN1OFtR22\nSgRH/ZJ4oTqxxsbiHE0c1Zkj0cd9wJ4lY+7WWENrIA+5MYrotUPsnXcyStXM\nzXMWI0WmqXWaEABHB5wq+QG+0t5e91FV90ovTKq9MN871t7f5JMV6fMpw6ir\n7zsTQH0PsArKg6dtTGBF19Vh1OrKBlSwBX9hP2f1QmeLrLmqYQBam/ql3YLw\n2+UE\r\n=TQJ3\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.4.0_1604907342084_0.1674791459654177"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.4.1": {
+      "name": "buildstamp",
+      "version": "1.4.1",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
+        "build:local": "yarn build:es5 && chmod +x target/es5/cli.js",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main --ignoreCompilerErrors || exit 0",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write 'src/**/*.ts'"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.1.4",
+        "@qiwi/license": "^1.1.3",
+        "@swissquote/crafty-preset-jest": "^1.13.7",
+        "@types/jest": "^26.0.15",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.14.6",
+        "@types/rimraf": "^3.0.0",
+        "coveralls": "^3.1.0",
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "terser": "^5.3.8",
+        "ts-jest": "^26.4.3",
+        "typedoc": "^0.19.2",
+        "typedoc-plugin-external-module-name": "^4.0.3",
+        "typescript": "4.0.5"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^8.0.0",
+        "tslib": "^2.0.3"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "pkg": {
+        "scripts": "../core/target/es5/**/*.js"
+      },
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.4.1",
+      "_nodeVersion": "12.20.0",
+      "_npmVersion": "6.14.8",
+      "dist": {
+        "integrity": "sha512-6ebBoYJWqhCYVYCIHRdJ64wEfbPqPqc87Q6+LvLCL+FHBN9YiBk4olD339wfeEGH9WvHknnLzW7aKJpqf4aMEg==",
+        "shasum": "7a2f2feac9992681162db51b0cc9028fb9a09476",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.4.1.tgz",
+        "fileCount": 117,
+        "unpackedSize": 67696,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfviv1CRA9TVsSAnZWagAAMEYP/Ai+O7+Q/lEf5qjtokFC\nyknIBGbmI6VYJCEOC5N5F0A4dlh+FbEgMjytmSI25tVge7wDESod4Egm/1En\nY7if4CIw0slAclRFFiTcVP9KBZMjoaEUTgoLVhV8qDx2LpWjN9OusvE81FOZ\nqmqXLNrEUlODryq6rDAK3F7sAoJbC892keBuT64ECoQ2wtA3AC4sKQhuXmxy\nNA6C01Khzd98KTUfW5hKfRVWulpBpMGeQea3vVv6KyxOqSeLKz4EZMtj4cc1\nPZm9se/lvZvP2ZIGUs7C3UMvdi1TdZt1e3r/nFwbvCFR+m1a0ytKQ6Rlhg7D\nZrFoueaynfN9QWRFpAoTLq36ZNXy9VjMcQYkCw3Z/0LxxAGaREOZuzD2JqOr\nyU1yM1TkNSYYqoILEwGqPpbtliNUxgHjV7N8vv3+YSYQoQ5XTLXe06ioD+/J\n/RQuSPUnlWo1NpIjS7K6GklgZjLxnFau8nD2lNMavxZjwZYTRMdE8uDtlMxR\nqM/YTQu9g9hjAu+AH505nG/fWsZrGCLlCgTuY63l3pH2pKpjsOZUtYeSH4N/\nE5E5YWQbemvCzORhpbsMF4o6blbSolFE6tQEG0QNdvalGrNuZtlBoFwMMuk2\n1fKz/Tc+l87OtBAH81xp35LZm/aFptFIhcmP4I+7pgYXiJBhaco9GOrXHzEX\nRLSJ\r\n=rNPn\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.4.1_1606298612909_0.661727596093068"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.4.2": {
+      "name": "buildstamp",
+      "version": "1.4.2",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
+        "build:local": "yarn build:es5 && chmod +x target/es5/cli.js",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write 'src/**/*.ts'"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.1.6",
+        "@qiwi/license": "^1.1.3",
+        "@swissquote/crafty-preset-jest": "^1.13.7",
+        "@types/jest": "^26.0.20",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^14.14.28",
+        "@types/rimraf": "^3.0.0",
+        "coveralls": "^3.1.0",
+        "prettier": "^2.2.1",
+        "rimraf": "^3.0.2",
+        "terser": "^5.6.0",
+        "ts-jest": "^26.5.1",
+        "typedoc": "^0.20.25",
+        "typescript": "4.1.5"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^9.0.0",
+        "tslib": "^2.1.0"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "pkg": {
+        "scripts": "../core/target/es5/**/*.js"
+      },
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.4.2",
+      "_nodeVersion": "12.20.2",
+      "_npmVersion": "6.14.11",
+      "dist": {
+        "integrity": "sha512-AjnQ1Zb79+0cqs5l64K4S5IA9EibVOdVmOFzPPGWfdV5N3+o6DnaadTqmQXYHXQMFecR4geqyr7YHS4mQxIPiA==",
+        "shasum": "f4e917f68c37481e88bb6b1d37c768546e766d2e",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.4.2.tgz",
+        "fileCount": 117,
+        "unpackedSize": 69480,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJgK5BPCRA9TVsSAnZWagAAc6YP/j7aQxcbyboJDyy2Rsov\nNFrCo88sNTGxreKWtBQs7NqloK8xhKdpttYSuc1FoxTRrmkWm04llPefTq12\nJLLjU3OfK+0YWyFVYwCPKdTcNd5S7YDZUDt7Blce+KvR6JHbwX3FchNycvED\nNzK+t+VstuZNdbfKbSSkkElMK7XDx3vhv0KsohXVqFi41oGce3qE50EMQwjm\nNf5MIc3Nh2bmnO0nn/V+eEve3phSEKc1Q3epdvrdsjiB5QgBpHD8twR7yppy\n/EOhVhIuuVTjvy8w9SM+C98z+Ws44Z6Yp1LQO40K3+3zUiuguscbZhg5yHnv\nqa0akiIeYdvy7JpfwlTc6NHHBbC8GFjd6rJbXz5aWH0I8Oq+M46RxevGrZUs\nUqA9MplQTZugTzwU7g8xIgO53h8yWaDPPkFlAuSZJOa2UCN9chjO0BIZzC3T\n8oDCFWnLIk/9IJuLbZhm/4XJyS64VCm43q0krqaW2dtPWMKPbONOt0iaMgFl\nS9XSo9qp0yExia1R8+WUaJWOAQpQuAZVvPENfPKrldjZVjys/axqrMEUBFmf\nzyo2b/ApZ0OKJ0dodOkwPEmt5QZ81UHpQYVK0EYhuxVfSkeJ5DsFx/uF6ls6\n8uuuiqkmfKOIYh+E+9mN7uLQ4kazqytTJ5wGZr6SFr6iI9hdQPNpu7D46o0R\n5qsj\r\n=JbX3\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.4.2_1613467726707_0.9584256617478957"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.4.3": {
+      "name": "buildstamp",
+      "version": "1.4.3",
+      "private": false,
+      "publishConfig": {
+        "access": "public"
+      },
+      "description": "Buildstamp",
+      "source": "src/main/ts/index.ts",
+      "main": "target/es5/index.js",
+      "types": "typings/index.d.ts",
+      "typescript": {
+        "definition": "typings/index.d.ts"
+      },
+      "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "jest": "jest -w 1 --config=jest.config.json",
+        "test": "yarn lint && yarn jest",
+        "clean": "rimraf target typings flow-typed buildcache",
+        "build": "yarn clean && yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
+        "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
+        "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
+        "build:ts": "mkdirp target/ts && cp -r src/main/ts/ target/ts/",
+        "build:local": "yarn build:es5 && chmod +x target/es5/cli.js",
+        "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
+        "test:report": "yarn test && yarn push:report",
+        "push:report": "yarn coveralls:push",
+        "coveralls:push": "cat ./coverage/lcov.info | coveralls || exit 0",
+        "docs": "typedoc --readme README.md --tsconfig tsconfig.json src/main",
+        "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+        "postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
+        "format": "prettier --write 'src/**/*.ts'"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/qiwi/buildstamp.git"
+      },
+      "keywords": [
+        "build-info",
+        "buildstamp"
+      ],
+      "author": {
+        "name": "Anton Golub",
+        "email": "a.golub@qiwi.com"
+      },
+      "license": "MIT",
+      "devDependencies": {
+        "@qiwi/libdefkit": "^2.1.8",
+        "@qiwi/license": "^1.3.0",
+        "@swissquote/crafty-preset-jest": "^1.14.0",
+        "@types/jest": "^26.0.23",
+        "@types/mkdirp": "^1.0.1",
+        "@types/node": "^15.6.1",
+        "@types/rimraf": "^3.0.0",
+        "coveralls": "^3.1.0",
+        "prettier": "^2.3.0",
+        "rimraf": "^3.0.2",
+        "terser": "^5.7.0",
+        "ts-jest": "^26.5.1",
+        "typedoc": "^0.20.25",
+        "typescript": "4.2.4"
+      },
+      "dependencies": {
+        "find-git-root": "^1.0.4",
+        "meow": "^9.0.0",
+        "tslib": "^2.2.0"
+      },
+      "bin": {
+        "buildstamp": "target/es5/cli.js"
+      },
+      "engines": {
+        "node": ">=12.18.0"
+      },
+      "pkg": {
+        "scripts": "../core/target/es5/**/*.js"
+      },
+      "bugs": {
+        "url": "https://github.com/qiwi/buildstamp/issues"
+      },
+      "homepage": "https://github.com/qiwi/buildstamp#readme",
+      "_id": "buildstamp@1.4.3",
+      "_nodeVersion": "12.22.1",
+      "_npmVersion": "6.14.12",
+      "dist": {
+        "integrity": "sha512-KDO9+T5OlS86g2LCKXvBo7kdJBdZbIE3VBxZ9jeUAxADG7+xtdvTDEq+BmtkKwzxzNKbGweOHtR4rKBYx2w+HA==",
+        "shasum": "b3ad4a75b50269ac97ec847336f0c05c21a57457",
+        "tarball": "https://registry.npmjs.org/buildstamp/-/buildstamp-1.4.3.tgz",
+        "fileCount": 117,
+        "unpackedSize": 69823,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJgtm1xCRA9TVsSAnZWagAA+xwP/R6oJhSrVhsZWY68cZO9\ncXzhvVtVkp22M7Cz45jRyxlKuG3le1HLaJGO3XBa98NnSqHpeKhNouSIJlG1\nDr+wITv1upi3nS+2k0r3+PJOQ3uyQMGQR5QXCHXZ+qovScuJ5AngqXgmk2Tp\nh68c4rGYweuifovd+FddoRhoi9kMcPUmCw4+5hMBY8nSKpDhOXAmtvyQBpHS\nDF+SpE8rRqzyDXBuQQUe8Ol3SkFahER5QF70BD8/OgE0PLsOXb06ZUi6ppKb\nN9jdh1VwLUnqnsuCpaOJMn2jmhqq0Sf1MByjGFzq5uhN8nIvoOgjy4AqpOpE\n1p19N0BWs/HpKQocmd3L1R08bgPQi0k/j6bnrReKq2xKhqNXjlAMTBq6O/cM\neQ7VzxjA87P0PQ+rkpuy0W+J6f0uux2IJuGt1HG8k9eX26cY3I8CMZ8ERkuy\nFiZCauqfJsK6BOKLfrLTq8uYnCxodPkKq+yUPEpmhIa7h7SUk96AarNvUeGN\nxFTLZgLT9TiRTB77UKk1f1HmWm9mmrL/fuRoaM4gW2cq0erhp7Em8t618jzc\nDfqMNk2hIc1z3uh5Gfz2zhGkbYLcaPqSy1H4A5qNHpd+aOOkoUD0K4cbIhSv\nRqyHOHMkWZ9xS4bDGoV4RwW6GksT2M6RzULwspeVx5hmkbJf4pDXwTOy5zEn\naJGR\r\n=ysXK\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "qiwibot",
+        "email": "opensource@qiwi.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "qiwibot",
+          "email": "opensource@qiwi.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/buildstamp_1.4.3_1622568305208_0.3826873089316758"
+      },
+      "_hasShrinkwrap": false
+    }
+  },
+  "time": {
+    "created": "2020-09-05T19:31:15.173Z",
+    "1.0.0": "2020-09-05T19:31:15.310Z",
+    "modified": "2021-06-01T17:25:07.578Z",
+    "1.0.1": "2020-09-18T11:20:56.459Z",
+    "1.0.2": "2020-09-18T15:54:00.081Z",
+    "1.0.3": "2020-09-23T16:46:28.006Z",
+    "1.0.4": "2020-10-22T13:45:45.685Z",
+    "1.1.0": "2020-10-26T19:01:25.486Z",
+    "1.2.1": "2020-10-29T09:32:32.016Z",
+    "1.2.2": "2020-10-30T11:29:05.656Z",
+    "1.2.3": "2020-10-30T19:16:13.160Z",
+    "1.3.0": "2020-11-05T19:31:45.630Z",
+    "1.4.0": "2020-11-09T07:35:42.278Z",
+    "1.4.1": "2020-11-25T10:03:33.072Z",
+    "1.4.2": "2021-02-16T09:28:46.826Z",
+    "1.4.3": "2021-06-01T17:25:05.398Z"
+  },
+  "maintainers": [
+    {
+      "name": "qiwibot",
+      "email": "opensource@qiwi.com"
+    }
+  ],
+  "description": "Buildstamp",
+  "homepage": "https://github.com/qiwi/buildstamp#readme",
+  "keywords": [
+    "build-info",
+    "buildstamp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qiwi/buildstamp.git"
+  },
+  "author": {
+    "name": "Anton Golub",
+    "email": "a.golub@qiwi.com"
+  },
+  "bugs": {
+    "url": "https://github.com/qiwi/buildstamp/issues"
+  },
+  "license": "MIT",
+  "readme": "# buildstamp\nUtility for gathering build details\n# Installation\n```shell script\nyarn add buildstamp\n```\n```shell script\nnpm i buildstamp\n```\n# Usage\n## CLI\n```shell script\nbuildstamp --out.path=some/path/b.json --git --docker.imageTag=foo --date.format=iso\n```\nOutput in `some/path/b.json`:\n```json\n{\n  \"git\": {\n    \"commitId\": \"007b8f715eb5670662d90f90cd1916398d1dfe98\",\n    \"repoUrl\": \"https://github.com/qiwi/buildstamp.git\",\n    \"repoName\": \"qiwi/buildstamp\"\n  },\n  \"docker\": {\n    \"imageTag\": \"foo\"\n  },\n  \"date\": \"2020-11-05T15:16:35.904Z\"\n}\n```\n### Flags\nOutput is always printed to stdout\n\n| Option              | Description                                             | Default                                |\n|:--------------------|:--------------------------------------------------------|:---------------------------------------|\n| --out.path          | path to generated file                                  | output is not written to a file        |\n| --out.jsonSeparator | one of `tab`, `space`, `double-space`, `no-space`       | `tab`                                  |\n| --git               | add git data to output                                  | git data is omitted                    |\n| --docker.imageTag   | docker image tag, will be added to output, if exists    | docker info is omitted                 |\n| --date.format       | add date to output, one of `iso` or `instant`           | date is omitted                        |\n| --date.value        | any valid input for Date constructor                    | `Date.now()`                           |\n| --cwd               | working directory                                       | `process.cwd()`                        |\n\n## API\nAPI functions accept the same options as cli\n### execute(options, env)\nCreates and returns buildstamp\n\nGet buildstamp\n```javascript\nimport { execute } from 'buildstamp'\n\nconst stamp = execute({\n    git: true,\n    date: { format: 'iso' },\n    docker: { imageTag: 'foo', bar: 'bar'}\n})\n/*\n{\n  \"git\": {\n    \"commitId\": \"007b8f715eb5670662d90f90cd1916398d1dfe98\",\n    \"repoUrl\": \"https://github.com/qiwi/buildstamp.git\",\n    \"repoName\": \"qiwi/buildstamp\"\n  },\n  \"docker\": {\n    \"imageTag\": \"foo\".\n    \"bar\": \"bar\"\n  },\n  \"date\": \"2020-11-05T15:16:35.904Z\"\n}\n*/\n```\nWrite buildstamp to file\n```javascript\nimport { execute } from 'buildstamp'\n\nexecute({\n    git: true,\n    date: { format: 'iso' },\n    docker: { imageTag: 'foo', bar: 'bar'},\n    out: {\n      path: 'some/path/stamp.json'\n    }\n})\n```\nOutput in `some/path/stamp.json`:\n```json\n{\n\t\"git\": {\n\t\t\"commitId\": \"19128459495e461b3c2b64704566f6aaac193ce1\",\n\t\t\"repoUrl\": \"https://github.com/qiwi/buildstamp.git\",\n\t\t\"repoName\": \"qiwi/buildstamp\"\n\t},\n\t\"docker\": {\n\t\t\"imageTag\": \"foo\",\n\t\t\"bar\": \"bar\"\n\t},\n\t\"date\": \"2020-09-04T19:53:03.790Z\"\n}\n```\n### readBuildstamp(path)\nSafely parses and returns buildstamp by given path. Returns `undefined` on error.\n```javascript\nimport { readBuildstamp } from 'buildstamp'\n\nconst stamp = getBuildstamp('some/path')\n```\n",
+  "readmeFilename": "README.md"
+}
