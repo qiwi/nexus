@@ -40,7 +40,11 @@ Output in `nexus-downloads/nexus-cli-downloads-meta-2021-03-17T06:48:21.347Z.jso
 ]
 ```
 ### Compare
-Utility will write list of missing packages and list of missing extra for primary registry in comparison with secondary one.
+Options for this action should be given via config
+```shell script
+nexus-cli --config compare-config.json
+```
+Utility will write list of missing packages and list of extra packages for primary registry in comparison with secondary one.
 
 Output in `${cwd}/missing.json`
 ```json
