@@ -174,7 +174,7 @@ describe('NexusContentsHelper', () => {
       version: `1.${i}.12`,
     }))
     const mocks = params.map(item => nock(basePath)
-      .get(assetsDownloadUri + 'asd')
+      .get(assetsDownloadUri)
       .query({ ...item, format: 'npm' })
       .reply(200, 'foo')
     )
