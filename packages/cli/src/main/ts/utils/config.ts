@@ -1,6 +1,19 @@
-import { IBaseConfig, TCompareConfig, TDeleteConfig, TDownloadConfig, TDownloadConfigStrict } from '../interfaces'
+import {
+  IBaseConfig,
+  TCompareConfig,
+  TDeleteConfig,
+  TDownloadByListConfig,
+  TDownloadConfig,
+  TDownloadConfigStrict, TDownloadLatestConfig
+} from '../interfaces'
 import { DeepPartial, readFileToString } from './misc'
-import { validateCompareConfig, validateConfig, validateDeleteConfig, validateDownloadConfig } from './validators'
+import {
+  validateCompareConfig,
+  validateConfig,
+  validateDeleteConfig,
+  validateDownloadConfig, validateDownloadLatestConfig,
+  validateDownloadListConfig
+} from './validators'
 
 export const defaultLimit = {
   period: 1000,
@@ -51,7 +64,40 @@ export const resolveDeleteConfig = (config: TDeleteConfig): TDeleteConfig => {
   }
 }
 
-export const getConfig = (opts: IBaseConfig, configPath?: string): TDownloadConfigStrict | TDeleteConfig | TCompareConfig => {
+export const resolveCompareConfig = (config: TCompareConfig): TCompareConfig => {
+  return {
+    ...config,
+    data: {
+      ...config.data,
+      packages: config.data.packages.map(item => ({ ...item, group: normalizeStringifiedNullable(item.group) })),
+    }
+  }
+}
+
+export const resolveDownloadByListConfig = (config: TDownloadByListConfig): TDownloadByListConfig => { // eslint-disable-line sonarjs/no-identical-functions
+  return {
+    ...config,
+    data: {
+      ...config.data,
+      packages: config.data.packages.map(item => ({ ...item, group: normalizeStringifiedNullable(item.group) })),
+    }
+  }
+}
+
+export const resolveDownloadLatestConfig = (config: TDownloadLatestConfig): TDownloadLatestConfig => { // eslint-disable-line sonarjs/no-identical-functions
+  return {
+    ...config,
+    data: {
+      ...config.data,
+      packages: config.data.packages.map(item => ({ ...item, group: normalizeStringifiedNullable(item.group) })),
+    }
+  }
+}
+
+export const getConfig = (
+  opts: IBaseConfig,
+  configPath?: string,
+): TDownloadConfigStrict | TDeleteConfig | TCompareConfig | TDownloadByListConfig | TDownloadLatestConfig => {
   const config = validateConfig(
     configPath
       ? resolveConfig(JSON.parse(readFileToString(configPath)), opts as any) as any
@@ -67,7 +113,15 @@ export const getConfig = (opts: IBaseConfig, configPath?: string): TDownloadConf
   }
 
   if (config.action === 'compare') {
-    return validateCompareConfig(config)
+    return resolveCompareConfig(validateCompareConfig(config))
+  }
+
+  if (config.action === 'download-by-list') {
+    return resolveDownloadByListConfig(validateDownloadListConfig(config))
+  }
+
+  if (config.action === 'download-latest') {
+    return resolveDownloadLatestConfig(validateDownloadLatestConfig(config))
   }
 
   throw new Error('Unsupported action in config')

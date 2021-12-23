@@ -1,7 +1,13 @@
 import { NpmRegClientWrapper } from '@qiwi/npm-batch-client'
 import { join } from 'path'
+import { compare } from 'semver'
 
-import { TCompareConfigData, TCompareRegistryOpts, TDownloadListItem } from '../interfaces'
+import {
+  TCompareConfigData,
+  TCompareRegistryOpts,
+  TDownloadByListConfig,
+  TDownloadListItem
+} from '../interfaces'
 import { writeJson } from '../utils'
 
 const clientFactory = (opts: TCompareRegistryOpts) =>  new NpmRegClientWrapper(
@@ -18,6 +24,7 @@ export const performCompare = async (config: TCompareConfigData): Promise<void> 
     primaryRegistry,
     packages,
     cwd,
+    downloadConfig,
   } = config
 
   const primaryRegClient = clientFactory(primaryRegistry)
@@ -55,10 +62,27 @@ export const performCompare = async (config: TCompareConfigData): Promise<void> 
   const missingResultsPath = join(cwd, 'missing.json')
   const extraResultsPath = join(cwd, 'extra.json')
 
-  writeJson(downloadListMissing, missingResultsPath)
-  writeJson(downloadListExtra, extraResultsPath)
+  downloadListExtra.sort((a, b) => compare(a.version, b.version))
+  downloadListMissing.sort((a, b) => compare(a.version, b.version))
+
+  writeJson(prepareDownloadConfig(downloadListMissing, downloadConfig), missingResultsPath)
+  writeJson(prepareDownloadConfig(downloadListExtra, downloadConfig), extraResultsPath)
 
   console.log(`Done.`)
   console.log(`${downloadListMissing.length} packages are missing, ${downloadListExtra.length} packages are extra in primary registry`)
   console.log(`Metadata is written to ${missingResultsPath} and ${extraResultsPath}`)
 }
+
+const prepareDownloadConfig = (
+  packages: TDownloadListItem[],
+  config?: Required<TCompareConfigData>['downloadConfig']
+): TDownloadByListConfig | TDownloadListItem[] => config
+  ? {
+    ...config,
+    action: 'download-by-list',
+    data: {
+      ...config.data,
+      packages,
+    },
+  }
+  : packages

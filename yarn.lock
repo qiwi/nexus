@@ -1896,10 +1896,10 @@
     semver "^7.3.5"
     tslib "^2.1.0"
 
-"@qiwi/npm-batch-client@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@qiwi/npm-batch-client/-/npm-batch-client-2.1.0.tgz#8b0c3d1af64a09a8a87e7452f7c8bb3402219d31"
-  integrity sha512-OlG8jHyVosGY2SDWE5e/FiFhYpabLowrf3FxwTuJFeUylGKcaP/SEimriHxuLoxLZYQJtGZX+6wvv+cSwJwYGw==
+"@qiwi/npm-batch-client@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@qiwi/npm-batch-client/-/npm-batch-client-2.2.0.tgz#b745d7bd2e89b904ccf03f9d9dca9f81017aaca5"
+  integrity sha512-jb3oP9T6dqm9QuiC2w0Icn10e04uj3SeOPJ617AxaBSWQByGFP9DngoVMt1OjZwZRTGLKKKkPJMZ6WO5ijgE1Q==
   dependencies:
     "@qiwi/npm-registry-client" "^8.9.1"
     "@qiwi/npm-types" "^1.0.3"

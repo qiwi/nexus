@@ -1,6 +1,7 @@
-import { INexusHelper, TAsset, TComponent } from '@qiwi/nexus-helper'
+import { INexusHelper, TAsset, TAssetInfo, TComponent, TDownloadAssetByListItem } from '@qiwi/nexus-helper'
+import { join } from 'path'
 
-import { defaultLimit } from '../../main/ts/utils'
+import { defaultLimit, getPackageFullName, getPackageVersionedFullName } from '../../main/ts/utils'
 
 export const components: any = Array.from(
   { length: 10 },
@@ -60,6 +61,16 @@ export const helperMockFactory = (
         }
       ]
     })
+  },
+  downloadPackageAssetsByList(opts: TDownloadAssetByListItem[], cwd: string): Promise<PromiseSettledResult<TAssetInfo>[]> {
+    return Promise.resolve(opts.map(item => ({
+      status: 'fulfilled',
+      value: {
+        name: getPackageFullName(item),
+        version: item.version,
+        filePath: join(cwd, getPackageVersionedFullName(item).replace('/', '%2F') + '.tgz'),
+      },
+    })))
   }
 })
 
