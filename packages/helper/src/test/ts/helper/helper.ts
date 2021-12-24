@@ -10,6 +10,10 @@ import asset from './resources/asset.json'
 import component from './resources/component.json'
 
 describe('NexusContentsHelper', () => {
+  const tempDirPath = 'temp-helper-test'
+  beforeEach(() => mkdirSync(tempDirPath))
+  afterEach(() => rimraf.sync(tempDirPath))
+
   const basePath = 'http://localhost/service/rest'
   const assetsDownloadUri = '/v1/search/assets/download'
   const assetsSearchUri = '/v1/search/assets'
@@ -146,9 +150,7 @@ describe('NexusContentsHelper', () => {
   })
 
   it('downloads asset', async () => {
-    const tempDirPath = 'temp-helper-test'
     const fullPath = join(tempDirPath, 'asset.tar.gz')
-    mkdirSync(tempDirPath)
 
     const params = {
       group: 'foo',
@@ -162,12 +164,38 @@ describe('NexusContentsHelper', () => {
 
     expect(mock.isDone()).toEqual(true)
     expect(existsSync(fullPath)).toEqual(true)
+  })
 
-    rimraf.sync(tempDirPath)
+  it('downloads assets by list', async () => {
+    const params = Array.from({ length: 5 }, (_, i) => ({
+      group: 'types',
+      repository: 'npm',
+      name: 'react',
+      version: `1.${i}.12`,
+    }))
+    const mocks = params.map(item => nock(basePath)
+      .get(assetsDownloadUri)
+      .query({ ...item, format: 'npm' })
+      .reply(200, 'foo')
+    )
+
+    const res = await helper.downloadPackageAssetsByList(params, tempDirPath)
+
+    expect(mocks.every(mock => mock.isDone()))
+
+    expect(res).toHaveLength(params.length)
+    expect(res).toEqual(expect.arrayContaining(params.map(item => ({
+      status: 'fulfilled',
+      value: {
+        name: '@types/react', // eslint-disable-line sonarjs/no-duplicate-string
+        version: item.version,
+        filePath: join(tempDirPath, `@types%2Freact@${item.version}`),
+      },
+    }))))
   })
 
   describe('downloadPackageAssets', () => {
-    const tempDirPath = 'temp-helper-test'
+    const tempDirPath = 'temp-helper-download-package-assets-test'
 
     beforeAll(() => rimraf.sync(tempDirPath))
 
@@ -354,14 +382,14 @@ describe('NexusContentsHelper', () => {
 
   describe('extractNameAndVersionFromPath', () => {
     const testCases = [
-      { filePath: '@qiwi/foo-bar-baz/-/foo-bar-baz-0.11.0.tgz', result: { name: '@qiwi/foo-bar-baz', version: '0.11.0' } },
-      { filePath: 'foo-bar-baz/-/foo-bar-baz-0.70.0.tgz', result: { name: 'foo-bar-baz', version: '0.70.0' } },
-      { filePath: '@types/react/-/react-16.9.41.tgz', result: { name: '@types/react', version: '16.9.41' } },
-      { filePath: 'foo-bar/-/foo-bar-1.56.1-1779.tgz', result: { name: 'foo-bar', version: '1.56.1-1779' } },
-      { filePath: '@qiwi-foo-bar/baz-bat-qux/-/baz-bat-qux-1.1150.0.tgz', result: { name: '@qiwi-foo-bar/baz-bat-qux', version: '1.1150.0' } },
-      { filePath: '@qiwi-foo-123/b2b-bar-baz/-/b2b-bar-baz-1.1150.0.tgz', result: { name: '@qiwi-foo-123/b2b-bar-baz', version: '1.1150.0' } },
-      { filePath: 'qiwi-foo-bar/-/qiwi-foo-bar-0.0.2-feature-Bat.14.tgz', result: { name: 'qiwi-foo-bar', version: '0.0.2-feature-Bat.14' } },
-      { filePath: '@qiwi/qiwi-foo-bar/-/qiwi-foo-bar-0.0.2-feature-bat.tgz', result: { name: '@qiwi/qiwi-foo-bar', version: '0.0.2-feature-bat' } },
+      { filePath: '@qiwi/foo-bar-baz/-/foo-bar-baz-0.11.0.tgz', result: { fullName: '@qiwi/foo-bar-baz', version: '0.11.0', group: 'qiwi', name: 'foo-bar-baz' } }, // eslint-disable-line sonarjs/no-duplicate-string
+      { filePath: 'foo-bar-baz/-/foo-bar-baz-0.70.0.tgz', result: { fullName: 'foo-bar-baz', version: '0.70.0', name: 'foo-bar-baz' } },
+      { filePath: '@types/react/-/react-16.9.41.tgz', result: { fullName: '@types/react', version: '16.9.41', group: 'types', name: 'react' } },
+      { filePath: 'foo-bar/-/foo-bar-1.56.1-1779.tgz', result: { fullName: 'foo-bar', version: '1.56.1-1779', name: 'foo-bar' } },
+      { filePath: '@qiwi-foo-bar/baz-bat-qux/-/baz-bat-qux-1.1150.0.tgz', result: { fullName: '@qiwi-foo-bar/baz-bat-qux', version: '1.1150.0', group: 'qiwi-foo-bar', name: 'baz-bat-qux' } },  // eslint-disable-line sonarjs/no-duplicate-string
+      { filePath: '@qiwi-foo-123/b2b-bar-baz/-/b2b-bar-baz-1.1150.0.tgz', result: { fullName: '@qiwi-foo-123/b2b-bar-baz', version: '1.1150.0', group: 'qiwi-foo-123', name: 'b2b-bar-baz' } },
+      { filePath: 'qiwi-foo-bar/-/qiwi-foo-bar-0.0.2-feature-Bat.14.tgz', result: { fullName: 'qiwi-foo-bar', version: '0.0.2-feature-Bat.14', name: 'qiwi-foo-bar' } },
+      { filePath: '@qiwi/qiwi-foo-bar/-/qiwi-foo-bar-0.0.2-feature-bat.tgz', result: { fullName: '@qiwi/qiwi-foo-bar', version: '0.0.2-feature-bat', group: 'qiwi', name: 'qiwi-foo-bar' } },
     ]
 
     testCases.forEach(({ filePath, result }) =>

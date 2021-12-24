@@ -14,6 +14,13 @@ export type TGetPackageVersionsOpts = {
   timeout?: number
 }
 
+export type TDownloadAssetByListItem = {
+  repository: string
+  group?: string
+  name: string
+  version: string
+}
+
 export type TGetPackageAssetsOpts = Partial<TGetPackageVersionsOpts> & { repository: string, range?: string }
 
 export type TPaginatedSettledResult<T> = {
@@ -51,6 +58,11 @@ export interface INexusHelper {
     filePath: string,
     retryCount?: number,
   ): Promise<void>
+
+  downloadPackageAssetsByList(
+    opts: TDownloadAssetByListItem[],
+    cwd: string
+  ): Promise<PromiseSettledResult<TAssetInfo>[]>
 }
 
 export type TRateLimitOpts = IComplexDelay | IComplexDelay[]

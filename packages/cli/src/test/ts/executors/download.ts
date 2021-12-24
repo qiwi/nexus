@@ -9,7 +9,7 @@ const cwd = 'cwd'
 
 const assetInfos = Array.from({ length: assets.length }, (_, i) => ({
   access: 'public',
-  filePath: join(cwd, 'downloads', `@qiwi-foo-bar%2Fbaz-bat@1.${i}.0`),
+  filePath: join(cwd, 'downloads', `@qiwi-foo-bar%2Fbaz-bat@1.${i}.0.tgz`),
   name: '@qiwi-foo-bar/baz-bat',
   version: `1.${i}.0`,
 }))
@@ -21,8 +21,6 @@ describe('performDownload', () => {
   })
 
   it('calls proper methods of helper and write meta to file', async () => {
-    const readJsonMock = jest.spyOn(misc, 'readFileToString')
-      .mockImplementation(() => '[]')
     const writeJsonMock = jest.spyOn(misc, 'writeJson')
       .mockImplementation(() => { /* noop */ })
     jest.spyOn(console, 'log')
@@ -38,17 +36,10 @@ describe('performDownload', () => {
       helper
     )
 
-    expect(writeJsonMock).toHaveBeenNthCalledWith(
-      1,
-      [],
-      "cwd/meta.json", // eslint-disable-line sonarjs/no-duplicate-string
-    )
-    expect(writeJsonMock).toHaveBeenNthCalledWith(
-      2,
+    expect(writeJsonMock).toHaveBeenCalledWith(
       assetInfos.map(item => ({ ...item, access: undefined })),
       "cwd/meta.json",
     )
-    expect(readJsonMock).toHaveBeenCalled()
   })
 
   it('prints npm batch config', async () => {
@@ -71,22 +62,7 @@ describe('performDownload', () => {
       },
       helper
     )
-    expect(writeJsonMock).toHaveBeenNthCalledWith(
-      1,
-      {
-        registryUrl: '',
-        auth: {
-          username: '',
-          password: '',
-          email: '',
-        },
-        action: 'publish',
-        data: [],
-      },
-      'cwd/meta.json'
-    )
-    expect(writeJsonMock).toHaveBeenNthCalledWith(
-      2,
+    expect(writeJsonMock).toHaveBeenCalledWith(
       {
         registryUrl: '',
         auth: {
@@ -108,14 +84,21 @@ describe('performDownload', () => {
       .mockImplementation(() => { /* noop */})
     const errorSpy = jest.spyOn(console, 'error')
       .mockImplementation(() => { /* noop */})
+    const helperMock = helperMockFactory(components, assets)
     const helper = {
-      ...helperMockFactory(components, assets),
-      downloadPackageAsset: jest.fn()
-        .mockReturnValueOnce(Promise.resolve())
-        .mockReturnValueOnce(Promise.reject(new Error('foo')))
-        .mockReturnValueOnce(Promise.resolve())
-        .mockReturnValueOnce(Promise.resolve())
-        .mockReturnValueOnce(Promise.resolve())
+      ...helperMock,
+      downloadPackageAssetsByList: async (opts: any) => {
+        const data = await helperMock.downloadPackageAssetsByList(opts, cwd)
+        return data.map((item) => {
+          if (item.status === 'fulfilled' && item.value.version === '1.1.0') {
+            return {
+              status: 'rejected' as PromiseRejectedResult['status'],
+              reason: 'foo',
+            }
+          }
+          return item
+        })
+      }
     }
 
     await performDownload(
@@ -127,8 +110,8 @@ describe('performDownload', () => {
           access: 'public'
         }
       },
-      helper as any
+      helper,
     )
-    expect(errorSpy).toHaveBeenCalledWith('@qiwi-foo-bar/baz-bat/-/baz-bat-1.1.0.tgz Error: foo')
+    expect(errorSpy).toHaveBeenCalledWith('@qiwi-foo-bar/baz-bat@1.1.0: foo')
   })
 })

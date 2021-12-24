@@ -7,7 +7,7 @@ import { satisfies } from 'semver'
 import { IComponentInfo, TAssetInfo, TComponent, TPaginatedAsset, TPaginatedComponent } from '../interfaces'
 import { callWithRetry, isDefined, nullCheckerFactory, withRateLimit } from '../utils'
 import {
-  INexusHelper,
+  INexusHelper, TDownloadAssetByListItem,
   TGetPackageAssetsOpts,
   TGetPackageVersionsOpts,
   TPaginatedSettledResult,
@@ -102,7 +102,7 @@ export class NexusComponentsHelper implements INexusHelper {
             if (!downloadUrl || !path) {
               return Promise.reject(new Error('downloadUrl or path is absent in Nexus API response'))
             }
-            const { version, name } = NexusComponentsHelper.extractNameAndVersionFromPath(path)
+            const { version, fullName: name } = NexusComponentsHelper.extractNameAndVersionFromPath(path)
             const filePath = join(cwd, path.replace(/\//g, '%2F'))
             return this.downloadPackageAsset({ ...opts, version }, filePath)
               .then(() => ({ version, name, filePath }))
@@ -173,11 +173,24 @@ export class NexusComponentsHelper implements INexusHelper {
     return callWithRetry<void>(fn, retryCount)
   }
 
-  static extractNameAndVersionFromPath(path: string): Omit<TAssetInfo, 'filePath'> {
+  downloadPackageAssetsByList(opts: TDownloadAssetByListItem[], cwd: string): Promise<PromiseSettledResult<TAssetInfo>[]> {
+    return Promise.allSettled(opts.map(item => {
+      const { name, version, group } = item
+      const fullName = `${group ? '@' + group + '/' : ''}${name}`
+      const filePath = join(cwd, `${fullName.replace('/', '%2F')}@${version}`)
+
+      return this.downloadPackageAsset(item, filePath)
+        .then(() => ({ version, name: fullName, filePath }))
+    }))
+  }
+
+  static extractNameAndVersionFromPath(path: string): { group: string, name: string, version: string, fullName: string } {
     const [, group, name, version] = /^(@[\da-z-]+[\da-z]+)?\/?([\da-z-]+)\/-\/[\da-z-]+-([\d.A-z-]+).tgz$/.exec(path) || []
     return {
-      name: `${group ? group + '/' : ''}${name}`,
-      version
+      name,
+      fullName: `${group ? group + '/' : ''}${name}`,
+      version,
+      group: group?.replace('@', ''),
     }
   }
 

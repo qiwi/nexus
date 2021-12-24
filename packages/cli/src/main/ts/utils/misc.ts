@@ -61,3 +61,9 @@ export const helperFactory = (config: IBaseConfig): INexusHelper => {
 }
 
 export { callWithRetry } from '@qiwi/nexus-utils'
+
+export const getPackageFullName = (item: { group?: string, name: string }): string =>
+  `${item.group && item.group !== 'null' ? '@' + item.group + '/' : ''}${item.name}`
+
+export const getPackageVersionedFullName = (item: { group?: string, name: string, version: string }): string =>
+  `${getPackageFullName(item)}@${item.version}`

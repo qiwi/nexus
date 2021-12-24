@@ -53,7 +53,7 @@
     "@qiwi/nexus-client": "1.1.5",
     "@qiwi/nexus-helper": "2.2.3",
     "@qiwi/nexus-utils": "1.0.3",
-    "@qiwi/npm-batch-client": "^2.1.0",
+    "@qiwi/npm-batch-client": "^2.2.0",
     "@types/semver": "^7.3.9",
     "axios": "^0.24.0",
     "blork": "^9.3.0",
