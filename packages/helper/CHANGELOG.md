@@ -1,3 +1,10 @@
+# @qiwi/nexus-helper [2.3.0](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@2.2.3...@qiwi/nexus-helper@2.3.0) (2021-12-24)
+
+
+### Features
+
+* add download-by-list, download-latest ([#32](https://github.com/qiwi/nexus/issues/32)) ([80201cd](https://github.com/qiwi/nexus/commit/80201cd8b17c98d2b8d9f3db50cd0ad3a68cb885))
+
 ## @qiwi/nexus-helper [2.2.3](https://github.com/qiwi/nexus/compare/@qiwi/nexus-helper@2.2.2...@qiwi/nexus-helper@2.2.3) (2021-12-19)
 
 
